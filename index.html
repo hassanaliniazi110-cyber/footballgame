@@ -1,98 +1,160 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Football Training Arena</title>
+  <meta charset="utf-8">
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"
+  >
+  <meta name="theme-color" content="#06130c">
+  <title>Football Arena X</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <div class="app">
 
-<div class="game">
+    <header class="topbar">
+      <div class="brand">
+        ⚽ <span>FOOTBALL ARENA X</span>
+      </div>
 
-  <header class="topbar">
-    <div class="logo">⚽ FOOTBALL ARENA</div>
+      <div class="stat">
+        <small>GOALS</small>
+        <strong id="score">0</strong>
+      </div>
 
-    <div class="score">
-      <span>GOALS</span>
-      <b id="score">0</b>
-    </div>
+      <div class="stat">
+        <small>LEVEL</small>
+        <strong id="level">1</strong>
+      </div>
 
-    <div class="level">
-      <span>LEVEL</span>
-      <b id="level">1</b>
-    </div>
+      <div class="stat lives">
+        <small>LIVES</small>
+        <strong id="lives">5</strong>
+      </div>
+    </header>
 
-    <div class="lives">
-      ❤️ <b id="lives">5</b>
-    </div>
-  </header>
+    <nav class="modes" aria-label="Game modes">
+      <button class="mode active" data-mode="penalty">
+        ⚽ PENALTY
+      </button>
 
-  <nav class="modes">
+      <button class="mode" data-mode="freekick">
+        🎯 FREE KICK
+      </button>
 
-    <button class="mode active" data-mode="penalty">
-      ⚽ PENALTY
-    </button>
+      <button class="mode" data-mode="keeper">
+        🧤 GOALKEEPER
+      </button>
+    </nav>
 
-    <button class="mode" data-mode="freekick">
-      🎯 FREE KICK
-    </button>
+    <section class="toolbar">
 
-    <button class="mode" data-mode="keeper">
-      🧤 GOALKEEPING
-    </button>
+      <label class="select-wrap">
+        <span>Difficulty</span>
 
-  </nav>
+        <select id="difficulty" aria-label="Difficulty">
+          <option value="easy">Easy</option>
+          <option value="normal" selected>Normal</option>
+          <option value="hard">Hard</option>
+        </select>
+      </label>
 
-  <div class="settings">
+      <button id="restart" class="restart">
+        RESTART
+      </button>
 
-    <label>
-      Difficulty
-      <select id="difficulty">
-        <option value="easy">Easy</option>
-        <option value="normal" selected>Normal</option>
-        <option value="hard">Hard</option>
-      </select>
-    </label>
+      <div class="hint" id="hint">
+        Tap LEFT, CENTER or RIGHT to shoot
+      </div>
 
-    <button id="restart">RESTART</button>
+    </section>
+
+    <main id="arena" aria-label="Football game arena">
+
+      <canvas id="gameCanvas"></canvas>
+
+      <div class="hud-message" id="message">
+        CHOOSE YOUR SHOT
+      </div>
+
+      <div class="power-wrap" id="powerWrap">
+
+        <div class="power-label">
+          <span>SHOT POWER</span>
+          <b id="powerText">75%</b>
+        </div>
+
+        <div class="power-track">
+          <div id="powerFill"></div>
+        </div>
+
+      </div>
+
+      <div class="controls" id="controls">
+
+        <button data-zone="left">
+          ↖
+          <span>LEFT</span>
+        </button>
+
+        <button data-zone="center">
+          ↑
+          <span>CENTER</span>
+        </button>
+
+        <button data-zone="right">
+          ↗
+          <span>RIGHT</span>
+        </button>
+
+      </div>
+
+      <button
+        id="diveButton"
+        class="dive-button"
+        hidden
+      >
+        🧤 DIVE NOW
+      </button>
+
+      <div
+        class="result-card"
+        id="resultCard"
+        hidden
+      >
+
+        <div id="resultTitle">
+          GOAL!
+        </div>
+
+        <div id="resultSub">
+          Great finish.
+        </div>
+
+        <button id="continueBtn">
+          CONTINUE
+        </button>
+
+      </div>
+
+    </main>
+
+    <footer>
+      <span id="modeText">
+        Penalty Kick
+      </span>
+
+      <span>•</span>
+
+      <span>
+        Every 3 goals = next level
+      </span>
+    </footer>
 
   </div>
 
-  <main id="arena">
-
-    <canvas id="canvas"></canvas>
-
-    <div id="message">
-      CHOOSE YOUR SHOT
-    </div>
-
-    <div id="powerBar">
-      <div id="powerFill"></div>
-    </div>
-
-    <div id="controls">
-
-      <button data-zone="left">↖ LEFT</button>
-
-      <button data-zone="center">↑ CENTER</button>
-
-      <button data-zone="right">↗ RIGHT</button>
-
-    </div>
-
-  </main>
-
-  <footer>
-    <span id="modeText">Penalty Kick</span>
-    <span>•</span>
-    <span>Score 3 goals to level up</span>
-  </footer>
-
-</div>
-
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
