@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Football Training Arena</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="game">
+
+  <header class="topbar">
+    <div class="logo">⚽ FOOTBALL ARENA</div>
+
+    <div class="score">
+      <span>GOALS</span>
+      <b id="score">0</b>
+    </div>
+
+    <div class="level">
+      <span>LEVEL</span>
+      <b id="level">1</b>
+    </div>
+
+    <div class="lives">
+      ❤️ <b id="lives">5</b>
+    </div>
+  </header>
+
+  <nav class="modes">
+
+    <button class="mode active" data-mode="penalty">
+      ⚽ PENALTY
+    </button>
+
+    <button class="mode" data-mode="freekick">
+      🎯 FREE KICK
+    </button>
+
+    <button class="mode" data-mode="keeper">
+      🧤 GOALKEEPING
+    </button>
+
+  </nav>
+
+  <div class="settings">
+
+    <label>
+      Difficulty
+      <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="normal" selected>Normal</option>
+        <option value="hard">Hard</option>
+      </select>
+    </label>
+
+    <button id="restart">RESTART</button>
+
+  </div>
+
+  <main id="arena">
+
+    <canvas id="canvas"></canvas>
+
+    <div id="message">
+      CHOOSE YOUR SHOT
+    </div>
+
+    <div id="powerBar">
+      <div id="powerFill"></div>
+    </div>
+
+    <div id="controls">
+
+      <button data-zone="left">↖ LEFT</button>
+
+      <button data-zone="center">↑ CENTER</button>
+
+      <button data-zone="right">↗ RIGHT</button>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <span id="modeText">Penalty Kick</span>
+    <span>•</span>
+    <span>Score 3 goals to level up</span>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
