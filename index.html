@@ -1,160 +1,97 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta
-    name="viewport"
-    content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"
-  >
-  <meta name="theme-color" content="#06130c">
-  <title>Football Arena X</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#06120b">
+<title>Football Arena X</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <div class="app">
+<div class="app">
+  <header class="topbar">
+    <div class="brand">⚽ <span>FOOTBALL ARENA X</span></div>
+    <div class="stat"><small>GOALS</small><strong id="score">0</strong></div>
+    <div class="stat"><small>LEVEL</small><strong id="level">1</strong></div>
+    <div class="stat"><small>LIVES</small><strong id="lives">5</strong></div>
+  </header>
 
-    <header class="topbar">
-      <div class="brand">
-        ⚽ <span>FOOTBALL ARENA X</span>
+  <nav class="modes">
+    <button class="mode active" data-mode="penalty">⚽ PENALTY</button>
+    <button class="mode" data-mode="freekick">🎯 FREE KICK</button>
+    <button class="mode" data-mode="keeper">🧤 GOALKEEPER</button>
+  </nav>
+
+  <section class="toolbar">
+    <label class="difficulty">
+      <span>Difficulty</span>
+      <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="normal" selected>Normal</option>
+        <option value="hard">Hard</option>
+      </select>
+    </label>
+
+    <button id="restart" class="restart">RESTART</button>
+
+    <div id="hint" class="hint">
+      Pick a corner and shoot!
+    </div>
+  </section>
+
+  <main id="arena">
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="message" class="message">
+      CHOOSE YOUR SHOT
+    </div>
+
+    <div id="powerWrap" class="power-wrap">
+      <div class="power-label">
+        <span>SHOT POWER</span>
+        <b id="powerText">75%</b>
       </div>
 
-      <div class="stat">
-        <small>GOALS</small>
-        <strong id="score">0</strong>
+      <div class="power-track">
+        <div id="powerFill"></div>
       </div>
+    </div>
 
-      <div class="stat">
-        <small>LEVEL</small>
-        <strong id="level">1</strong>
-      </div>
-
-      <div class="stat lives">
-        <small>LIVES</small>
-        <strong id="lives">5</strong>
-      </div>
-    </header>
-
-    <nav class="modes" aria-label="Game modes">
-      <button class="mode active" data-mode="penalty">
-        ⚽ PENALTY
+    <div id="controls" class="controls">
+      <button data-zone="left">
+        <span>↖</span>
+        LEFT
       </button>
 
-      <button class="mode" data-mode="freekick">
-        🎯 FREE KICK
+      <button data-zone="center">
+        <span>↑</span>
+        CENTER
       </button>
 
-      <button class="mode" data-mode="keeper">
-        🧤 GOALKEEPER
+      <button data-zone="right">
+        <span>↗</span>
+        RIGHT
       </button>
-    </nav>
+    </div>
 
-    <section class="toolbar">
+    <button id="diveButton" class="dive" hidden>
+      🧤 DIVE NOW
+    </button>
 
-      <label class="select-wrap">
-        <span>Difficulty</span>
+    <div id="resultCard" class="result-card" hidden>
+      <div id="resultTitle">GOAL!</div>
+      <div id="resultSub">Great finish.</div>
+      <button id="continueBtn">CONTINUE</button>
+    </div>
+  </main>
 
-        <select id="difficulty" aria-label="Difficulty">
-          <option value="easy">Easy</option>
-          <option value="normal" selected>Normal</option>
-          <option value="hard">Hard</option>
-        </select>
-      </label>
+  <footer>
+    <span id="modeText">Penalty Kick</span>
+    <span>•</span>
+    <span>3 goals = next level</span>
+  </footer>
+</div>
 
-      <button id="restart" class="restart">
-        RESTART
-      </button>
-
-      <div class="hint" id="hint">
-        Tap LEFT, CENTER or RIGHT to shoot
-      </div>
-
-    </section>
-
-    <main id="arena" aria-label="Football game arena">
-
-      <canvas id="gameCanvas"></canvas>
-
-      <div class="hud-message" id="message">
-        CHOOSE YOUR SHOT
-      </div>
-
-      <div class="power-wrap" id="powerWrap">
-
-        <div class="power-label">
-          <span>SHOT POWER</span>
-          <b id="powerText">75%</b>
-        </div>
-
-        <div class="power-track">
-          <div id="powerFill"></div>
-        </div>
-
-      </div>
-
-      <div class="controls" id="controls">
-
-        <button data-zone="left">
-          ↖
-          <span>LEFT</span>
-        </button>
-
-        <button data-zone="center">
-          ↑
-          <span>CENTER</span>
-        </button>
-
-        <button data-zone="right">
-          ↗
-          <span>RIGHT</span>
-        </button>
-
-      </div>
-
-      <button
-        id="diveButton"
-        class="dive-button"
-        hidden
-      >
-        🧤 DIVE NOW
-      </button>
-
-      <div
-        class="result-card"
-        id="resultCard"
-        hidden
-      >
-
-        <div id="resultTitle">
-          GOAL!
-        </div>
-
-        <div id="resultSub">
-          Great finish.
-        </div>
-
-        <button id="continueBtn">
-          CONTINUE
-        </button>
-
-      </div>
-
-    </main>
-
-    <footer>
-      <span id="modeText">
-        Penalty Kick
-      </span>
-
-      <span>•</span>
-
-      <span>
-        Every 3 goals = next level
-      </span>
-    </footer>
-
-  </div>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
