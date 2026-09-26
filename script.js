@@ -1,13 +1,16 @@
 "use strict";
 
-/* =========================
-   ELEMENTS
-========================= */
+/* =========================================================
+   FOOTBALL ARENA X
+   - Easier goals
+   - Real goalkeeper POV
+   - Penalty mode
+   - Free kick with wall
+   - Goalkeeping POV
+========================================================= */
 
 const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d", {
-  alpha: false
-});
+const ctx = canvas.getContext("2d");
 
 const arena = document.getElementById("arena");
 
@@ -34,12 +37,13 @@ const resultTitle = document.getElementById("resultTitle");
 const resultSub = document.getElementById("resultSub");
 const continueBtn = document.getElementById("continueBtn");
 
-/* =========================
-   MAIN STATE
-========================= */
 
-let W = 1;
-let H = 1;
+/* =========================================================
+   GAME STATE
+========================================================= */
+
+let W = 1000;
+let H = 600;
 let dpr = 1;
 
 let score = 0;
@@ -47,22 +51,21 @@ let level = 1;
 let lives = 5;
 
 let mode = "penalty";
-
 let state = "ready";
 
 let power = 0.72;
-let powerDir = 1;
+let powerDirection = 1;
 
-let last = performance.now();
+let lastTime = performance.now();
 let pulse = 0;
 
 let particles = [];
-let timer = null;
-let resizeQueued = false;
+let gameTimer = null;
 
-/* =========================
+
+/* =========================================================
    BALL
-========================= */
+========================================================= */
 
 const ball = {
   x: 0,
@@ -75,7 +78,7 @@ const ball = {
   targetY: 0,
 
   t: 0,
-  duration: 0.55,
+  duration: 0.6,
 
   curve: 0,
   arc: 0,
@@ -83,9 +86,10 @@ const ball = {
   radius: 13
 };
 
-/* =========================
-   GOALKEEPER
-========================= */
+
+/* =========================================================
+   KEEPER
+========================================================= */
 
 const keeper = {
   x: 0,
@@ -98,78 +102,56 @@ const keeper = {
   targetY: 0,
 
   t: 0,
-  duration: 0.5,
+  duration: 1,
 
   tilt: 0
 };
 
-/* =========================
+
+/* =========================================================
    FREE KICK WALL
-========================= */
+========================================================= */
 
 const wall = {
   people: 4,
   x: 0,
   y: 0,
-  height: 70
+  height: 72
 };
 
-/* =========================
-   UTILS
-========================= */
+
+/* =========================================================
+   HELPERS
+========================================================= */
 
 function clamp(value, min, max) {
-  return Math.max(
-    min,
-    Math.min(max, value)
-  );
+  return Math.max(min, Math.min(max, value));
 }
 
-function schedule(fn, delay) {
-  clearTimeout(timer);
-
-  timer = setTimeout(
-    fn,
-    delay
-  );
+function schedule(callback, delay) {
+  clearTimeout(gameTimer);
+  gameTimer = setTimeout(callback, delay);
 }
 
-/* =========================
+
+/* =========================================================
    CANVAS
-========================= */
+========================================================= */
 
 function resizeCanvas() {
 
-  const rect =
-    arena.getBoundingClientRect();
+  const rect = arena.getBoundingClientRect();
 
-  W = Math.max(
-    320,
-    Math.floor(rect.width)
-  );
+  W = Math.max(320, Math.floor(rect.width));
+  H = Math.max(260, Math.floor(rect.height));
 
-  H = Math.max(
-    260,
-    Math.floor(rect.height)
-  );
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-  dpr =
-    Math.min(
-      window.devicePixelRatio || 1,
-      2
-    );
+  canvas.width = Math.floor(W * dpr);
+  canvas.height = Math.floor(H * dpr);
 
-  canvas.width =
-    Math.floor(W * dpr);
-
-  canvas.height =
-    Math.floor(H * dpr);
-
-  canvas.style.width =
-    W + "px";
-
-  canvas.style.height =
-    H + "px";
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
 
   ctx.setTransform(
     dpr,
@@ -181,83 +163,40 @@ function resizeCanvas() {
   );
 
   layout();
-
   draw();
 }
 
-function queueResize() {
-
-  if (resizeQueued) {
-    return;
-  }
-
-  resizeQueued = true;
-
-  requestAnimationFrame(() => {
-
-    resizeQueued = false;
-
-    resizeCanvas();
-  });
-}
-
-if (
-  "ResizeObserver" in window
-) {
-
-  new ResizeObserver(
-    queueResize
-  ).observe(arena);
-
-} else {
-
-  window.addEventListener(
-    "resize",
-    queueResize
-  );
-}
+window.addEventListener(
+  "resize",
+  resizeCanvas
+);
 
 window.addEventListener(
   "orientationchange",
   () => {
-
-    setTimeout(
-      queueResize,
-      150
-    );
+    setTimeout(resizeCanvas, 150);
   }
 );
 
-/* =========================
+
+/* =========================================================
    FIELD GEOMETRY
-========================= */
+========================================================= */
 
-function goal() {
+function getGoal() {
 
-  const gw =
-    Math.min(
-      W * 0.78,
-      920
-    );
-
-  const gh =
-    Math.min(
-      H * 0.35,
-      300
-    );
+  const width = Math.min(W * 0.78, 920);
+  const height = Math.min(H * 0.35, 300);
 
   return {
-    x: (W - gw) / 2,
-    y: Math.max(
-      38,
-      H * 0.08
-    ),
-    w: gw,
-    h: gh
+    x: (W - width) / 2,
+    y: Math.max(38, H * 0.08),
+    w: width,
+    h: height
   };
 }
 
-function spot() {
+function getSpot() {
 
   return {
     x: W / 2,
@@ -265,39 +204,29 @@ function spot() {
   };
 }
 
-function keeperHome() {
+function getKeeperHome() {
 
-  const g =
-    goal();
+  const g = getGoal();
 
   return {
     x: W / 2,
-
-    y:
-      g.y +
-      g.h * 0.68
+    y: g.y + g.h * 0.68
   };
 }
 
-function wallY() {
+function getWallY() {
 
-  const s =
-    spot();
-
-  return (
-    s.y -
-    H * 0.20
-  );
+  return H * 0.59;
 }
 
-/* =========================
+
+/* =========================================================
    LAYOUT
-========================= */
+========================================================= */
 
 function layout() {
 
-  const home =
-    keeperHome();
+  const home = getKeeperHome();
 
   keeper.x = home.x;
   keeper.y = home.y;
@@ -311,140 +240,110 @@ function layout() {
   keeper.t = 0;
   keeper.tilt = 0;
 
-  const s =
-    spot();
+  const spot = getSpot();
 
-  ball.x = s.x;
-  ball.y = s.y;
+  ball.x = spot.x;
+  ball.y = spot.y;
 
-  ball.startX = s.x;
-  ball.startY = s.y;
+  ball.startX = spot.x;
+  ball.startY = spot.y;
 
-  ball.targetX = s.x;
-  ball.targetY = s.y;
+  ball.targetX = spot.x;
+  ball.targetY = spot.y;
 
   ball.t = 0;
+
   ball.curve = 0;
   ball.arc = 0;
 
-  ball.radius =
-    clamp(
-      Math.min(W, H) * 0.022,
-      10,
-      15
-    );
+  ball.radius = clamp(
+    Math.min(W, H) * 0.022,
+    10,
+    15
+  );
 
-  wall.people =
-    clamp(
-      3 +
-      Math.floor(
-        (level - 1) / 2
-      ),
-      3,
-      7
-    );
+  /*
+     Easier wall.
+     It still grows with level.
+  */
 
-  wall.height =
-    clamp(
-      58 +
-      level * 4,
-      58,
-      90
-    );
+  wall.people = clamp(
+    3 + Math.floor((level - 1) / 3),
+    3,
+    6
+  );
+
+  wall.height = clamp(
+    58 + level * 3,
+    58,
+    78
+  );
 
   wall.x = W / 2;
-  wall.y = wallY();
+  wall.y = getWallY();
 }
 
-/* =========================
-   DRAW EVERYTHING
-========================= */
+
+/* =========================================================
+   DRAW
+========================================================= */
 
 function draw() {
 
-  drawField();
+  if (mode === "keeper") {
 
-  if (
-    mode === "freekick"
-  ) {
-    drawWall();
+    drawGoalkeeperPOV();
+
+  } else {
+
+    drawNormalField();
+
+    if (mode === "freekick") {
+      drawWall();
+    }
+
+    drawKeeper();
+    drawBall();
+    drawAim();
   }
 
-  drawKeeper();
-  drawBall();
-  drawAim();
   drawParticles();
 }
 
-/* =========================
-   FIELD
-========================= */
 
-function drawField() {
+/* =========================================================
+   NORMAL FIELD
+========================================================= */
 
-  ctx.clearRect(
+function drawNormalField() {
+
+  ctx.clearRect(0, 0, W, H);
+
+  const sky = ctx.createLinearGradient(
     0,
     0,
-    W,
+    0,
+    H * 0.3
+  );
+
+  sky.addColorStop(0, "#07120c");
+  sky.addColorStop(1, "#173824");
+
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 0, W, H * 0.3);
+
+  const grass = ctx.createLinearGradient(
+    0,
+    H * 0.18,
+    0,
     H
   );
 
-  /* Stadium */
-
-  const sky =
-    ctx.createLinearGradient(
-      0,
-      0,
-      0,
-      H * 0.28
-    );
-
-  sky.addColorStop(
-    0,
-    "#07120c"
-  );
-
-  sky.addColorStop(
-    1,
-    "#173824"
-  );
-
-  ctx.fillStyle = sky;
-
-  ctx.fillRect(
-    0,
-    0,
-    W,
-    H * 0.30
-  );
-
-  /* Grass */
-
-  const grass =
-    ctx.createLinearGradient(
-      0,
-      H * 0.18,
-      0,
-      H
-    );
-
-  grass.addColorStop(
-    0,
-    "#15974a"
-  );
-
-  grass.addColorStop(
-    0.55,
-    "#0d823d"
-  );
-
-  grass.addColorStop(
-    1,
-    "#075b29"
-  );
+  grass.addColorStop(0, "#15974a");
+  grass.addColorStop(0.55, "#0d823d");
+  grass.addColorStop(1, "#075b29");
 
   ctx.fillStyle = grass;
-
   ctx.fillRect(
     0,
     H * 0.18,
@@ -454,13 +353,7 @@ function drawField() {
 
   drawStadiumLights();
 
-  /* Field stripes */
-
-  for (
-    let i = 0;
-    i < 14;
-    i++
-  ) {
+  for (let i = 0; i < 14; i++) {
 
     ctx.fillStyle =
       i % 2
@@ -470,23 +363,18 @@ function drawField() {
     ctx.fillRect(
       0,
       H * 0.18 +
-        i *
-        (H * 0.82 / 14),
-
+        i * (H * 0.82 / 14),
       W,
       H * 0.82 / 14
     );
   }
 
-  const g =
-    goal();
+  const g = getGoal();
 
-  /* Penalty area */
-
-  ctx.strokeStyle =
-    "#ffffffd6";
-
+  ctx.strokeStyle = "#ffffffd6";
   ctx.lineWidth = 3;
+
+  /* Penalty box */
 
   ctx.strokeRect(
     W * 0.08,
@@ -495,7 +383,7 @@ function drawField() {
     H * 0.30
   );
 
-  /* Six yard box */
+  /* Six-yard box */
 
   ctx.strokeRect(
     W * 0.27,
@@ -518,7 +406,7 @@ function drawField() {
 
   ctx.stroke();
 
-  /* Penalty point */
+  /* Spot */
 
   ctx.beginPath();
 
@@ -534,22 +422,16 @@ function drawField() {
   ctx.fill();
 
   drawGoal(g);
-
-  if (
-    mode === "freekick"
-  ) {
-    drawFreeKickLine();
-  }
 }
 
-/* =========================
+
+/* =========================================================
    STADIUM LIGHTS
-========================= */
+========================================================= */
 
 function drawStadiumLights() {
 
-  ctx.fillStyle =
-    "#0a130d";
+  ctx.fillStyle = "#0a130d";
 
   ctx.fillRect(
     0,
@@ -558,16 +440,14 @@ function drawStadiumLights() {
     H * 0.12
   );
 
-  const lights = [
-    W * 0.12,
-    W * 0.34,
-    W * 0.66,
-    W * 0.88
+  const positions = [
+    W * 0.1,
+    W * 0.33,
+    W * 0.67,
+    W * 0.9
   ];
 
-  for (
-    const x of lights
-  ) {
+  positions.forEach(x => {
 
     const glow =
       ctx.createRadialGradient(
@@ -598,8 +478,7 @@ function drawStadiumLights() {
       110
     );
 
-    ctx.fillStyle =
-      "#fff1aa";
+    ctx.fillStyle = "#fff1aa";
 
     ctx.beginPath();
 
@@ -612,13 +491,9 @@ function drawStadiumLights() {
     );
 
     ctx.fill();
-  }
+  });
 
-  for (
-    let i = 0;
-    i < 80;
-    i++
-  ) {
+  for (let i = 0; i < 80; i++) {
 
     const x =
       (i / 79) * W;
@@ -637,8 +512,7 @@ function drawStadiumLights() {
     ctx.arc(
       x,
       y,
-      1.8 +
-        (i % 3) * .4,
+      1.8,
       0,
       Math.PI * 2
     );
@@ -647,9 +521,10 @@ function drawStadiumLights() {
   }
 }
 
-/* =========================
+
+/* =========================================================
    GOAL
-========================= */
+========================================================= */
 
 function drawGoal(g) {
 
@@ -682,10 +557,7 @@ function drawGoal(g) {
     g.h + 100
   );
 
-  /* Net */
-
-  ctx.fillStyle =
-    "#f3f7f511";
+  ctx.fillStyle = "#f3f7f511";
 
   ctx.fillRect(
     g.x,
@@ -694,22 +566,18 @@ function drawGoal(g) {
     g.h
   );
 
-  ctx.strokeStyle =
-    "#ffffff2b";
-
+  ctx.strokeStyle = "#ffffff2b";
   ctx.lineWidth = 1;
 
-  const sx =
-    Math.max(
-      18,
-      g.w / 24
-    );
+  const sx = Math.max(
+    18,
+    g.w / 24
+  );
 
-  const sy =
-    Math.max(
-      14,
-      g.h / 12
-    );
+  const sy = Math.max(
+    14,
+    g.h / 12
+  );
 
   for (
     let x = g.x;
@@ -753,8 +621,6 @@ function drawGoal(g) {
     ctx.stroke();
   }
 
-  /* Posts */
-
   ctx.strokeStyle = "#fff";
   ctx.lineWidth = 10;
 
@@ -765,9 +631,7 @@ function drawGoal(g) {
     g.h
   );
 
-  ctx.strokeStyle =
-    "#cbd6cf";
-
+  ctx.strokeStyle = "#cbd6cf";
   ctx.lineWidth = 3;
 
   ctx.strokeRect(
@@ -778,68 +642,24 @@ function drawGoal(g) {
   );
 }
 
-/* =========================
-   FREE KICK LINE
-========================= */
 
-function drawFreeKickLine() {
-
-  const s =
-    spot();
-
-  const y =
-    wall.y +
-    wall.height * .76;
-
-  ctx.strokeStyle =
-    "#ffffff40";
-
-  ctx.lineWidth = 2;
-
-  ctx.setLineDash([
-    8,
-    8
-  ]);
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    s.x,
-    s.y - 10
-  );
-
-  ctx.lineTo(
-    s.x,
-    y
-  );
-
-  ctx.stroke();
-
-  ctx.setLineDash([]);
-}
-
-/* =========================
-   DEFENSIVE WALL
-========================= */
+/* =========================================================
+   FREE KICK WALL
+========================================================= */
 
 function drawWall() {
 
-  const n =
-    wall.people;
+  const n = wall.people;
 
   const spacing =
     42 +
-    Math.min(
-      8,
-      level
-    );
+    Math.min(7, level);
 
   const total =
-    (n - 1) *
-    spacing;
+    (n - 1) * spacing;
 
   const firstX =
-    wall.x -
+    W / 2 -
     total / 2;
 
   for (
@@ -848,34 +668,19 @@ function drawWall() {
     i++
   ) {
 
-    const x =
-      firstX +
-      i * spacing;
-
-    const y =
-      wall.y +
-      6 *
-      Math.sin(
-        pulse * 3 +
-        i * .6
-      );
-
     drawDefender(
-      x,
-      y,
-      i % 2 === 0
+      firstX + i * spacing,
+      wall.y,
+      i
     );
   }
 }
 
-/* =========================
-   DEFENDER
-========================= */
 
 function drawDefender(
   x,
   y,
-  alternate
+  index
 ) {
 
   ctx.save();
@@ -885,17 +690,27 @@ function drawDefender(
     y
   );
 
+  const bounce =
+    Math.sin(
+      pulse * 3 +
+      index
+    ) * 2;
+
+  ctx.translate(
+    0,
+    bounce
+  );
+
   /* Shadow */
 
-  ctx.fillStyle =
-    "#0007";
+  ctx.fillStyle = "#0007";
 
   ctx.beginPath();
 
   ctx.ellipse(
     0,
-    wall.height * .40,
-    18,
+    42,
+    19,
     5,
     0,
     0,
@@ -906,42 +721,26 @@ function drawDefender(
 
   /* Legs */
 
-  ctx.strokeStyle =
-    "#102539";
-
+  ctx.strokeStyle = "#102539";
   ctx.lineWidth = 9;
   ctx.lineCap = "round";
 
   ctx.beginPath();
 
-  ctx.moveTo(
-    -5,
-    17
-  );
+  ctx.moveTo(-5, 17);
+  ctx.lineTo(-8, 43);
 
-  ctx.lineTo(
-    -8,
-    43
-  );
-
-  ctx.moveTo(
-    5,
-    17
-  );
-
-  ctx.lineTo(
-    8,
-    43
-  );
+  ctx.moveTo(5, 17);
+  ctx.lineTo(8, 43);
 
   ctx.stroke();
 
-  /* Body */
+  /* Shirt */
 
   ctx.fillStyle =
-    alternate
-      ? "#1b63a0"
-      : "#244f86";
+    index % 2
+      ? "#24558e"
+      : "#1b63a0";
 
   ctx.fillRect(
     -14,
@@ -952,39 +751,22 @@ function drawDefender(
 
   /* Arms */
 
-  ctx.strokeStyle =
-    "#1b3f68";
-
+  ctx.strokeStyle = "#173f68";
   ctx.lineWidth = 8;
 
   ctx.beginPath();
 
-  ctx.moveTo(
-    -12,
-    -7
-  );
+  ctx.moveTo(-12, -7);
+  ctx.lineTo(-21, 7);
 
-  ctx.lineTo(
-    -21,
-    7
-  );
-
-  ctx.moveTo(
-    12,
-    -7
-  );
-
-  ctx.lineTo(
-    21,
-    7
-  );
+  ctx.moveTo(12, -7);
+  ctx.lineTo(21, 7);
 
   ctx.stroke();
 
   /* Head */
 
-  ctx.fillStyle =
-    "#d99b72";
+  ctx.fillStyle = "#d99b72";
 
   ctx.beginPath();
 
@@ -1000,8 +782,7 @@ function drawDefender(
 
   /* Hair */
 
-  ctx.fillStyle =
-    "#24170f";
+  ctx.fillStyle = "#24170f";
 
   ctx.beginPath();
 
@@ -1018,9 +799,10 @@ function drawDefender(
   ctx.restore();
 }
 
-/* =========================
-   GOALKEEPER
-========================= */
+
+/* =========================================================
+   NORMAL GOALKEEPER
+========================================================= */
 
 function drawKeeper() {
 
@@ -1037,8 +819,7 @@ function drawKeeper() {
 
   /* Shadow */
 
-  ctx.fillStyle =
-    "#0007";
+  ctx.fillStyle = "#0007";
 
   ctx.beginPath();
 
@@ -1056,33 +837,17 @@ function drawKeeper() {
 
   /* Legs */
 
-  ctx.strokeStyle =
-    "#213929";
-
+  ctx.strokeStyle = "#213929";
   ctx.lineWidth = 13;
   ctx.lineCap = "round";
 
   ctx.beginPath();
 
-  ctx.moveTo(
-    -9,
-    19
-  );
+  ctx.moveTo(-9, 19);
+  ctx.lineTo(-20, 50);
 
-  ctx.lineTo(
-    -20,
-    50
-  );
-
-  ctx.moveTo(
-    9,
-    19
-  );
-
-  ctx.lineTo(
-    20,
-    50
-  );
+  ctx.moveTo(9, 19);
+  ctx.lineTo(20, 50);
 
   ctx.stroke();
 
@@ -1117,39 +882,22 @@ function drawKeeper() {
 
   /* Arms */
 
-  ctx.strokeStyle =
-    "#ffd21e";
-
+  ctx.strokeStyle = "#ffd21e";
   ctx.lineWidth = 12;
 
   ctx.beginPath();
 
-  ctx.moveTo(
-    -22,
-    -12
-  );
+  ctx.moveTo(-22, -12);
+  ctx.lineTo(-49, 3);
 
-  ctx.lineTo(
-    -49,
-    3
-  );
-
-  ctx.moveTo(
-    22,
-    -12
-  );
-
-  ctx.lineTo(
-    49,
-    3
-  );
+  ctx.moveTo(22, -12);
+  ctx.lineTo(49, 3);
 
   ctx.stroke();
 
   /* Gloves */
 
-  ctx.fillStyle =
-    "#f4f6f4";
+  ctx.fillStyle = "#f4f6f4";
 
   ctx.beginPath();
 
@@ -1177,8 +925,7 @@ function drawKeeper() {
 
   /* Neck */
 
-  ctx.fillStyle =
-    "#d79b70";
+  ctx.fillStyle = "#d79b70";
 
   ctx.fillRect(
     -7,
@@ -1203,8 +950,7 @@ function drawKeeper() {
 
   /* Hair */
 
-  ctx.fillStyle =
-    "#21160f";
+  ctx.fillStyle = "#21160f";
 
   ctx.beginPath();
 
@@ -1218,48 +964,21 @@ function drawKeeper() {
 
   ctx.fill();
 
-  /* Eyes */
-
-  ctx.fillStyle =
-    "#1a1a1a";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    -6,
-    -52,
-    2,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.arc(
-    6,
-    -52,
-    2,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.fill();
-
   ctx.restore();
 }
 
-/* =========================
+
+/* =========================================================
    BALL
-========================= */
+========================================================= */
 
 function drawBall() {
 
-  const r =
-    ball.radius;
+  const r = ball.radius;
 
   ctx.save();
 
-  ctx.shadowColor =
-    "#000a";
-
+  ctx.shadowColor = "#000a";
   ctx.shadowBlur = 14;
 
   const gradient =
@@ -1267,7 +986,6 @@ function drawBall() {
       ball.x - r * .35,
       ball.y - r * .4,
       2,
-
       ball.x,
       ball.y,
       r
@@ -1279,7 +997,7 @@ function drawBall() {
   );
 
   gradient.addColorStop(
-    .72,
+    .7,
     "#e8efeb"
   );
 
@@ -1288,8 +1006,7 @@ function drawBall() {
     "#9aa7a0"
   );
 
-  ctx.fillStyle =
-    gradient;
+  ctx.fillStyle = gradient;
 
   ctx.beginPath();
 
@@ -1303,20 +1020,16 @@ function drawBall() {
 
   ctx.fill();
 
-  ctx.strokeStyle =
-    "#222823";
-
+  ctx.strokeStyle = "#222823";
   ctx.lineWidth = 1.5;
-
   ctx.stroke();
 
   ctx.shadowBlur = 0;
 
-  ctx.fillStyle =
-    "#252a27";
+  ctx.fillStyle = "#252a27";
 
   for (
-    const a of [
+    const angle of [
       .1,
       2.2,
       4.3
@@ -1325,21 +1038,17 @@ function drawBall() {
 
     ctx.beginPath();
 
-    const cx =
-      ball.x +
-      Math.cos(a) *
-      r *
-      .35;
-
-    const cy =
-      ball.y +
-      Math.sin(a) *
-      r *
-      .35;
-
     ctx.arc(
-      cx,
-      cy,
+      ball.x +
+        Math.cos(angle) *
+        r *
+        .35,
+
+      ball.y +
+        Math.sin(angle) *
+        r *
+        .35,
+
       3,
       0,
       Math.PI * 2
@@ -1351,9 +1060,844 @@ function drawBall() {
   ctx.restore();
 }
 
-/* =========================
+
+/* =========================================================
+   GOALKEEPER POV
+========================================================= */
+
+function drawGoalkeeperPOV() {
+
+  ctx.clearRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+  /*
+     Dark stadium background
+  */
+
+  const sky =
+    ctx.createLinearGradient(
+      0,
+      0,
+      0,
+      H
+    );
+
+  sky.addColorStop(
+    0,
+    "#07110c"
+  );
+
+  sky.addColorStop(
+    .34,
+    "#123a21"
+  );
+
+  sky.addColorStop(
+    .35,
+    "#0e8a40"
+  );
+
+  sky.addColorStop(
+    1,
+    "#075b29"
+  );
+
+  ctx.fillStyle = sky;
+
+  ctx.fillRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+  /*
+     Stadium lights
+  */
+
+  drawPOVLights();
+
+  /*
+     Pitch perspective
+  */
+
+  ctx.strokeStyle =
+    "#ffffff55";
+
+  ctx.lineWidth = 3;
+
+  /* Left perspective line */
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    W * .04,
+    H
+  );
+
+  ctx.lineTo(
+    W * .37,
+    H * .37
+  );
+
+  ctx.stroke();
+
+  /* Right perspective line */
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    W * .96,
+    H
+  );
+
+  ctx.lineTo(
+    W * .63,
+    H * .37
+  );
+
+  ctx.stroke();
+
+  /*
+     Penalty box ahead
+  */
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    W * .20,
+    H
+  );
+
+  ctx.lineTo(
+    W * .37,
+    H * .49
+  );
+
+  ctx.lineTo(
+    W * .63,
+    H * .49
+  );
+
+  ctx.lineTo(
+    W * .80,
+    H
+  );
+
+  ctx.stroke();
+
+  /*
+     Opponent players in distance
+  */
+
+  drawPOVOpponents();
+
+  /*
+     Goalkeeper hands
+  */
+
+  drawGoalkeeperHands();
+
+  /*
+     Incoming ball
+  */
+
+  if (
+    state === "keeper"
+  ) {
+
+    drawPOVBall();
+
+  } else {
+
+    drawPOVTargetBall();
+  }
+
+  /*
+     Goal net / posts at edges
+  */
+
+  drawPOVGoalFrame();
+}
+
+
+/* =========================================================
+   POV LIGHTS
+========================================================= */
+
+function drawPOVLights() {
+
+  const lights = [
+    W * .08,
+    W * .28,
+    W * .5,
+    W * .72,
+    W * .92
+  ];
+
+  lights.forEach(
+    (x, index) => {
+
+      const glow =
+        ctx.createRadialGradient(
+          x,
+          30,
+          2,
+          x,
+          30,
+          100
+        );
+
+      glow.addColorStop(
+        0,
+        "#fff7b5aa"
+      );
+
+      glow.addColorStop(
+        1,
+        "#fff0"
+      );
+
+      ctx.fillStyle =
+        glow;
+
+      ctx.fillRect(
+        x - 100,
+        0,
+        200,
+        130
+      );
+
+      ctx.fillStyle =
+        "#fff4a8";
+
+      ctx.beginPath();
+
+      ctx.arc(
+        x,
+        30,
+        5,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+    }
+  );
+
+  for (
+    let i = 0;
+    i < 90;
+    i++
+  ) {
+
+    const x =
+      (i / 89) * W;
+
+    const y =
+      80 +
+      (i % 5) * 9;
+
+    ctx.fillStyle =
+      "#ffffff77";
+
+    ctx.beginPath();
+
+    ctx.arc(
+      x,
+      y,
+      1.5,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fill();
+  }
+}
+
+
+/* =========================================================
+   POV GOAL FRAME
+========================================================= */
+
+function drawPOVGoalFrame() {
+
+  /*
+     Goal posts appear very close
+     to the goalkeeper.
+  */
+
+  const postWidth =
+    Math.max(
+      15,
+      W * .025
+    );
+
+  /* Left post */
+
+  const leftGradient =
+    ctx.createLinearGradient(
+      0,
+      0,
+      postWidth,
+      0
+    );
+
+  leftGradient.addColorStop(
+    0,
+    "#c7d0ca"
+  );
+
+  leftGradient.addColorStop(
+    .5,
+    "#fff"
+  );
+
+  leftGradient.addColorStop(
+    1,
+    "#8f9993"
+  );
+
+  ctx.fillStyle =
+    leftGradient;
+
+  ctx.fillRect(
+    0,
+    0,
+    postWidth,
+    H
+  );
+
+  /* Right post */
+
+  ctx.fillStyle =
+    leftGradient;
+
+  ctx.fillRect(
+    W - postWidth,
+    0,
+    postWidth,
+    H
+  );
+
+  /*
+     Net strands
+  */
+
+  ctx.strokeStyle =
+    "#ffffff22";
+
+  ctx.lineWidth = 1;
+
+  for (
+    let x = 20;
+    x < W;
+    x += 28
+  ) {
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      x,
+      0
+    );
+
+    ctx.lineTo(
+      x + (x - W / 2) * .25,
+      H
+    );
+
+    ctx.stroke();
+  }
+
+  for (
+    let y = 40;
+    y < H;
+    y += 30
+  ) {
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      0,
+      y
+    );
+
+    ctx.lineTo(
+      W,
+      y
+    );
+
+    ctx.stroke();
+  }
+}
+
+
+/* =========================================================
+   POV OPPONENTS
+========================================================= */
+
+function drawPOVOpponents() {
+
+  const positions = [
+    .25,
+    .39,
+    .50,
+    .61,
+    .75
+  ];
+
+  positions.forEach(
+    (ratio, index) => {
+
+      const x =
+        W * ratio;
+
+      const y =
+        H * (
+          .39 +
+          Math.abs(
+            ratio - .5
+          ) * .08
+        );
+
+      const scale =
+        index === 2
+          ? 1.15
+          : .9;
+
+      ctx.save();
+
+      ctx.translate(
+        x,
+        y
+      );
+
+      ctx.scale(
+        scale,
+        scale
+      );
+
+      /* Body */
+
+      ctx.fillStyle =
+        "#233b67";
+
+      ctx.fillRect(
+        -12,
+        0,
+        24,
+        40
+      );
+
+      /* Legs */
+
+      ctx.strokeStyle =
+        "#172338";
+
+      ctx.lineWidth = 8;
+
+      ctx.beginPath();
+
+      ctx.moveTo(
+        -5,
+        39
+      );
+
+      ctx.lineTo(
+        -9,
+        67
+      );
+
+      ctx.moveTo(
+        5,
+        39
+      );
+
+      ctx.lineTo(
+        9,
+        67
+      );
+
+      ctx.stroke();
+
+      /* Head */
+
+      ctx.fillStyle =
+        "#d99b72";
+
+      ctx.beginPath();
+
+      ctx.arc(
+        0,
+        -10,
+        10,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+
+      ctx.restore();
+    }
+  );
+}
+
+
+/* =========================================================
+   POV GLOVES
+========================================================= */
+
+function drawGoalkeeperHands() {
+
+  /*
+     Hands are deliberately large
+     to make it feel like first person.
+  */
+
+  const gloveY =
+    H * .84;
+
+  const leftX =
+    W * .18;
+
+  const rightX =
+    W * .82;
+
+  /* Arms */
+
+  ctx.strokeStyle =
+    "#f0c323";
+
+  ctx.lineWidth =
+    Math.max(
+      24,
+      W * .055
+    );
+
+  ctx.lineCap =
+    "round";
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    W * .02,
+    H
+  );
+
+  ctx.lineTo(
+    leftX,
+    gloveY
+  );
+
+  ctx.moveTo(
+    W * .98,
+    H
+  );
+
+  ctx.lineTo(
+    rightX,
+    gloveY
+  );
+
+  ctx.stroke();
+
+  /* Left glove */
+
+  drawBigGlove(
+    leftX,
+    gloveY,
+    -1
+  );
+
+  /* Right glove */
+
+  drawBigGlove(
+    rightX,
+    gloveY,
+    1
+  );
+}
+
+
+function drawBigGlove(
+  x,
+  y,
+  direction
+) {
+
+  ctx.save();
+
+  ctx.translate(
+    x,
+    y
+  );
+
+  ctx.rotate(
+    direction * -.15
+  );
+
+  /* Palm */
+
+  const glove =
+    ctx.createRadialGradient(
+      0,
+      0,
+      4,
+      0,
+      0,
+      42
+    );
+
+  glove.addColorStop(
+    0,
+    "#ffffff"
+  );
+
+  glove.addColorStop(
+    1,
+    "#bfc9c3"
+  );
+
+  ctx.fillStyle =
+    glove;
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    0,
+    0,
+    37,
+    30,
+    0,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+  ctx.strokeStyle =
+    "#829089";
+
+  ctx.lineWidth = 2;
+
+  ctx.stroke();
+
+  /* Fingers */
+
+  ctx.strokeStyle =
+    "#f7faf8";
+
+  ctx.lineWidth = 10;
+
+  ctx.lineCap =
+    "round";
+
+  for (
+    let i = -1;
+    i <= 1;
+    i++
+  ) {
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      direction * 25,
+      i * 9
+    );
+
+    ctx.lineTo(
+      direction * 50,
+      i * 13
+    );
+
+    ctx.stroke();
+  }
+
+  /* Glove logo */
+
+  ctx.fillStyle =
+    "#e5b51b";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    -direction * 4,
+    0,
+    6,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+  ctx.restore();
+}
+
+
+/* =========================================================
+   POV BALL
+========================================================= */
+
+function drawPOVBall() {
+
+  /*
+     Ball approaches from the pitch.
+
+     As it gets closer to the
+     goalkeeper it grows.
+  */
+
+  const targetX =
+    ball.x;
+
+  const targetY =
+    ball.y;
+
+  const distance =
+    Math.abs(
+      targetY -
+      H * .43
+    );
+
+  const size =
+    clamp(
+      10 +
+      (H - distance) * .025,
+      13,
+      42
+    );
+
+  drawLargeBall(
+    targetX,
+    targetY,
+    size
+  );
+}
+
+
+function drawPOVTargetBall() {
+
+  drawLargeBall(
+    W / 2,
+    H * .42,
+    20
+  );
+}
+
+
+function drawLargeBall(
+  x,
+  y,
+  radius
+) {
+
+  ctx.save();
+
+  ctx.shadowColor =
+    "#000b";
+
+  ctx.shadowBlur = 22;
+
+  const gradient =
+    ctx.createRadialGradient(
+      x - radius * .35,
+      y - radius * .4,
+      2,
+      x,
+      y,
+      radius
+    );
+
+  gradient.addColorStop(
+    0,
+    "#ffffff"
+  );
+
+  gradient.addColorStop(
+    .72,
+    "#e6ede9"
+  );
+
+  gradient.addColorStop(
+    1,
+    "#9ca9a2"
+  );
+
+  ctx.fillStyle =
+    gradient;
+
+  ctx.beginPath();
+
+  ctx.arc(
+    x,
+    y,
+    radius,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+  ctx.strokeStyle =
+    "#202622";
+
+  ctx.lineWidth = 2;
+
+  ctx.stroke();
+
+  ctx.shadowBlur = 0;
+
+  ctx.fillStyle =
+    "#202622";
+
+  const spots = 5;
+
+  for (
+    let i = 0;
+    i < spots;
+    i++
+  ) {
+
+    const angle =
+      i * 1.256;
+
+    ctx.beginPath();
+
+    ctx.arc(
+      x +
+        Math.cos(angle) *
+        radius *
+        .35,
+
+      y +
+        Math.sin(angle) *
+        radius *
+        .35,
+
+      Math.max(
+        2,
+        radius * .14
+      ),
+
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fill();
+  }
+
+  ctx.restore();
+}
+
+
+/* =========================================================
    AIM
-========================= */
+========================================================= */
 
 function drawAim() {
 
@@ -1366,47 +1910,44 @@ function drawAim() {
 
   const targets =
     mode === "freekick"
-      ? freeKickTargets()
-      : penaltyTargets();
+      ? getFreeKickTargets()
+      : getPenaltyTargets();
 
-  for (
-    const target of targets
-  ) {
+  targets.forEach(
+    target => {
 
-    ctx.strokeStyle =
-      target.zone === "center"
-        ? "#ffffff2d"
-        : "#ffffff16";
+      ctx.strokeStyle =
+        "#ffffff25";
 
-    ctx.lineWidth = 2;
+      ctx.lineWidth = 2;
 
-    ctx.beginPath();
+      ctx.beginPath();
 
-    ctx.arc(
-      target.x,
-      target.y,
-      mode === "freekick"
-        ? 18
-        : 15,
-      0,
-      Math.PI * 2
-    );
+      ctx.arc(
+        target.x,
+        target.y,
+        17,
+        0,
+        Math.PI * 2
+      );
 
-    ctx.stroke();
-  }
+      ctx.stroke();
+    }
+  );
 }
 
-function penaltyTargets() {
+
+function getPenaltyTargets() {
 
   const g =
-    goal();
+    getGoal();
 
   const y =
     g.y +
     g.h * .28;
 
   const inset =
-    g.w * .17;
+    g.w * .18;
 
   return [
     {
@@ -1414,11 +1955,13 @@ function penaltyTargets() {
       x: g.x + inset,
       y
     },
+
     {
       zone: "center",
-      x: g.x + g.w / 2,
+      x: W / 2,
       y
     },
+
     {
       zone: "right",
       x: g.x + g.w - inset,
@@ -1427,17 +1970,18 @@ function penaltyTargets() {
   ];
 }
 
-function freeKickTargets() {
+
+function getFreeKickTargets() {
 
   const g =
-    goal();
+    getGoal();
 
   const y =
     g.y +
-    g.h * .20;
+    g.h * .18;
 
   const inset =
-    g.w * .17;
+    g.w * .18;
 
   return [
     {
@@ -1445,11 +1989,13 @@ function freeKickTargets() {
       x: g.x + inset,
       y
     },
+
     {
       zone: "center",
-      x: g.x + g.w / 2,
+      x: W / 2,
       y
     },
+
     {
       zone: "right",
       x: g.x + g.w - inset,
@@ -1458,26 +2004,26 @@ function freeKickTargets() {
   ];
 }
 
-function targetForZone(
-  zone
-) {
 
-  const list =
+function targetForZone(zone) {
+
+  const targets =
     mode === "freekick"
-      ? freeKickTargets()
-      : penaltyTargets();
+      ? getFreeKickTargets()
+      : getPenaltyTargets();
 
-  return list.find(
-    item =>
-      item.zone === zone
+  return targets.find(
+    target =>
+      target.zone === zone
   );
 }
 
-/* =========================
-   PARTICLES
-========================= */
 
-function burst(
+/* =========================================================
+   PARTICLES
+========================================================= */
+
+function createParticles(
   x,
   y,
   good
@@ -1485,7 +2031,7 @@ function burst(
 
   for (
     let i = 0;
-    i < 40;
+    i < 42;
     i++
   ) {
 
@@ -1497,7 +2043,7 @@ function burst(
     const speed =
       80 +
       Math.random() *
-      310;
+      300;
 
     particles.push({
 
@@ -1514,36 +2060,35 @@ function burst(
 
       life:
         .8 +
-        Math.random() *
-        .5,
+        Math.random() * .6,
 
       size:
         2 +
-        Math.random() *
-        4,
+        Math.random() * 4,
 
       good
     });
   }
 }
 
+
 function updateParticles(dt) {
 
-  for (
-    const p of particles
-  ) {
+  particles.forEach(
+    p => {
 
-    p.x +=
-      p.vx * dt;
+      p.x +=
+        p.vx * dt;
 
-    p.y +=
-      p.vy * dt;
+      p.y +=
+        p.vy * dt;
 
-    p.vy +=
-      260 * dt;
+      p.vy +=
+        250 * dt;
 
-    p.life -= dt;
-  }
+      p.life -= dt;
+    }
+  );
 
   particles =
     particles.filter(
@@ -1551,45 +2096,47 @@ function updateParticles(dt) {
     );
 }
 
+
 function drawParticles() {
 
-  for (
-    const p of particles
-  ) {
+  particles.forEach(
+    p => {
 
-    ctx.globalAlpha =
-      clamp(
-        p.life,
+      ctx.globalAlpha =
+        clamp(
+          p.life,
+          0,
+          1
+        );
+
+      ctx.fillStyle =
+        p.good
+          ? "#ffe24a"
+          : "#ffffff";
+
+      ctx.beginPath();
+
+      ctx.arc(
+        p.x,
+        p.y,
+        p.size,
         0,
-        1
+        Math.PI * 2
       );
 
-    ctx.fillStyle =
-      p.good
-        ? "#ffe24a"
-        : "#fff";
-
-    ctx.beginPath();
-
-    ctx.arc(
-      p.x,
-      p.y,
-      p.size,
-      0,
-      Math.PI * 2
-    );
-
-    ctx.fill();
-  }
+      ctx.fill();
+    }
+  );
 
   ctx.globalAlpha = 1;
 }
 
-/* =========================
-   DIFFICULTY
-========================= */
 
-function difficultyValues() {
+/* =========================================================
+   DIFFICULTY
+========================================================= */
+
+function difficultySettings() {
 
   if (
     difficultyEl.value ===
@@ -1597,9 +2144,9 @@ function difficultyValues() {
   ) {
 
     return {
-      keeperSpeed: 245,
-      flight: .68,
-      reaction: .28
+      keeperSpeed: 190,
+      reaction: .18,
+      flight: .72
     };
   }
 
@@ -1609,24 +2156,25 @@ function difficultyValues() {
   ) {
 
     return {
-      keeperSpeed: 405,
-      flight: .48,
-      reaction: .79
+      keeperSpeed: 300,
+      reaction: .60,
+      flight: .58
     };
   }
 
   return {
-    keeperSpeed: 320,
-    flight: .57,
-    reaction: .54
+    keeperSpeed: 240,
+    reaction: .38,
+    flight: .65
   };
 }
 
-/* =========================
-   HUD
-========================= */
 
-function updateHud() {
+/* =========================================================
+   HUD
+========================================================= */
+
+function updateHUD() {
 
   scoreEl.textContent =
     score;
@@ -1638,18 +2186,21 @@ function updateHud() {
     lives;
 }
 
-function setMessage(text) {
+
+function message(text) {
+
   messageEl.textContent =
     text;
 }
 
-/* =========================
-   BEGIN MODE
-========================= */
+
+/* =========================================================
+   START MODE
+========================================================= */
 
 function beginMode() {
 
-  clearTimeout(timer);
+  clearTimeout(gameTimer);
 
   resultCard.hidden = true;
   diveButton.hidden = true;
@@ -1671,7 +2222,7 @@ function beginMode() {
     hintEl.textContent =
       "Pick a corner and shoot!";
 
-    setMessage(
+    message(
       "CHOOSE YOUR SHOT"
     );
 
@@ -1688,39 +2239,42 @@ function beginMode() {
     hintEl.textContent =
       `Wall: ${wall.people} defenders • Bend it over the wall!`;
 
-    setMessage(
-      `FREE KICK • WALL OF ${wall.people}`
+    message(
+      "FREE KICK • OVER THE WALL"
     );
 
   } else {
+
+    /*
+       GOALKEEPER POV
+    */
 
     controlsEl.hidden = true;
     powerWrap.hidden = true;
 
     modeTextEl.textContent =
-      "Goalkeeping";
+      "Goalkeeper POV";
 
     hintEl.textContent =
-      "Wait for the shot, then dive!";
+      "You're inside the goal — dive to save it!";
 
-    setMessage(
-      "GET READY! 🧤"
+    message(
+      "GET READY, GOALKEEPER! 🧤"
     );
 
     schedule(
       startKeeperRound,
-      700
+      900
     );
   }
 }
 
-/* =========================
-   START SHOT
-========================= */
 
-function startShot(
-  zone
-) {
+/* =========================================================
+   SHOOT
+========================================================= */
+
+function shoot(zone) {
 
   if (
     state !== "ready" ||
@@ -1732,19 +2286,25 @@ function startShot(
   const target =
     targetForZone(zone);
 
-  const diff =
-    difficultyValues();
+  const settings =
+    difficultySettings();
 
-  const s =
-    spot();
+  const spot =
+    getSpot();
 
   state = "flight";
 
-  ball.startX = s.x;
-  ball.startY = s.y;
+  ball.startX =
+    spot.x;
 
-  ball.x = s.x;
-  ball.y = s.y;
+  ball.startY =
+    spot.y;
+
+  ball.x =
+    spot.x;
+
+  ball.y =
+    spot.y;
 
   ball.targetX =
     target.x;
@@ -1754,26 +2314,27 @@ function startShot(
 
   ball.t = 0;
 
+  /*
+     POWER
+  */
+
   const powerBoost =
-    .78 +
-    power * .33;
+    .82 +
+    power * .25;
 
   ball.duration =
-    diff.flight /
+    settings.flight /
     powerBoost;
 
-  ball.curve = 0;
-  ball.arc = 0;
-
-  /* =====================
-     FREE KICK PHYSICS
-  ===================== */
+  /*
+     Free kick curve
+  */
 
   if (
     mode === "freekick"
   ) {
 
-    const sign =
+    const direction =
       zone === "left"
         ? 1
         : zone === "right"
@@ -1781,19 +2342,18 @@ function startShot(
           : 0;
 
     ball.curve =
-      sign *
+      direction *
       (
-        26 +
-        power * 36
+        24 +
+        power * 28
       );
 
     ball.arc =
-      110 +
-      power * 75 +
-      level * 3;
+      105 +
+      power * 70;
 
-    setMessage(
-      "OVER THE WALL! 🎯"
+    message(
+      "BENDING OVER THE WALL! 🎯"
     );
 
   } else {
@@ -1802,34 +2362,36 @@ function startShot(
       (
         Math.random() -
         .5
-      ) * 9;
+      ) * 7;
 
     ball.arc =
-      35 +
+      25 +
       power * 15;
 
-    setMessage(
+    message(
       "SHOT ON THE WAY! ⚡"
     );
   }
 
-  /* =====================
-     GOALKEEPER DECISION
-  ===================== */
+  /*
+     EASY GOALS:
+     goalkeeper often reacts
+     to the wrong direction.
+  */
 
-  const aimedKeeper =
+  const correctReaction =
     Math.random() <
     clamp(
-      diff.reaction +
-      (level - 1) * .035,
-      .05,
-      .94
+      settings.reaction +
+      (level - 1) * .02,
+      .08,
+      .68
     );
 
   let keeperTarget;
 
   if (
-    aimedKeeper
+    correctReaction
   ) {
 
     keeperTarget =
@@ -1837,21 +2399,20 @@ function startShot(
 
   } else {
 
-    const otherZones =
-      [
-        "left",
-        "center",
-        "right"
-      ].filter(
-        z => z !== zone
-      );
+    const zones = [
+      "left",
+      "center",
+      "right"
+    ].filter(
+      z => z !== zone
+    );
 
     keeperTarget =
       targetForZone(
-        otherZones[
+        zones[
           Math.floor(
             Math.random() *
-            otherZones.length
+            zones.length
           )
         ]
       );
@@ -1867,14 +2428,14 @@ function startShot(
     keeperTarget.x;
 
   keeper.targetY =
-    keeperTarget.y + 22;
+    keeperTarget.y + 25;
 
   keeper.t = 0;
 
   keeper.duration =
     Math.max(
-      .24,
-      diff.flight * .88
+      .38,
+      settings.flight * .95
     );
 
   keeper.tilt =
@@ -1882,18 +2443,36 @@ function startShot(
       keeperTarget.x -
       keeper.startX
     ) /
-    Math.max(
-      1,
-      W
-    ) *
-    1.55;
+    W *
+    1.2;
 }
 
-/* =========================
+
+/* =========================================================
    FINISH SHOT
-========================= */
+========================================================= */
 
 function finishShot() {
+
+  /*
+     SMALLER SAVE RANGE = EASIER GOALS.
+  */
+
+  let saveRange =
+    mode === "freekick"
+      ? 32
+      : 40;
+
+  /*
+     Keep levels from making
+     saves ridiculously difficult.
+  */
+
+  saveRange +=
+    Math.min(
+      level * 1.2,
+      12
+    );
 
   const distance =
     Math.hypot(
@@ -1904,26 +2483,8 @@ function finishShot() {
       ball.targetY
     );
 
-  let saveRange =
-    mode === "freekick"
-      ? 48
-      : 58;
-
-  saveRange +=
-    level * 1.8;
-
   if (
-    mode === "freekick" &&
-    ball.targetY >
-    wall.y - 35
-  ) {
-
-    saveRange += 8;
-  }
-
-  if (
-    distance <=
-    saveRange
+    distance <= saveRange
   ) {
 
     loseLife(
@@ -1932,28 +2493,32 @@ function finishShot() {
 
   } else {
 
-    scoreGoal();
+    goalScored();
   }
 }
 
-/* =========================
-   GOAL
-========================= */
 
-function scoreGoal() {
+/* =========================================================
+   GOAL SCORED
+========================================================= */
+
+function goalScored() {
 
   score++;
 
+  const levelUp =
+    score % 3 === 0;
+
   if (
-    score % 3 === 0
+    levelUp
   ) {
 
     level++;
   }
 
-  updateHud();
+  updateHUD();
 
-  burst(
+  createParticles(
     ball.targetX,
     ball.targetY,
     true
@@ -1961,95 +2526,61 @@ function scoreGoal() {
 
   state = "result";
 
-  diveButton.hidden =
-    true;
-
-  resultCard.hidden =
-    false;
+  resultCard.hidden = false;
 
   if (
-    score % 3 === 0
+    levelUp
   ) {
 
     resultTitle.textContent =
       `LEVEL ${level}! 🏆`;
 
-    if (
+    resultSub.textContent =
       mode === "freekick"
-    ) {
+        ? `The wall now has ${wall.people} defenders.`
+        : "The goalkeeper gets slightly faster.";
 
-      const defenders =
-        clamp(
-          3 +
-          Math.floor(
-            (level - 1) / 2
-          ),
-          3,
-          7
-        );
-
-      resultSub.textContent =
-        `The wall grows stronger: ${defenders} defenders.`;
-
-    } else {
-
-      resultSub.textContent =
-        "The goalkeeper gets faster.";
-    }
-
-    setMessage(
+    message(
       `LEVEL ${level}! 🏆`
     );
 
   } else {
 
     resultTitle.textContent =
-      "GOAL! ⚽";
+      "GOAL! ⚽🔥";
 
     resultSub.textContent =
       mode === "freekick"
-        ? "Beautiful free kick over the wall."
-        : "Perfect finish.";
-
-    setMessage(
-      "GOAL! ⚽🔥"
-    );
+        ? "What a free kick!"
+        : "Great finish!";
   }
 
   continueBtn.textContent =
     "CONTINUE";
 }
 
-/* =========================
-   LOSE LIFE
-========================= */
+
+/* =========================================================
+   SAVED
+========================================================= */
 
 function loseLife(text) {
 
   lives--;
 
-  updateHud();
+  updateHUD();
 
-  burst(
+  createParticles(
     ball.targetX || ball.x,
     ball.targetY || ball.y,
     false
   );
 
-  state =
-    lives <= 0
-      ? "gameover"
-      : "result";
-
-  resultCard.hidden =
-    false;
-
-  diveButton.hidden =
-    true;
-
   if (
     lives <= 0
   ) {
+
+    state = "gameover";
 
     resultTitle.textContent =
       "GAME OVER";
@@ -2060,16 +2591,16 @@ function loseLife(text) {
     continueBtn.textContent =
       "PLAY AGAIN";
 
-    setMessage(
+    message(
       `GAME OVER — ${score} GOALS`
     );
 
   } else {
 
+    state = "result";
+
     resultTitle.textContent =
-      text.includes("SAVED")
-        ? "SAVED!"
-        : "MISS!";
+      "SAVED! 🧤";
 
     resultSub.textContent =
       `${lives} ${
@@ -2081,15 +2612,16 @@ function loseLife(text) {
     continueBtn.textContent =
       "CONTINUE";
 
-    setMessage(
-      text
-    );
+    message(text);
   }
+
+  resultCard.hidden = false;
 }
 
-/* =========================
+
+/* =========================================================
    GOALKEEPER MODE
-========================= */
+========================================================= */
 
 function startKeeperRound() {
 
@@ -2103,42 +2635,53 @@ function startKeeperRound() {
   state = "keeper";
 
   const g =
-    goal();
+    getGoal();
+
+  /*
+     Ball appears somewhere
+     in the shooting area.
+  */
 
   ball.x =
-    g.x +
-    g.w *
-    (
+    W * (
       .12 +
-      Math.random() *
-      .76
+      Math.random() * .76
     );
 
   ball.y =
-    g.y +
-    g.h *
-    (
-      .10 +
-      Math.random() *
-      .68
+    H * (
+      .16 +
+      Math.random() * .38
     );
 
-  const diff =
-    difficultyValues();
+  const settings =
+    difficultySettings();
 
   keeper.startX =
-    keeper.x;
+    W / 2;
 
   keeper.startY =
-    keeper.y;
+    H * .73;
+
+  keeper.x =
+    keeper.startX;
+
+  keeper.y =
+    keeper.startY;
 
   keeper.targetX =
     ball.x;
 
   keeper.targetY =
-    ball.y;
+    H * .53;
 
   keeper.t = 0;
+
+  /*
+     Goalkeeper POV:
+     the keeper moves across
+     the screen toward the ball.
+  */
 
   if (
     difficultyEl.value ===
@@ -2146,7 +2689,7 @@ function startKeeperRound() {
   ) {
 
     keeper.duration =
-      1.45;
+      1.65;
 
   } else if (
     difficultyEl.value ===
@@ -2154,36 +2697,33 @@ function startKeeperRound() {
   ) {
 
     keeper.duration =
-      .82;
+      1.05;
 
   } else {
 
     keeper.duration =
-      1.12;
+      1.35;
   }
 
   keeper.tilt =
     (
       ball.x -
-      keeper.startX
+      W / 2
     ) /
-    Math.max(
-      1,
-      W
-    ) *
-    1.5;
+    W *
+    1.3;
 
-  diveButton.hidden =
-    false;
+  diveButton.hidden = false;
 
-  setMessage(
-    "DIVE! STOP THE SHOT! 🧤"
+  message(
+    "DIVE NOW! 🧤"
   );
 }
 
-/* =========================
+
+/* =========================================================
    KEEPER SAVE
-========================= */
+========================================================= */
 
 function keeperSave() {
 
@@ -2194,8 +2734,11 @@ function keeperSave() {
     return;
   }
 
-  diveButton.hidden =
-    true;
+  diveButton.hidden = true;
+
+  /*
+     Easier saves.
+  */
 
   const distance =
     Math.hypot(
@@ -2206,22 +2749,31 @@ function keeperSave() {
       ball.y
     );
 
+  const saveRange =
+    difficultyEl.value === "easy"
+      ? 125
+      : difficultyEl.value === "hard"
+        ? 92
+        : 110;
+
   if (
-    distance < 92
+    distance <= saveRange
   ) {
 
     score++;
 
-    if (
-      score % 3 === 0
-    ) {
+    const levelUp =
+      score % 3 === 0;
 
+    if (
+      levelUp
+    ) {
       level++;
     }
 
-    updateHud();
+    updateHUD();
 
-    burst(
+    createParticles(
       ball.x,
       ball.y,
       true
@@ -2229,41 +2781,34 @@ function keeperSave() {
 
     state = "result";
 
-    resultCard.hidden =
-      false;
+    resultCard.hidden = false;
 
     resultTitle.textContent =
-      score % 3 === 0
+      levelUp
         ? `LEVEL ${level}! 🏆`
         : "GREAT SAVE! 🧤";
 
     resultSub.textContent =
-      "Lightning-fast reflexes.";
+      "You stopped the shot!";
 
     continueBtn.textContent =
       "CONTINUE";
 
-    setMessage(
-      "GREAT SAVE! 🔥"
+    message(
+      "WHAT A SAVE! 🔥🧤"
     );
 
   } else {
 
     lives--;
 
-    updateHud();
-
-    state =
-      lives <= 0
-        ? "gameover"
-        : "result";
-
-    resultCard.hidden =
-      false;
+    updateHUD();
 
     if (
       lives <= 0
     ) {
+
+      state = "gameover";
 
       resultTitle.textContent =
         "GAME OVER";
@@ -2274,11 +2819,13 @@ function keeperSave() {
       continueBtn.textContent =
         "PLAY AGAIN";
 
-      setMessage(
-        `GAME OVER — ${score} GOALS`
+      message(
+        `GAME OVER — ${score} SAVES`
       );
 
     } else {
+
+      state = "result";
 
       resultTitle.textContent =
         "MISSED!";
@@ -2293,21 +2840,23 @@ function keeperSave() {
       continueBtn.textContent =
         "CONTINUE";
 
-      setMessage(
-        "MISSED! ⚽"
+      message(
+        "JUST MISSED IT! ⚽"
       );
     }
+
+    resultCard.hidden = false;
   }
 }
 
-/* =========================
+
+/* =========================================================
    CONTINUE
-========================= */
+========================================================= */
 
 function continueRound() {
 
-  resultCard.hidden =
-    true;
+  resultCard.hidden = true;
 
   if (
     state === "gameover"
@@ -2321,13 +2870,14 @@ function continueRound() {
   beginMode();
 }
 
-/* =========================
+
+/* =========================================================
    RESTART
-========================= */
+========================================================= */
 
 function restartGame() {
 
-  clearTimeout(timer);
+  clearTimeout(gameTimer);
 
   score = 0;
   level = 1;
@@ -2335,14 +2885,15 @@ function restartGame() {
 
   particles = [];
 
-  hud();
+  updateHUD();
 
   beginMode();
 }
 
-/* =========================
-   UPDATE LOOP
-========================= */
+
+/* =========================================================
+   UPDATE
+========================================================= */
 
 function update(dt) {
 
@@ -2350,10 +2901,12 @@ function update(dt) {
 
   updateParticles(dt);
 
-  /* Power meter */
+  /*
+     Power bar.
+  */
 
   power +=
-    powerDir *
+    powerDirection *
     dt *
     .62;
 
@@ -2362,7 +2915,7 @@ function update(dt) {
   ) {
 
     power = 1;
-    powerDir = -1;
+    powerDirection = -1;
   }
 
   if (
@@ -2370,7 +2923,7 @@ function update(dt) {
   ) {
 
     power = 0;
-    powerDir = 1;
+    powerDirection = 1;
   }
 
   const displayPower =
@@ -2385,9 +2938,10 @@ function update(dt) {
   powerText.textContent =
     displayPower + "%";
 
-  /* =====================
-     BALL FLIGHT
-  ===================== */
+
+  /* =====================================================
+     SHOOTING
+  ===================================================== */
 
   if (
     state === "flight"
@@ -2425,8 +2979,17 @@ function update(dt) {
       smooth;
 
     /*
-      Huge arc for free kicks,
-      smaller arc for penalties.
+       Free kick curves.
+    */
+
+    ball.x +=
+      Math.sin(
+        p * Math.PI
+      ) *
+      ball.curve;
+
+    /*
+       Ball rises above wall.
     */
 
     ball.y -=
@@ -2434,12 +2997,6 @@ function update(dt) {
         p * Math.PI
       ) *
       ball.arc;
-
-    ball.x +=
-      Math.sin(
-        p * Math.PI
-      ) *
-      ball.curve;
 
     ball.radius =
       clamp(
@@ -2452,7 +3009,9 @@ function update(dt) {
         15
       );
 
-    /* Goalkeeper */
+    /*
+       Keeper moves.
+    */
 
     keeper.t +=
       dt /
@@ -2465,7 +3024,7 @@ function update(dt) {
         1
       );
 
-    const keeperSmooth =
+    const ks =
       kp * kp *
       (3 - 2 * kp);
 
@@ -2475,7 +3034,7 @@ function update(dt) {
         keeper.targetX -
         keeper.startX
       ) *
-      keeperSmooth;
+      ks;
 
     keeper.y =
       keeper.startY +
@@ -2483,7 +3042,7 @@ function update(dt) {
         keeper.targetY -
         keeper.startY
       ) *
-      keeperSmooth;
+      ks;
 
     if (
       p >= 1
@@ -2493,9 +3052,10 @@ function update(dt) {
     }
   }
 
-  /* =====================
-     KEEPER CHALLENGE
-  ===================== */
+
+  /* =====================================================
+     GOALKEEPER POV
+  ===================================================== */
 
   if (
     state === "keeper"
@@ -2532,12 +3092,20 @@ function update(dt) {
       ) *
       smooth;
 
+    /*
+       The ball slowly comes
+       toward the goalkeeper.
+    */
+
+    ball.y +=
+      dt *
+      55;
+
     if (
       p >= 1
     ) {
 
-      diveButton.hidden =
-        true;
+      diveButton.hidden = true;
 
       loseLife(
         "MISSED! ⚽"
@@ -2546,19 +3114,20 @@ function update(dt) {
   }
 }
 
-/* =========================
+
+/* =========================================================
    GAME LOOP
-========================= */
+========================================================= */
 
 function gameLoop(now) {
 
   const dt =
     Math.min(
       .035,
-      (now - last) / 1000
+      (now - lastTime) / 1000
     );
 
-  last = now;
+  lastTime = now;
 
   update(dt);
   draw();
@@ -2568,9 +3137,10 @@ function gameLoop(now) {
   );
 }
 
-/* =========================
+
+/* =========================================================
    MODE BUTTONS
-========================= */
+========================================================= */
 
 document
   .querySelectorAll(".mode")
@@ -2582,10 +3152,11 @@ document
 
         document
           .querySelectorAll(".mode")
-          .forEach(btn =>
-            btn.classList.remove(
-              "active"
-            )
+          .forEach(
+            b =>
+              b.classList.remove(
+                "active"
+              )
           );
 
         button.classList.add(
@@ -2600,9 +3171,10 @@ document
     );
   });
 
-/* =========================
+
+/* =========================================================
    SHOT BUTTONS
-========================= */
+========================================================= */
 
 document
   .querySelectorAll(
@@ -2616,16 +3188,17 @@ document
 
         event.preventDefault();
 
-        startShot(
+        shoot(
           button.dataset.zone
         );
       }
     );
   });
 
-/* =========================
+
+/* =========================================================
    CANVAS TOUCH
-========================= */
+========================================================= */
 
 canvas.addEventListener(
   "pointerdown",
@@ -2662,13 +3235,14 @@ canvas.addEventListener(
           ? "center"
           : "right";
 
-    startShot(zone);
+    shoot(zone);
   }
 );
 
-/* =========================
-   DIVE
-========================= */
+
+/* =========================================================
+   DIVE BUTTON
+========================================================= */
 
 diveButton.addEventListener(
   "pointerdown",
@@ -2680,9 +3254,10 @@ diveButton.addEventListener(
   }
 );
 
-/* =========================
-   BUTTONS
-========================= */
+
+/* =========================================================
+   UI BUTTONS
+========================================================= */
 
 restartBtn.addEventListener(
   "click",
@@ -2701,21 +3276,28 @@ difficultyEl.addEventListener(
     if (
       state === "ready"
     ) {
+
       beginMode();
     }
   }
 );
 
-/* =========================
-   START
-========================= */
 
-resizeCanvas();
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
-updateHud();
+function initialize() {
 
-beginMode();
+  resizeCanvas();
 
-requestAnimationFrame(
-  gameLoop
-);
+  updateHUD();
+
+  beginMode();
+
+  requestAnimationFrame(
+    gameLoop
+  );
+}
+
+initialize();
