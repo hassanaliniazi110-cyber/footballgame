@@ -1,175 +1,411 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-      maximum-scale=1.0, user-scalable=no">
-
-<title>Football Legends Arena</title>
-
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#06180d" />
+  <title>Football Legends Arena</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-
-<div id="app">
+  <div id="app">
 
     <header class="topbar">
-        <div class="brand">
-            ⚽ FOOTBALL
-            <span>LEGENDS ARENA</span>
+
+      <div class="brand">
+        <div class="brand-main">⚽ FOOTBALL LEGENDS ARENA</div>
+        <div class="brand-sub">
+          PENALTY • FREE KICK • GOALKEEPER
+        </div>
+      </div>
+
+      <div class="stats">
+
+        <div class="stat">
+          <span>SCORE</span>
+          <strong id="score">0</strong>
         </div>
 
         <div class="stat">
-            <small>SCORE</small>
-            <strong id="score">0</strong>
+          <span>LEVEL</span>
+          <strong id="level">1</strong>
         </div>
 
         <div class="stat">
-            <small>LEVEL</small>
-            <strong id="level">1</strong>
+          <span>GOALS</span>
+          <strong id="goals">0</strong>
         </div>
 
         <div class="stat">
-            <small>GOALS</small>
-            <strong id="goals">0</strong>
+          <span>SAVES</span>
+          <strong id="saves">0</strong>
         </div>
+
+      </div>
+
     </header>
 
 
-    <section class="selectionPanel">
+    <section class="selection-panel">
 
-        <div class="selectionGroup">
-            <label>PLAYER</label>
+      <div class="select-group player-group">
+        <label for="playerSelect">PLAYER</label>
 
-            <select id="playerSelect">
-                <option value="Hassan Ali">Hassan Ali</option>
-                <option value="Ehan Ali">Ehan Ali</option>
-                <option value="Umar Shoaib">Umar Shoaib</option>
-                <option value="Cristiano Ronaldo">Cristiano Ronaldo</option>
-            </select>
-        </div>
+        <select id="playerSelect">
+
+          <option value="Hassan Ali">
+            Hassan Ali
+          </option>
+
+          <option value="Ehan Ali">
+            Ehan Ali
+          </option>
+
+          <option value="Umar Shoaib">
+            Umar Shoaib
+          </option>
+
+          <option value="Cristiano Ronaldo">
+            Cristiano Ronaldo
+          </option>
+
+          <option value="Lionel Messi">
+            Lionel Messi
+          </option>
+
+          <option value="Kylian Mbappé">
+            Kylian Mbappé
+          </option>
+
+          <option value="Erling Haaland">
+            Erling Haaland
+          </option>
+
+          <option value="Neymar Jr.">
+            Neymar Jr.
+          </option>
+
+          <option value="Mohamed Salah">
+            Mohamed Salah
+          </option>
+
+          <option value="Vinícius Júnior">
+            Vinícius Júnior
+          </option>
+
+          <option value="Jude Bellingham">
+            Jude Bellingham
+          </option>
+
+          <option value="Kevin De Bruyne">
+            Kevin De Bruyne
+          </option>
+
+          <option value="Robert Lewandowski">
+            Robert Lewandowski
+          </option>
+
+          <option value="Lamine Yamal">
+            Lamine Yamal
+          </option>
+
+        </select>
+      </div>
 
 
-        <div class="selectionGroup">
-            <label>GOALKEEPER</label>
+      <div class="select-group keeper-group">
 
-            <select id="keeperSelect">
-                <option value="Ehan Ali">Ehan Ali</option>
-                <option value="Thibaut Courtois">Thibaut Courtois</option>
-                <option value="Alisson">Alisson</option>
-                <option value="Manuel Neuer">Manuel Neuer</option>
-                <option value="Gianluigi Donnarumma">
-                    Gianluigi Donnarumma
-                </option>
-            </select>
-        </div>
+        <label for="keeperSelect">
+          GOALKEEPER
+        </label>
+
+        <select id="keeperSelect">
+
+          <option value="Ehan Ali">
+            Ehan Ali
+          </option>
+
+          <option value="Thibaut Courtois">
+            Thibaut Courtois
+          </option>
+
+          <option value="Alisson">
+            Alisson
+          </option>
+
+          <option value="Manuel Neuer">
+            Manuel Neuer
+          </option>
+
+          <option value="Gianluigi Donnarumma">
+            Gianluigi Donnarumma
+          </option>
+
+          <option value="Ederson">
+            Ederson
+          </option>
+
+          <option value="Jan Oblak">
+            Jan Oblak
+          </option>
+
+          <option value="Marc-André ter Stegen">
+            Marc-André ter Stegen
+          </option>
+
+          <option value="Emiliano Martínez">
+            Emiliano Martínez
+          </option>
+
+        </select>
+
+      </div>
 
 
-        <div class="selectionGroup">
-            <label>DIFFICULTY</label>
+      <div class="select-group difficulty-group">
 
-            <select id="difficulty">
-                <option value="easy">Easy</option>
-                <option value="normal" selected>Normal</option>
-                <option value="hard">Hard</option>
-            </select>
-        </div>
+        <label for="difficulty">
+          DIFFICULTY
+        </label>
+
+        <select id="difficulty">
+
+          <option value="easy">
+            Easy
+          </option>
+
+          <option value="normal" selected>
+            Normal
+          </option>
+
+          <option value="hard">
+            Hard
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="select-group camera-group">
+
+        <label for="cameraSelect">
+          CAMERA
+        </label>
+
+        <select id="cameraSelect">
+
+          <option value="broadcast" selected>
+            Broadcast
+          </option>
+
+          <option value="close">
+            Close
+          </option>
+
+          <option value="wide">
+            Wide
+          </option>
+
+        </select>
+
+      </div>
 
     </section>
 
 
-    <nav class="modeBar">
+    <nav class="mode-bar">
 
-        <button class="mode active" data-mode="penalty">
-            ⚽ PENALTY
-        </button>
+      <button
+        class="mode active"
+        data-mode="penalty"
+      >
+        ⚽ PENALTY
+      </button>
 
-        <button class="mode" data-mode="freekick">
-            🎯 FREE KICK
-        </button>
+      <button
+        class="mode"
+        data-mode="freekick"
+      >
+        🎯 FREE KICK
+      </button>
 
-        <button class="mode" data-mode="keeper">
-            🧤 GOALKEEPER
-        </button>
+      <button
+        class="mode"
+        data-mode="keeper"
+      >
+        🧤 GOALKEEPER
+      </button>
 
     </nav>
 
 
     <main id="gameArea">
 
-        <canvas id="gameCanvas"></canvas>
+      <canvas
+        id="gameCanvas"
+        aria-label="Football game canvas"
+      ></canvas>
 
-        <div id="hud">
 
-            <div class="playerCard">
-                <span id="selectedPlayer">
-                    Hassan Ali
-                </span>
+      <div class="hud">
 
-                <small id="selectedKeeper">
-                    vs Ehan Ali
-                </small>
-            </div>
+        <div class="glass-card player-card">
 
-            <div id="message">
-                CHOOSE YOUR SHOT
-            </div>
+          <strong id="selectedPlayer">
+            Hassan Ali
+          </strong>
 
-            <div id="distance">
-                Distance: 11 m
-            </div>
+          <span id="selectedKeeper">
+            vs Ehan Ali
+          </span>
 
         </div>
 
 
-        <div id="shootControls">
+        <div class="glass-card center-card">
 
-            <button data-zone="left">
-                ↖
-                <span>LEFT</span>
-            </button>
+          <div id="modeTitle">
+            PENALTY
+          </div>
 
-            <button data-zone="center">
-                ↑
-                <span>CENTER</span>
-            </button>
+          <strong id="message">
+            CHOOSE YOUR SHOT
+          </strong>
 
-            <button data-zone="right">
-                ↗
-                <span>RIGHT</span>
-            </button>
+          <span id="distance">
+            Distance: 11 m
+          </span>
 
         </div>
 
 
-        <div id="keeperControls">
+        <div class="glass-card info-card">
 
-            <button data-save="left">↖ LEFT</button>
-            <button data-save="center">↑ CENTER</button>
-            <button data-save="right">↗ RIGHT</button>
+          <span id="streakText">
+            STREAK
+          </span>
+
+          <strong id="streak">
+            0
+          </strong>
 
         </div>
+
+      </div>
+
+
+      <div
+        id="powerMeter"
+        class="power-meter hidden"
+      >
+
+        <div class="power-label">
+          POWER
+        </div>
+
+        <div class="power-bar">
+          <div id="powerFill"></div>
+        </div>
+
+      </div>
+
+
+      <div id="shootControls" class="controls">
+
+        <button
+          class="control-btn shot-btn"
+          data-zone="left"
+          data-action="shot"
+        >
+          <span class="big-arrow">↖</span>
+          <span>LEFT</span>
+        </button>
+
+
+        <button
+          class="control-btn shot-btn"
+          data-zone="center"
+          data-action="shot"
+        >
+          <span class="big-arrow">↑</span>
+          <span>CENTER</span>
+        </button>
+
+
+        <button
+          class="control-btn shot-btn"
+          data-zone="right"
+          data-action="shot"
+        >
+          <span class="big-arrow">↗</span>
+          <span>RIGHT</span>
+        </button>
+
+      </div>
+
+
+      <div
+        id="keeperControls"
+        class="controls hidden"
+      >
+
+        <button
+          class="control-btn save-btn"
+          data-zone="left"
+          data-action="save"
+        >
+          ↖ DIVE LEFT
+        </button>
+
+
+        <button
+          class="control-btn save-btn"
+          data-zone="center"
+          data-action="save"
+        >
+          ↑ STAY CENTER
+        </button>
+
+
+        <button
+          class="control-btn save-btn"
+          data-zone="right"
+          data-action="save"
+        >
+          ↗ DIVE RIGHT
+        </button>
+
+      </div>
+
+
+      <div id="tip" class="tip">
+        Tap LEFT, CENTER or RIGHT to shoot.
+      </div>
+
+
+      <div id="flash" class="flash"></div>
 
     </main>
 
 
-    <footer>
+    <footer class="footer">
 
-        <button id="restart">
-            🔄 RESTART
-        </button>
+      <button id="restart">
+        🔄 RESTART
+      </button>
 
-        <span>
-            Score 3 goals to level up
-        </span>
+      <span id="footerText">
+        Score 3 goals to level up • Your browser is the game engine
+      </span>
 
     </footer>
 
-</div>
+  </div>
 
-<script src="script.js"></script>
+
+  <script src="script.js"></script>
 
 </body>
 </html>
