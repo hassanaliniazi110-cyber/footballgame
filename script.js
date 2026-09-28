@@ -1,3 +1,1418 @@
+"use strict";
+
+const canvas =
+
+  document.getElementById("gameCanvas");
+
+const ctx =
+
+  canvas.getContext(
+
+    "2d",
+
+    { alpha: false }
+
+  );
+
+const scoreEl =
+
+  document.getElementById("score");
+
+const levelEl =
+
+  document.getElementById("level");
+
+const goalsEl =
+
+  document.getElementById("goals");
+
+const savesEl =
+
+  document.getElementById("saves");
+
+const playerSelect =
+
+  document.getElementById("playerSelect");
+
+const keeperSelect =
+
+  document.getElementById("keeperSelect");
+
+const difficultySelect =
+
+  document.getElementById("difficulty");
+
+const cameraSelect =
+
+  document.getElementById("cameraSelect");
+
+const selectedPlayerEl =
+
+  document.getElementById("selectedPlayer");
+
+const selectedKeeperEl =
+
+  document.getElementById("selectedKeeper");
+
+const modeTitleEl =
+
+  document.getElementById("modeTitle");
+
+const messageEl =
+
+  document.getElementById("message");
+
+const distanceEl =
+
+  document.getElementById("distance");
+
+const streakEl =
+
+  document.getElementById("streak");
+
+const tipEl =
+
+  document.getElementById("tip");
+
+const flashEl =
+
+  document.getElementById("flash");
+
+const powerMeterEl =
+
+  document.getElementById("powerMeter");
+
+const powerFillEl =
+
+  document.getElementById("powerFill");
+
+const shootControls =
+
+  document.getElementById("shootControls");
+
+const keeperControls =
+
+  document.getElementById("keeperControls");
+
+const restartButton =
+
+  document.getElementById("restart");
+
+let W = 1200;
+
+let H = 700;
+
+let dpr = 1;
+
+let animationId = 0;
+
+let lastTime = performance.now();
+
+let roundToken = 0;
+
+let pendingTimer = null;
+
+let particles = [];
+
+let confetti = [];
+
+const state = {
+
+  mode: "penalty",
+
+  score: 0,
+
+  goals: 0,
+
+  saves: 0,
+
+  level: 1,
+
+  streak: 0,
+
+  busy: false,
+
+  keeperChallengeActive: false,
+
+  shotStart: 0,
+
+  shotDuration: 760,
+
+  keeperMoveStart: 0,
+
+  keeperMoveDuration: 500,
+
+  incomingZone: "center",
+
+  keeperChoice: null,
+
+  freeKickDistance: 22,
+
+  power: .72,
+
+  powerDirection: 1,
+
+  camera: "broadcast"
+
+};
+
+const difficultySettings = {
+
+  easy: {
+
+    keeperAccuracy: .28,
+
+    keeperSpeed: 330,
+
+    saveRadius: 74,
+
+    reactionMs: 400
+
+  },
+
+  normal: {
+
+    keeperAccuracy: .46,
+
+    keeperSpeed: 390,
+
+    saveRadius: 64,
+
+    reactionMs: 320
+
+  },
+
+  hard: {
+
+    keeperAccuracy: .64,
+
+    keeperSpeed: 455,
+
+    saveRadius: 54,
+
+    reactionMs: 235
+
+  }
+
+};
+
+const playerProfiles = {
+
+  "Hassan Ali": {
+
+    power: 1.00,
+
+    curve: 1.00,
+
+    accuracy: 1.00
+
+  },
+
+  "Ehan Ali": {
+
+    power: .98,
+
+    curve: 1.02,
+
+    accuracy: 1.02
+
+  },
+
+  "Umar Shoaib": {
+
+    power: 1.03,
+
+    curve: 1.06,
+
+    accuracy: .98
+
+  },
+
+  "Cristiano Ronaldo": {
+
+    power: 1.08,
+
+    curve: 1.08,
+
+    accuracy: 1.04
+
+  },
+
+  "Lionel Messi": {
+
+    power: .98,
+
+    curve: 1.15,
+
+    accuracy: 1.10
+
+  },
+
+  "Kylian Mbappé": {
+
+    power: 1.07,
+
+    curve: 1.06,
+
+    accuracy: 1.02
+
+  },
+
+  "Erling Haaland": {
+
+    power: 1.12,
+
+    curve: .96,
+
+    accuracy: 1.00
+
+  },
+
+  "Neymar Jr.": {
+
+    power: 1.00,
+
+    curve: 1.16,
+
+    accuracy: 1.04
+
+  },
+
+  "Mohamed Salah": {
+
+    power: 1.02,
+
+    curve: 1.10,
+
+    accuracy: 1.03
+
+  },
+
+  "Vinícius Júnior": {
+
+    power: 1.04,
+
+    curve: 1.11,
+
+    accuracy: 1.02
+
+  },
+
+  "Jude Bellingham": {
+
+    power: 1.04,
+
+    curve: 1.05,
+
+    accuracy: 1.02
+
+  },
+
+  "Kevin De Bruyne": {
+
+    power: 1.01,
+
+    curve: 1.14,
+
+    accuracy: 1.06
+
+  },
+
+  "Robert Lewandowski": {
+
+    power: 1.06,
+
+    curve: 1.03,
+
+    accuracy: 1.04
+
+  },
+
+  "Lamine Yamal": {
+
+    power: .99,
+
+    curve: 1.15,
+
+    accuracy: 1.04
+
+  }
+
+};
+
+const keeperProfiles = {
+
+  "Ehan Ali": {
+
+    reach: 1.00,
+
+    speed: 1.00
+
+  },
+
+  "Thibaut Courtois": {
+
+    reach: 1.16,
+
+    speed: .98
+
+  },
+
+  "Alisson": {
+
+    reach: 1.06,
+
+    speed: 1.06
+
+  },
+
+  "Manuel Neuer": {
+
+    reach: 1.04,
+
+    speed: 1.09
+
+  },
+
+  "Gianluigi Donnarumma": {
+
+    reach: 1.15,
+
+    speed: 1.00
+
+  },
+
+  "Ederson": {
+
+    reach: 1.01,
+
+    speed: 1.10
+
+  },
+
+  "Jan Oblak": {
+
+    reach: 1.11,
+
+    speed: 1.01
+
+  },
+
+  "Marc-André ter Stegen": {
+
+    reach: 1.07,
+
+    speed: 1.07
+
+  },
+
+  "Emiliano Martínez": {
+
+    reach: 1.08,
+
+    speed: 1.04
+
+  }
+
+};
+
+const ball = {
+
+  x: 0,
+
+  y: 0,
+
+  startX: 0,
+
+  startY: 0,
+
+  targetX: 0,
+
+  targetY: 0,
+
+  curve: 0,
+
+  arc: 0,
+
+  progress: 0,
+
+  radius: 12,
+
+  visible: true
+
+};
+
+const keeper = {
+
+  x: 0,
+
+  y: 0,
+
+  targetX: 0,
+
+  targetY: 0,
+
+  diveX: 0,
+
+  diveY: 0,
+
+  pose: 0,
+
+  scale: 1
+
+};
+
+function clamp(
+
+  value,
+
+  min,
+
+  max
+
+) {
+
+  return Math.max(
+
+    min,
+
+    Math.min(max, value)
+
+  );
+
+}
+
+function lerp(
+
+  a,
+
+  b,
+
+  t
+
+) {
+
+  return a +
+
+    (b - a) * t;
+
+}
+
+function easeInOut(t) {
+
+  return t * t *
+
+    (3 - 2 * t);
+
+}
+
+function randomBetween(
+
+  min,
+
+  max
+
+) {
+
+  return min +
+
+    Math.random() *
+
+    (max - min);
+
+}
+
+function schedule(
+
+  callback,
+
+  delay
+
+) {
+
+  const token =
+
+    roundToken;
+
+  clearTimeout(
+
+    pendingTimer
+
+  );
+
+  pendingTimer =
+
+    setTimeout(
+
+      () => {
+
+        if (
+
+          token ===
+
+          roundToken
+
+        ) {
+
+          callback();
+
+        }
+
+      },
+
+      delay
+
+    );
+
+}
+
+function invalidateTimers() {
+
+  roundToken += 1;
+
+  clearTimeout(
+
+    pendingTimer
+
+  );
+
+  pendingTimer = null;
+
+}
+
+function resizeCanvas() {
+
+  const rect =
+
+    canvas.getBoundingClientRect();
+
+  const width =
+
+    Math.max(
+
+      320,
+
+      Math.floor(rect.width)
+
+    );
+
+  const height =
+
+    Math.max(
+
+      390,
+
+      Math.floor(rect.height)
+
+    );
+
+  W = width;
+
+  H = height;
+
+  dpr =
+
+    Math.min(
+
+      window.devicePixelRatio || 1,
+
+      2
+
+    );
+
+  canvas.width =
+
+    Math.floor(W * dpr);
+
+  canvas.height =
+
+    Math.floor(H * dpr);
+
+  ctx.setTransform(
+
+    dpr,
+
+    0,
+
+    0,
+
+    dpr,
+
+    0,
+
+    0
+
+  );
+
+  positionGameObjects();
+
+}
+
+function goalGeometry() {
+
+  let left = .20;
+
+  let width = .60;
+
+  let top = .12;
+
+  let height = .31;
+
+  if (
+
+    state.camera ===
+
+    "close"
+
+  ) {
+
+    left = .13;
+
+    width = .74;
+
+    top = .10;
+
+    height = .36;
+
+  }
+
+  if (
+
+    state.camera ===
+
+    "wide"
+
+  ) {
+
+    left = .25;
+
+    width = .50;
+
+    top = .14;
+
+    height = .28;
+
+  }
+
+  return {
+
+    x: W * left,
+
+    y: H * top,
+
+    width: W * width,
+
+    height: H * height
+
+  };
+
+}
+
+function penaltyStart() {
+
+  return {
+
+    x: W / 2,
+
+    y: H * .74
+
+  };
+
+}
+
+function freeKickStart() {
+
+  return {
+
+    x: W / 2,
+
+    y: H * .72
+
+  };
+
+}
+
+function keeperLineY() {
+
+  const g =
+
+    goalGeometry();
+
+  return g.y +
+
+    g.height * .80;
+
+}
+
+function fieldCenterY() {
+
+  return H * .54;
+
+}
+
+function positionGameObjects() {
+
+  const g =
+
+    goalGeometry();
+
+  keeper.x =
+
+    W / 2;
+
+  keeper.y =
+
+    g.y +
+
+    g.height * .76;
+
+  keeper.targetX =
+
+    keeper.x;
+
+  keeper.targetY =
+
+    keeper.y;
+
+  keeper.pose = 0;
+
+  if (
+
+    state.mode !==
+
+    "keeper"
+
+  ) {
+
+    const start =
+
+      state.mode === "freekick"
+
+        ? freeKickStart()
+
+        : penaltyStart();
+
+    ball.x =
+
+      start.x;
+
+    ball.y =
+
+      start.y;
+
+    ball.startX =
+
+      start.x;
+
+    ball.startY =
+
+      start.y;
+
+    ball.visible =
+
+      true;
+
+    ball.progress =
+
+      0;
+
+  }
+
+}
+
+function updateHUD() {
+
+  scoreEl.textContent =
+
+    String(state.score);
+
+  levelEl.textContent =
+
+    String(state.level);
+
+  goalsEl.textContent =
+
+    String(state.goals);
+
+  savesEl.textContent =
+
+    String(state.saves);
+
+  streakEl.textContent =
+
+    String(state.streak);
+
+  selectedPlayerEl.textContent =
+
+    playerSelect.value;
+
+  selectedKeeperEl.textContent =
+
+    `vs ${keeperSelect.value}`;
+
+  modeTitleEl.textContent =
+
+    state.mode === "penalty"
+
+      ? "PENALTY"
+
+      : state.mode === "freekick"
+
+        ? "FREE KICK"
+
+        : "GOALKEEPER";
+
+}
+
+function setMessage(
+
+  text
+
+) {
+
+  messageEl.textContent =
+
+    text;
+
+}
+
+function flash() {
+
+  flashEl.classList.remove(
+
+    "show"
+
+  );
+
+  void flashEl.offsetWidth;
+
+  flashEl.classList.add(
+
+    "show"
+
+  );
+
+}
+
+function addParticles(
+
+  x,
+
+  y,
+
+  type = "normal",
+
+  count = 35
+
+) {
+
+  for (
+
+    let i = 0;
+
+    i < count;
+
+    i++
+
+  ) {
+
+    const angle =
+
+      Math.random() *
+
+      Math.PI * 2;
+
+    const speed =
+
+      randomBetween(
+
+        90,
+
+        390
+
+      );
+
+    particles.push({
+
+      x,
+
+      y,
+
+      vx:
+
+        Math.cos(angle) *
+
+        speed,
+
+      vy:
+
+        Math.sin(angle) *
+
+        speed -
+
+        randomBetween(
+
+          20,
+
+          150
+
+        ),
+
+      life: 1,
+
+      size:
+
+        randomBetween(
+
+          2,
+
+          5
+
+        ),
+
+      type
+
+    });
+
+  }
+
+}
+
+function addConfetti(
+
+  count = 90
+
+) {
+
+  for (
+
+    let i = 0;
+
+    i < count;
+
+    i++
+
+  ) {
+
+    confetti.push({
+
+      x:
+
+        W * .5 +
+
+        randomBetween(
+
+          -80,
+
+          80
+
+        ),
+
+      y:
+
+        H * .32,
+
+      vx:
+
+        randomBetween(
+
+          -250,
+
+          250
+
+        ),
+
+      vy:
+
+        randomBetween(
+
+          -420,
+
+          -120
+
+        ),
+
+      life: 1,
+
+      size:
+
+        randomBetween(
+
+          3,
+
+          7
+
+        ),
+
+      rot:
+
+        randomBetween(
+
+          0,
+
+          Math.PI * 2
+
+        ),
+
+      spin:
+
+        randomBetween(
+
+          -7,
+
+          7
+
+        )
+
+    });
+
+  }
+
+}
+
+function updateParticles(dt) {
+
+  for (
+
+    const p of particles
+
+  ) {
+
+    p.x +=
+
+      p.vx * dt;
+
+    p.y +=
+
+      p.vy * dt;
+
+    p.vy +=
+
+      280 * dt;
+
+    p.life -=
+
+      dt * 1.5;
+
+  }
+
+  particles =
+
+    particles.filter(
+
+      p => p.life > 0
+
+    );
+
+  for (
+
+    const c of confetti
+
+  ) {
+
+    c.x +=
+
+      c.vx * dt;
+
+    c.y +=
+
+      c.vy * dt;
+
+    c.vy +=
+
+      420 * dt;
+
+    c.rot +=
+
+      c.spin * dt;
+
+    c.life -=
+
+      dt * .65;
+
+  }
+
+  confetti =
+
+    confetti.filter(
+
+      c => c.life > 0
+
+    );
+
+}
+
+function drawParticles() {
+
+  for (
+
+    const p of particles
+
+  ) {
+
+    ctx.globalAlpha =
+
+      clamp(
+
+        p.life,
+
+        0,
+
+        1
+
+      );
+
+    ctx.fillStyle =
+
+      p.type === "goal"
+
+        ? "#ffe44a"
+
+        : "#f7fff9";
+
+    ctx.beginPath();
+
+    ctx.arc(
+
+      p.x,
+
+      p.y,
+
+      p.size,
+
+      0,
+
+      Math.PI * 2
+
+    );
+
+    ctx.fill();
+
+  }
+
+  ctx.globalAlpha = 1;
+
+  const confettiColors = [
+
+    "#ffef4b",
+
+    "#62e9ff",
+
+    "#ff6d8d",
+
+    "#ffffff",
+
+    "#a9ff6a"
+
+  ];
+
+  for (
+
+    const c of confetti
+
+  ) {
+
+    ctx.save();
+
+    ctx.globalAlpha =
+
+      clamp(
+
+        c.life,
+
+        0,
+
+        1
+
+      );
+
+    ctx.translate(
+
+      c.x,
+
+      c.y
+
+    );
+
+    ctx.rotate(
+
+      c.rot
+
+    );
+
+    ctx.fillStyle =
+
+      confettiColors[
+
+        Math.abs(
+
+          Math.floor(c.x)
+
+        ) %
+
+        confettiColors.length
+
+      ];
+
+    ctx.fillRect(
+
+      -c.size,
+
+      -c.size / 2,
+
+      c.size * 2,
+
+      c.size
+
+    );
+
+    ctx.restore();
+
+  }
+
+  ctx.globalAlpha = 1;
+
+}
+
+function drawBackground() {
+
+  const bg =
+
+    ctx.createLinearGradient(
+
+      0,
+
+      0,
+
+      0,
+
+      H
+
+    );
+
+  bg.addColorStop(
+
+    0,
+
+    "#062b17"
+
+  );
+
+  bg.addColorStop(
+
+    .45,
+
+    "#08752e"
+
+  );
+
+  bg.addColorStop(
+
+    1,
+
+    "#03451e"
+
+  );
+
+  ctx.fillStyle =
+
+    bg;
+
+  ctx.fillRect(
+
+    0,
+
+    0,
+
+    W,
+
+    H
+
+  );
+
+}
+
+function drawStadium() {
+
+  const crowdH =
+
+    H * .16;
+
+  const crowd =
+
+    ctx.createLinearGradient(
+
+      0,
+
+      0,
+
+      0,
+
+      crowdH
+
+    );
+
+  crowd.addColorStop(
+
+    0,
+
+    "#111922"
+
+  );
+
+  crowd.addColorStop(
+
+    1,
+
+    "#24322a"
+
+  );
+
+  ctx.fillStyle =
+
+    crowd;
+
+  ctx.fillRect(
+
+    0,
+
+    0,
+
+    W,
+
+    crowdH
+
+  );
+
+  const lights = [
+
+    .12,
+
+    .29,
+
+    .50,
+
+    .71,
+
+    .88
+
+  ];
+
+  for (
+
+    const lx of lights
+
+  ) {
+
+    ctx.fillStyle =
+
+      "rgba(255,255,220,.85)";
+
+    ctx.shadowColor =
+
+      "rgba(255,255,255,.35)";
+
+    ctx.shadowBlur = 18;
 
     ctx.beginPath();
 
