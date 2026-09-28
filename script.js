@@ -134,23 +134,19 @@ const players = {
     number: "10"
   },
 
-
   "Umar Shoaib": {
-
     color: "red",
     accent: "#ffffff",
     number: "7"
   },
 
   "Ehan Ali": {
-
     color: "blue",
     accent: "#ffffff",
     number: "1"
        },
 
   "Hassan Ali": {
-
     color: "Orange",
     accent: "#ffffff",
     number: "5"
