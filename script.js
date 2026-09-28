@@ -128,12 +128,12 @@ const players = {
     number: "11"
   },
 
-  "Neymar Jr": {
+  "Neymar": {
     color: "#1c7e3c",
     accent: "#f1d441",
     number: "10"
   }
-  
+
 };
 
 
