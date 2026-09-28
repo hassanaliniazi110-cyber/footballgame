@@ -128,12 +128,32 @@ const players = {
     number: "11"
   },
 
-  "Neymar": {
+  "Neymar Jr": {
     color: "#1c7e3c",
     accent: "#f1d441",
     number: "10"
-  }
+  },
 
+
+  "Umar Shoaib": {
+
+    color: "red",
+    accent: "#ffffff",
+    number: "7"
+  },
+
+  "Ehan Ali": {
+
+    color: "blue",
+    accent: "#ffffff",
+    number: "1"
+       },
+
+  "Hassan Ali": {
+
+    color: "Orange",
+    accent: "#ffffff",
+    number: "5"
 };
 
 
