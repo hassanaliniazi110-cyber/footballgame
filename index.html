@@ -1,169 +1,175 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta
-    name="viewport"
-    content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"
-  >
-  <meta name="theme-color" content="#06120b">
-  <title>Football Arena X</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0, user-scalable=no">
+
+<title>Football Legends Arena</title>
+
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <div class="app">
+
+<div id="app">
 
     <header class="topbar">
-      <div class="brand">
-        ⚽ <span>FOOTBALL ARENA X</span>
-      </div>
+        <div class="brand">
+            ⚽ FOOTBALL
+            <span>LEGENDS ARENA</span>
+        </div>
 
-      <div class="stat">
-        <small>GOALS</small>
-        <strong id="score">0</strong>
-      </div>
+        <div class="stat">
+            <small>SCORE</small>
+            <strong id="score">0</strong>
+        </div>
 
-      <div class="stat">
-        <small>LEVEL</small>
-        <strong id="level">1</strong>
-      </div>
+        <div class="stat">
+            <small>LEVEL</small>
+            <strong id="level">1</strong>
+        </div>
 
-      <div class="stat">
-        <small>LIVES</small>
-        <strong id="lives">5</strong>
-      </div>
+        <div class="stat">
+            <small>GOALS</small>
+            <strong id="goals">0</strong>
+        </div>
     </header>
 
-    <nav class="modes">
-      <button class="mode active" data-mode="penalty">
-        ⚽ PENALTY
-      </button>
 
-      <button class="mode" data-mode="freekick">
-        🎯 FREE KICK
-      </button>
+    <section class="selectionPanel">
 
-      <button class="mode" data-mode="longshot">
-        🚀 LONG SHOT
-      </button>
+        <div class="selectionGroup">
+            <label>PLAYER</label>
 
-      <button class="mode" data-mode="keeper">
-        🧤 GOALKEEPER
-      </button>
-    </nav>
+            <select id="playerSelect">
+                <option value="Hassan Ali">Hassan Ali</option>
+                <option value="Ehan Ali">Ehan Ali</option>
+                <option value="Umar Shoaib">Umar Shoaib</option>
+                <option value="Cristiano Ronaldo">Cristiano Ronaldo</option>
+            </select>
+        </div>
 
-    <section class="toolbar">
 
-      <label class="difficulty">
-        <span>Difficulty</span>
+        <div class="selectionGroup">
+            <label>GOALKEEPER</label>
 
-        <select id="difficulty">
-          <option value="easy">Easy</option>
-          <option value="normal" selected>Normal</option>
-          <option value="hard">Hard</option>
-        </select>
-      </label>
+            <select id="keeperSelect">
+                <option value="Ehan Ali">Ehan Ali</option>
+                <option value="Thibaut Courtois">Thibaut Courtois</option>
+                <option value="Alisson">Alisson</option>
+                <option value="Manuel Neuer">Manuel Neuer</option>
+                <option value="Gianluigi Donnarumma">
+                    Gianluigi Donnarumma
+                </option>
+            </select>
+        </div>
 
-      <label class="difficulty">
-        <span>Player</span>
 
-        <select id="playerSelect">
-          <option>Cristiano Ronaldo</option>
-          <option>Lionel Messi</option>
-          <option>Kylian Mbappe</option>
-          <option>Erling Haaland</option>
-          <option>Mohamed Salah</option>
-          <option>Neymar</option>
-        </select>
-      </label>
+        <div class="selectionGroup">
+            <label>DIFFICULTY</label>
 
-      <button id="restart" class="restart">
-        RESTART
-      </button>
-
-      <div id="hint" class="hint">
-        Pick a target and shoot!
-      </div>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="normal" selected>Normal</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
 
     </section>
 
-    <main id="arena">
 
-      <canvas id="gameCanvas"></canvas>
+    <nav class="modeBar">
 
-      <div id="message" class="message">
-        CHOOSE YOUR SHOT
-      </div>
-
-      <div id="distance" class="distance">
-        DISTANCE: 12 m
-      </div>
-
-      <div id="powerWrap" class="power-wrap">
-
-        <div class="power-label">
-          <span>SHOT POWER</span>
-          <b id="powerText">75%</b>
-        </div>
-
-        <div class="power-track">
-          <div id="powerFill"></div>
-        </div>
-
-      </div>
-
-      <div id="controls" class="controls">
-
-        <button data-zone="left">
-          <span>↖</span>
-          LEFT
+        <button class="mode active" data-mode="penalty">
+            ⚽ PENALTY
         </button>
 
-        <button data-zone="center">
-          <span>↑</span>
-          CENTER
+        <button class="mode" data-mode="freekick">
+            🎯 FREE KICK
         </button>
 
-        <button data-zone="right">
-          <span>↗</span>
-          RIGHT
+        <button class="mode" data-mode="keeper">
+            🧤 GOALKEEPER
         </button>
 
-      </div>
+    </nav>
 
-      <button id="diveButton" class="dive" hidden>
-        🧤 DIVE NOW
-      </button>
 
-      <div id="resultCard" class="result-card" hidden>
+    <main id="gameArea">
 
-        <div id="resultTitle">
-          GOAL!
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="hud">
+
+            <div class="playerCard">
+                <span id="selectedPlayer">
+                    Hassan Ali
+                </span>
+
+                <small id="selectedKeeper">
+                    vs Ehan Ali
+                </small>
+            </div>
+
+            <div id="message">
+                CHOOSE YOUR SHOT
+            </div>
+
+            <div id="distance">
+                Distance: 11 m
+            </div>
+
         </div>
 
-        <div id="resultSub">
-          Great finish.
+
+        <div id="shootControls">
+
+            <button data-zone="left">
+                ↖
+                <span>LEFT</span>
+            </button>
+
+            <button data-zone="center">
+                ↑
+                <span>CENTER</span>
+            </button>
+
+            <button data-zone="right">
+                ↗
+                <span>RIGHT</span>
+            </button>
+
         </div>
 
-        <button id="continueBtn">
-          CONTINUE
-        </button>
 
-      </div>
+        <div id="keeperControls">
+
+            <button data-save="left">↖ LEFT</button>
+            <button data-save="center">↑ CENTER</button>
+            <button data-save="right">↗ RIGHT</button>
+
+        </div>
 
     </main>
 
+
     <footer>
-      <span id="modeText">Penalty Kick</span>
-      <span>•</span>
-      <span id="footerText">
-        3 goals = next level
-      </span>
+
+        <button id="restart">
+            🔄 RESTART
+        </button>
+
+        <span>
+            Score 3 goals to level up
+        </span>
+
     </footer>
 
-  </div>
+</div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
