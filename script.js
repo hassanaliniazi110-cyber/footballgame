@@ -2,54 +2,122 @@
 
 
 /* ============================================================
-   FOOTBALL LEGENDS ARENA X
-   LARGE GAME ENGINE
+   FOOTBALL LEGENDS ARENA X7
+   ============================================================
+   This version deliberately uses SVG for the visual stadium,
+   goal, goalkeeper, player and ball instead of relying on
+   canvas rendering for the main scene.
+
+   Hassan Ali:
+   - 300 shooting
+   - 300 power
+   - 300 accuracy
+   - 300 curve
+   - 300 speed
+   - 300 stamina
+   - 300 long shot
+   - 300 penalty
+   - 300 free kick
+
+   Goalkeeper Hassan Ali:
+   - 300 diving
+   - 300 reflexes
+   - 300 positioning
+   - 300 handling
+   - 300 speed
+   - 300 kicking
+   - 300 reactions
+   - 300 reach
 ============================================================ */
 
 
 /* ============================================================
-   DOM
+   ELEMENTS
 ============================================================ */
 
-const canvas =
+const gameArea =
     document.getElementById(
-        "gameCanvas"
-    );
-
-const ctx =
-    canvas.getContext(
-        "2d"
+        "gameArea"
     );
 
 
-const scoreEl =
+const pitchSvg =
+    document.getElementById(
+        "pitchSvg"
+    );
+
+
+const keeperSvg =
+    document.getElementById(
+        "keeperSvg"
+    );
+
+
+const ballElement =
+    document.getElementById(
+        "ball"
+    );
+
+
+const keeperBallElement =
+    document.getElementById(
+        "keeperBall"
+    );
+
+
+const fieldKeeper =
+    document.getElementById(
+        "fieldKeeper"
+    );
+
+
+const wallGroup =
+    document.getElementById(
+        "wallGroup"
+    );
+
+
+const aimTarget =
+    document.getElementById(
+        "aimTarget"
+    );
+
+
+/* HUD */
+
+const scoreElement =
     document.getElementById(
         "score"
     );
 
-const levelEl =
+
+const levelElement =
     document.getElementById(
         "level"
     );
 
-const goalsEl =
+
+const goalsElement =
     document.getElementById(
         "goals"
     );
 
-const savesEl =
+
+const savesElement =
     document.getElementById(
         "saves"
     );
 
-const comboEl =
+
+const comboElement =
     document.getElementById(
         "combo"
     );
 
-const bestComboEl =
+
+const bestElement =
     document.getElementById(
-        "bestCombo"
+        "best"
     );
 
 
@@ -58,15 +126,18 @@ const playerSelect =
         "playerSelect"
     );
 
+
 const keeperSelect =
     document.getElementById(
         "keeperSelect"
     );
 
+
 const difficultySelect =
     document.getElementById(
         "difficulty"
     );
+
 
 const cameraSelect =
     document.getElementById(
@@ -74,96 +145,115 @@ const cameraSelect =
     );
 
 
-const displayPlayer =
+const playerNameElement =
     document.getElementById(
-        "displayPlayer"
+        "playerName"
     );
 
-const displayRole =
+
+const playerRoleElement =
     document.getElementById(
-        "displayRole"
+        "playerRole"
     );
 
-const playerAvatar =
+
+const avatarElement =
     document.getElementById(
-        "playerAvatar"
+        "avatar"
     );
 
 
 const statShoot =
     document.getElementById(
-        "statShoot"
+        "sShoot"
     );
+
 
 const statPower =
     document.getElementById(
-        "statPower"
+        "sPower"
     );
+
 
 const statAccuracy =
     document.getElementById(
-        "statAccuracy"
+        "sAccuracy"
     );
+
 
 const statCurve =
     document.getElementById(
-        "statCurve"
+        "sCurve"
     );
+
 
 const statSpeed =
     document.getElementById(
-        "statSpeed"
+        "sSpeed"
     );
+
 
 const statStamina =
     document.getElementById(
-        "statStamina"
+        "sStamina"
     );
+
 
 const statLong =
     document.getElementById(
-        "statLong"
+        "sLong"
     );
 
 
-const matchPlayer =
+const hudPlayer =
     document.getElementById(
-        "matchPlayer"
+        "hudPlayer"
     );
 
-const matchKeeper =
+
+const hudKeeper =
     document.getElementById(
-        "matchKeeper"
+        "hudKeeper"
     );
 
 
-const modeTitle =
+const hudBest =
     document.getElementById(
-        "modeTitle"
+        "hudBest"
     );
 
-const gameMessage =
+
+const hudMode =
     document.getElementById(
-        "gameMessage"
+        "hudMode"
     );
 
-const distance =
+
+const messageElement =
+    document.getElementById(
+        "message"
+    );
+
+
+const distanceElement =
     document.getElementById(
         "distance"
     );
 
 
-const ability =
+const abilityElement =
     document.getElementById(
         "ability"
     );
 
-const wind =
+
+const windElement =
     document.getElementById(
         "wind"
     );
 
-const challenge =
+
+const challengeElement =
     document.getElementById(
         "challenge"
     );
@@ -174,37 +264,52 @@ const precisionCard =
         "precisionCard"
     );
 
-const precision =
+
+const precisionElement =
     document.getElementById(
         "precision"
     );
 
 
-const powerContainer =
+const powerBox =
     document.getElementById(
-        "powerContainer"
-    );
-
-const powerBar =
-    document.getElementById(
-        "powerBar"
+        "powerBox"
     );
 
 
-const shootControls =
+const powerFill =
     document.getElementById(
-        "shootControls"
-    );
-
-const keeperControls =
-    document.getElementById(
-        "keeperControls"
+        "powerFill"
     );
 
 
-const exactShootButton =
+const shotButtons =
     document.getElementById(
-        "shootExactButton"
+        "shotButtons"
+    );
+
+
+const saveButtons =
+    document.getElementById(
+        "saveButtons"
+    );
+
+
+const exactButton =
+    document.getElementById(
+        "exactButton"
+    );
+
+
+const broadcastScene =
+    document.getElementById(
+        "broadcastScene"
+    );
+
+
+const keeperScene =
+    document.getElementById(
+        "keeperScene"
     );
 
 
@@ -213,53 +318,32 @@ const pauseOverlay =
         "pauseOverlay"
     );
 
-const resumeButton =
-    document.getElementById(
-        "resumeButton"
-    );
 
 const resultOverlay =
     document.getElementById(
         "resultOverlay"
     );
 
+
 const resultTitle =
     document.getElementById(
         "resultTitle"
     );
+
 
 const resultPoints =
     document.getElementById(
         "resultPoints"
     );
 
-const resultText =
-    document.getElementById(
-        "resultText"
-    );
 
-const continueButton =
+const resultDetail =
     document.getElementById(
-        "continueButton"
+        "resultDetail"
     );
 
 
-const soundButton =
-    document.getElementById(
-        "soundButton"
-    );
-
-const pauseButton =
-    document.getElementById(
-        "pauseButton"
-    );
-
-const restartButton =
-    document.getElementById(
-        "restartButton"
-    );
-
-const status =
+const statusElement =
     document.getElementById(
         "status"
     );
@@ -269,32 +353,37 @@ const status =
    PLAYER DATABASE
 ============================================================ */
 
-const players = {
+const PLAYER_DATA = {
 
-
-    /* --------------------------------------------------------
-       HASSAN ALI
-    --------------------------------------------------------- */
 
     "Hassan Ali": {
 
-        shoot:300,
+        shoot:
+            300,
 
-        power:300,
+        power:
+            300,
 
-        accuracy:300,
+        accuracy:
+            300,
 
-        curve:300,
+        curve:
+            300,
 
-        speed:300,
+        speed:
+            300,
 
-        stamina:300,
+        stamina:
+            300,
 
-        long:300,
+        long:
+            300,
 
-        penalty:300,
+        penalty:
+            300,
 
-        freeKick:300,
+        freeKick:
+            300,
 
         role:
             "300 ALL-STATS MASTER",
@@ -308,29 +397,34 @@ const players = {
     },
 
 
-    /* --------------------------------------------------------
-       MUHAMMAD ARHAM
-    --------------------------------------------------------- */
-
     "Muhammad Arham": {
 
-        shoot:94,
+        shoot:
+            94,
 
-        power:92,
+        power:
+            92,
 
-        accuracy:93,
+        accuracy:
+            94,
 
-        curve:90,
+        curve:
+            91,
 
-        speed:91,
+        speed:
+            92,
 
-        stamina:95,
+        stamina:
+            96,
 
-        long:94,
+        long:
+            95,
 
-        penalty:91,
+        penalty:
+            92,
 
-        freeKick:89,
+        freeKick:
+            90,
 
         role:
             "ELITE ATTACKER",
@@ -339,30 +433,39 @@ const players = {
             "MA",
 
         color:
-            "#74b9ff"
+            "#70bbff"
 
     },
 
 
     "Ehan Ali": {
 
-        shoot:90,
+        shoot:
+            90,
 
-        power:88,
+        power:
+            88,
 
-        accuracy:91,
+        accuracy:
+            90,
 
-        curve:90,
+        curve:
+            91,
 
-        speed:91,
+        speed:
+            91,
 
-        stamina:89,
+        stamina:
+            89,
 
-        long:87,
+        long:
+            87,
 
-        penalty:88,
+        penalty:
+            88,
 
-        freeKick:86,
+        freeKick:
+            86,
 
         role:
             "ATTACKER",
@@ -371,30 +474,39 @@ const players = {
             "EA",
 
         color:
-            "#65d2ff"
+            "#64d1ff"
 
     },
 
 
     "Umar Shoaib": {
 
-        shoot:92,
+        shoot:
+            92,
 
-        power:94,
+        power:
+            94,
 
-        accuracy:91,
+        accuracy:
+            91,
 
-        curve:95,
+        curve:
+            95,
 
-        speed:89,
+        speed:
+            89,
 
-        stamina:94,
+        stamina:
+            94,
 
-        long:93,
+        long:
+            93,
 
-        penalty:91,
+        penalty:
+            91,
 
-        freeKick:94,
+        freeKick:
+            94,
 
         role:
             "PLAYMAKER",
@@ -410,23 +522,32 @@ const players = {
 
     "Cristiano Ronaldo": {
 
-        shoot:96,
+        shoot:
+            96,
 
-        power:96,
+        power:
+            96,
 
-        accuracy:93,
+        accuracy:
+            93,
 
-        curve:89,
+        curve:
+            88,
 
-        speed:89,
+        speed:
+            89,
 
-        stamina:91,
+        stamina:
+            91,
 
-        long:97,
+        long:
+            97,
 
-        penalty:96,
+        penalty:
+            96,
 
-        freeKick:91,
+        freeKick:
+            91,
 
         role:
             "GOAL SCORER",
@@ -442,23 +563,32 @@ const players = {
 
     "Lionel Messi": {
 
-        shoot:97,
+        shoot:
+            97,
 
-        power:86,
+        power:
+            86,
 
-        accuracy:99,
+        accuracy:
+            99,
 
-        curve:99,
+        curve:
+            99,
 
-        speed:90,
+        speed:
+            90,
 
-        stamina:86,
+        stamina:
+            86,
 
-        long:95,
+        long:
+            95,
 
-        penalty:92,
+        penalty:
+            92,
 
-        freeKick:99,
+        freeKick:
+            99,
 
         role:
             "PLAYMAKER",
@@ -474,23 +604,32 @@ const players = {
 
     "Kylian Mbappe": {
 
-        shoot:94,
+        shoot:
+            94,
 
-        power:92,
+        power:
+            92,
 
-        accuracy:91,
+        accuracy:
+            91,
 
-        curve:86,
+        curve:
+            86,
 
-        speed:99,
+        speed:
+            99,
 
-        stamina:94,
+        stamina:
+            94,
 
-        long:92,
+        long:
+            92,
 
-        penalty:89,
+        penalty:
+            89,
 
-        freeKick:83,
+        freeKick:
+            83,
 
         role:
             "SPEEDSTER",
@@ -499,35 +638,43 @@ const players = {
             "KM",
 
         color:
-            "#ae82ff"
+            "#aa82ff"
 
     },
 
 
-    /* --------------------------------------------------------
-       HAALAND
+    /* ========================================================
        LONG SHOT SPECIALIST
-    --------------------------------------------------------- */
+    ========================================================= */
 
     "Erling Haaland": {
 
-        shoot:99,
+        shoot:
+            99,
 
-        power:100,
+        power:
+            100,
 
-        accuracy:93,
+        accuracy:
+            93,
 
-        curve:78,
+        curve:
+            78,
 
-        speed:90,
+        speed:
+            90,
 
-        stamina:92,
+        stamina:
+            92,
 
-        long:100,
+        long:
+            100,
 
-        penalty:92,
+        penalty:
+            92,
 
-        freeKick:72,
+        freeKick:
+            72,
 
         role:
             "LONG SHOT SPECIALIST",
@@ -536,35 +683,43 @@ const players = {
             "EH",
 
         color:
-            "#acd7ff"
+            "#acd9ff"
 
     },
 
 
-    /* --------------------------------------------------------
-       LAMINE YAMAL
+    /* ========================================================
        FREE KICK SPECIALIST
-    --------------------------------------------------------- */
+    ========================================================= */
 
     "Lamine Yamal": {
 
-        shoot:91,
+        shoot:
+            91,
 
-        power:85,
+        power:
+            85,
 
-        accuracy:97,
+        accuracy:
+            97,
 
-        curve:100,
+        curve:
+            100,
 
-        speed:95,
+        speed:
+            95,
 
-        stamina:90,
+        stamina:
+            90,
 
-        long:92,
+        long:
+            92,
 
-        penalty:86,
+        penalty:
+            86,
 
-        freeKick:100,
+        freeKick:
+            100,
 
         role:
             "FREE KICK SPECIALIST",
@@ -573,35 +728,43 @@ const players = {
             "LY",
 
         color:
-            "#ffe06a"
+            "#ffe16b"
 
     },
 
 
-    /* --------------------------------------------------------
-       BELLINGHAM
+    /* ========================================================
        PENALTY SPECIALIST
-    --------------------------------------------------------- */
+    ========================================================= */
 
     "Jude Bellingham": {
 
-        shoot:95,
+        shoot:
+            95,
 
-        power:93,
+        power:
+            93,
 
-        accuracy:96,
+        accuracy:
+            96,
 
-        curve:89,
+        curve:
+            89,
 
-        speed:90,
+        speed:
+            90,
 
-        stamina:98,
+        stamina:
+            98,
 
-        long:96,
+        long:
+            96,
 
-        penalty:100,
+        penalty:
+            100,
 
-        freeKick:86,
+        freeKick:
+            86,
 
         role:
             "PENALTY SPECIALIST",
@@ -610,30 +773,39 @@ const players = {
             "JB",
 
         color:
-            "#dfb0ff"
+            "#e2b3ff"
 
     },
 
 
     "Vinicius Jr": {
 
-        shoot:91,
+        shoot:
+            91,
 
-        power:88,
+        power:
+            88,
 
-        accuracy:89,
+        accuracy:
+            89,
 
-        curve:86,
+        curve:
+            86,
 
-        speed:100,
+        speed:
+            100,
 
-        stamina:94,
+        stamina:
+            94,
 
-        long:87,
+        long:
+            87,
 
-        penalty:81,
+        penalty:
+            81,
 
-        freeKick:80,
+        freeKick:
+            80,
 
         role:
             "WINGER",
@@ -642,30 +814,39 @@ const players = {
             "VJ",
 
         color:
-            "#ff8295"
+            "#ff8297"
 
     },
 
 
     "Neymar": {
 
-        shoot:92,
+        shoot:
+            92,
 
-        power:84,
+        power:
+            84,
 
-        accuracy:95,
+        accuracy:
+            95,
 
-        curve:99,
+        curve:
+            99,
 
-        speed:90,
+        speed:
+            90,
 
-        stamina:83,
+        stamina:
+            83,
 
-        long:91,
+        long:
+            91,
 
-        penalty:89,
+        penalty:
+            89,
 
-        freeKick:98,
+        freeKick:
+            98,
 
         role:
             "SKILL MASTER",
@@ -674,30 +855,39 @@ const players = {
             "NJ",
 
         color:
-            "#7ce6ff"
+            "#7de6ff"
 
     },
 
 
     "Mohamed Salah": {
 
-        shoot:94,
+        shoot:
+            94,
 
-        power:90,
+        power:
+            90,
 
-        accuracy:93,
+        accuracy:
+            93,
 
-        curve:90,
+        curve:
+            90,
 
-        speed:95,
+        speed:
+            95,
 
-        stamina:92,
+        stamina:
+            92,
 
-        long:93,
+        long:
+            93,
 
-        penalty:88,
+        penalty:
+            88,
 
-        freeKick:82,
+        freeKick:
+            82,
 
         role:
             "WINGER",
@@ -706,30 +896,39 @@ const players = {
             "MS",
 
         color:
-            "#ffd06b"
+            "#ffd36a"
 
     },
 
 
     "Kevin De Bruyne": {
 
-        shoot:92,
+        shoot:
+            92,
 
-        power:91,
+        power:
+            91,
 
-        accuracy:97,
+        accuracy:
+            97,
 
-        curve:98,
+        curve:
+            98,
 
-        speed:83,
+        speed:
+            83,
 
-        stamina:90,
+        stamina:
+            90,
 
-        long:93,
+        long:
+            93,
 
-        penalty:84,
+        penalty:
+            84,
 
-        freeKick:97,
+        freeKick:
+            97,
 
         role:
             "PRECISION PLAYMAKER",
@@ -738,30 +937,39 @@ const players = {
             "KD",
 
         color:
-            "#8fd9ff"
+            "#91dcff"
 
     },
 
 
     "Robert Lewandowski": {
 
-        shoot:98,
+        shoot:
+            98,
 
-        power:96,
+        power:
+            96,
 
-        accuracy:95,
+        accuracy:
+            95,
 
-        curve:87,
+        curve:
+            87,
 
-        speed:80,
+        speed:
+            80,
 
-        stamina:89,
+        stamina:
+            89,
 
-        long:94,
+        long:
+            94,
 
-        penalty:97,
+        penalty:
+            97,
 
-        freeKick:79,
+        freeKick:
+            79,
 
         role:
             "CLINICAL STRIKER",
@@ -770,30 +978,39 @@ const players = {
             "RL",
 
         color:
-            "#d7e1ff"
+            "#d9e4ff"
 
     },
 
 
     "Harry Kane": {
 
-        shoot:97,
+        shoot:
+            97,
 
-        power:95,
+        power:
+            95,
 
-        accuracy:95,
+        accuracy:
+            95,
 
-        curve:92,
+        curve:
+            92,
 
-        speed:82,
+        speed:
+            82,
 
-        stamina:90,
+        stamina:
+            90,
 
-        long:98,
+        long:
+            98,
 
-        penalty:98,
+        penalty:
+            98,
 
-        freeKick:88,
+        freeKick:
+            88,
 
         role:
             "LONG RANGE STRIKER",
@@ -802,30 +1019,39 @@ const players = {
             "HK",
 
         color:
-            "#d9f2ff"
+            "#dbf3ff"
 
     },
 
 
     "Son Heung-min": {
 
-        shoot:95,
+        shoot:
+            95,
 
-        power:91,
+        power:
+            91,
 
-        accuracy:92,
+        accuracy:
+            92,
 
-        curve:95,
+        curve:
+            95,
 
-        speed:96,
+        speed:
+            96,
 
-        stamina:93,
+        stamina:
+            93,
 
-        long:96,
+        long:
+            96,
 
-        penalty:89,
+        penalty:
+            89,
 
-        freeKick:85,
+        freeKick:
+            85,
 
         role:
             "FORWARD",
@@ -834,30 +1060,39 @@ const players = {
             "SH",
 
         color:
-            "#e7ff77"
+            "#e7ff78"
 
     },
 
 
     "Rodri": {
 
-        shoot:88,
+        shoot:
+            88,
 
-        power:92,
+        power:
+            92,
 
-        accuracy:91,
+        accuracy:
+            91,
 
-        curve:84,
+        curve:
+            84,
 
-        speed:71,
+        speed:
+            71,
 
-        stamina:96,
+        stamina:
+            96,
 
-        long:95,
+        long:
+            95,
 
-        penalty:76,
+        penalty:
+            76,
 
-        freeKick:80,
+        freeKick:
+            80,
 
         role:
             "MIDFIELDER",
@@ -866,30 +1101,39 @@ const players = {
             "R",
 
         color:
-            "#b6b7ff"
+            "#b9baff"
 
     },
 
 
     "Antoine Griezmann": {
 
-        shoot:94,
+        shoot:
+            94,
 
-        power:88,
+        power:
+            88,
 
-        accuracy:95,
+        accuracy:
+            95,
 
-        curve:96,
+        curve:
+            96,
 
-        speed:87,
+        speed:
+            87,
 
-        stamina:91,
+        stamina:
+            91,
 
-        long:92,
+        long:
+            92,
 
-        penalty:91,
+        penalty:
+            91,
 
-        freeKick:94,
+        freeKick:
+            94,
 
         role:
             "FORWARD",
@@ -898,30 +1142,39 @@ const players = {
             "AG",
 
         color:
-            "#9eefff"
+            "#9defff"
 
     },
 
 
     "Ousmane Dembele": {
 
-        shoot:89,
+        shoot:
+            89,
 
-        power:85,
+        power:
+            85,
 
-        accuracy:89,
+        accuracy:
+            89,
 
-        curve:91,
+        curve:
+            91,
 
-        speed:98,
+        speed:
+            98,
 
-        stamina:88,
+        stamina:
+            88,
 
-        long:87,
+        long:
+            87,
 
-        penalty:78,
+        penalty:
+            78,
 
-        freeKick:86,
+        freeKick:
+            86,
 
         role:
             "WINGER",
@@ -930,30 +1183,39 @@ const players = {
             "OD",
 
         color:
-            "#d796ff"
+            "#d995ff"
 
     },
 
 
     "Jamal Musiala": {
 
-        shoot:90,
+        shoot:
+            90,
 
-        power:85,
+        power:
+            85,
 
-        accuracy:93,
+        accuracy:
+            93,
 
-        curve:95,
+        curve:
+            95,
 
-        speed:94,
+        speed:
+            94,
 
-        stamina:89,
+        stamina:
+            89,
 
-        long:87,
+        long:
+            87,
 
-        penalty:80,
+        penalty:
+            80,
 
-        freeKick:84,
+        freeKick:
+            84,
 
         role:
             "PLAYMAKER",
@@ -962,30 +1224,39 @@ const players = {
             "JM",
 
         color:
-            "#baffcf"
+            "#b7ffd0"
 
     },
 
 
     "Phil Foden": {
 
-        shoot:91,
+        shoot:
+            91,
 
-        power:87,
+        power:
+            87,
 
-        accuracy:95,
+        accuracy:
+            95,
 
-        curve:96,
+        curve:
+            96,
 
-        speed:91,
+        speed:
+            91,
 
-        stamina:89,
+        stamina:
+            89,
 
-        long:90,
+        long:
+            90,
 
-        penalty:82,
+        penalty:
+            82,
 
-        freeKick:92,
+        freeKick:
+            92,
 
         role:
             "PLAYMAKER",
@@ -994,30 +1265,39 @@ const players = {
             "PF",
 
         color:
-            "#f4c7ff"
+            "#f1c8ff"
 
     },
 
 
     "Raphinha": {
 
-        shoot:91,
+        shoot:
+            91,
 
-        power:91,
+        power:
+            91,
 
-        accuracy:91,
+        accuracy:
+            91,
 
-        curve:95,
+        curve:
+            95,
 
-        speed:94,
+        speed:
+            94,
 
-        stamina:91,
+        stamina:
+            91,
 
-        long:94,
+        long:
+            94,
 
-        penalty:81,
+        penalty:
+            81,
 
-        freeKick:91,
+        freeKick:
+            91,
 
         role:
             "WINGER",
@@ -1026,7 +1306,7 @@ const players = {
             "RA",
 
         color:
-            "#8fe9ff"
+            "#90e9ff"
 
     }
 
@@ -1034,310 +1314,360 @@ const players = {
 
 
 /* ============================================================
-   GOALKEEPER DATABASE
+   GOALKEEPERS
 ============================================================ */
 
-const goalkeepers = {
+const GK_DATA = {
 
-
-    /* --------------------------------------------------------
-       HASSAN ALI
-       300 EVERY GK STAT
-    --------------------------------------------------------- */
 
     "Hassan Ali": {
 
-        diving:300,
+        diving:
+            300,
 
-        reflexes:300,
+        reflexes:
+            300,
 
-        positioning:300,
+        positioning:
+            300,
 
-        handling:300,
+        handling:
+            300,
 
-        speed:300,
+        speed:
+            300,
 
-        kicking:300,
+        kicking:
+            300,
 
-        reactions:300,
+        reactions:
+            300,
 
-        reach:300,
+        reach:
+            300,
 
         role:
-            "ULTIMATE GK",
-
-        initials:
-            "HA"
+            "ULTIMATE GK"
 
     },
 
 
     "Muhammad Arham": {
 
-        diving:92,
+        diving:
+            92,
 
-        reflexes:93,
+        reflexes:
+            93,
 
-        positioning:90,
+        positioning:
+            91,
 
-        handling:91,
+        handling:
+            91,
 
-        speed:90,
+        speed:
+            90,
 
-        kicking:89,
+        kicking:
+            89,
 
-        reactions:92,
+        reactions:
+            93,
 
-        reach:90,
+        reach:
+            90,
 
         role:
-            "GOALKEEPER",
-
-        initials:
-            "MA"
+            "GOALKEEPER"
 
     },
 
 
     "Ehan Ali": {
 
-        diving:90,
+        diving:
+            90,
 
-        reflexes:91,
+        reflexes:
+            91,
 
-        positioning:89,
+        positioning:
+            89,
 
-        handling:90,
+        handling:
+            90,
 
-        speed:90,
+        speed:
+            90,
 
-        kicking:88,
+        kicking:
+            88,
 
-        reactions:91,
+        reactions:
+            91,
 
-        reach:88,
+        reach:
+            88,
 
         role:
-            "GOALKEEPER",
-
-        initials:
-            "EA"
+            "GOALKEEPER"
 
     },
 
 
     "Thibaut Courtois": {
 
-        diving:98,
+        diving:
+            98,
 
-        reflexes:97,
+        reflexes:
+            97,
 
-        positioning:98,
+        positioning:
+            98,
 
-        handling:95,
+        handling:
+            95,
 
-        speed:83,
+        speed:
+            83,
 
-        kicking:88,
+        kicking:
+            88,
 
-        reactions:97,
+        reactions:
+            97,
 
-        reach:100,
+        reach:
+            100,
 
         role:
-            "GIANT GK",
-
-        initials:
-            "TC"
+            "GIANT GK"
 
     },
 
 
     "Alisson": {
 
-        diving:95,
+        diving:
+            95,
 
-        reflexes:95,
+        reflexes:
+            95,
 
-        positioning:96,
+        positioning:
+            96,
 
-        handling:96,
+        handling:
+            96,
 
-        speed:91,
+        speed:
+            91,
 
-        kicking:97,
+        kicking:
+            97,
 
-        reactions:95,
+        reactions:
+            95,
 
-        reach:94,
+        reach:
+            94,
 
         role:
-            "COMPLETE GK",
-
-        initials:
-            "AL"
+            "COMPLETE GK"
 
     },
 
 
     "Manuel Neuer": {
 
-        diving:93,
+        diving:
+            93,
 
-        reflexes:95,
+        reflexes:
+            95,
 
-        positioning:94,
+        positioning:
+            94,
 
-        handling:92,
+        handling:
+            92,
 
-        speed:95,
+        speed:
+            95,
 
-        kicking:96,
+        kicking:
+            96,
 
-        reactions:94,
+        reactions:
+            94,
 
-        reach:93,
+        reach:
+            93,
 
         role:
-            "SWEEPER GK",
-
-        initials:
-            "MN"
+            "SWEEPER GK"
 
     },
 
 
     "Gianluigi Donnarumma": {
 
-        diving:97,
+        diving:
+            97,
 
-        reflexes:97,
+        reflexes:
+            97,
 
-        positioning:94,
+        positioning:
+            94,
 
-        handling:95,
+        handling:
+            95,
 
-        speed:86,
+        speed:
+            86,
 
-        kicking:87,
+        kicking:
+            87,
 
-        reactions:97,
+        reactions:
+            97,
 
-        reach:100,
+        reach:
+            100,
 
         role:
-            "TALL GK",
-
-        initials:
-            "GD"
+            "TALL GK"
 
     },
 
 
     "Ederson": {
 
-        diving:91,
+        diving:
+            91,
 
-        reflexes:93,
+        reflexes:
+            93,
 
-        positioning:95,
+        positioning:
+            95,
 
-        handling:91,
+        handling:
+            91,
 
-        speed:93,
+        speed:
+            93,
 
-        kicking:100,
+        kicking:
+            100,
 
-        reactions:92,
+        reactions:
+            92,
 
-        reach:91,
+        reach:
+            91,
 
         role:
-            "DISTRIBUTOR GK",
-
-        initials:
-            "ED"
+            "DISTRIBUTOR GK"
 
     },
 
 
     "Jan Oblak": {
 
-        diving:96,
+        diving:
+            96,
 
-        reflexes:97,
+        reflexes:
+            97,
 
-        positioning:98,
+        positioning:
+            98,
 
-        handling:96,
+        handling:
+            96,
 
-        speed:80,
+        speed:
+            80,
 
-        kicking:86,
+        kicking:
+            86,
 
-        reactions:97,
+        reactions:
+            97,
 
-        reach:94,
+        reach:
+            94,
 
         role:
-            "SHOT STOPPER",
-
-        initials:
-            "JO"
+            "SHOT STOPPER"
 
     },
 
 
     "Marc-Andre ter Stegen": {
 
-        diving:93,
+        diving:
+            93,
 
-        reflexes:95,
+        reflexes:
+            95,
 
-        positioning:95,
+        positioning:
+            95,
 
-        handling:93,
+        handling:
+            93,
 
-        speed:89,
+        speed:
+            89,
 
-        kicking:97,
+        kicking:
+            97,
 
-        reactions:95,
+        reactions:
+            95,
 
-        reach:92,
+        reach:
+            92,
 
         role:
-            "MODERN GK",
-
-        initials:
-            "MT"
+            "MODERN GK"
 
     },
 
 
     "Emiliano Martinez": {
 
-        diving:94,
+        diving:
+            94,
 
-        reflexes:95,
+        reflexes:
+            95,
 
-        positioning:92,
+        positioning:
+            92,
 
-        handling:92,
+        handling:
+            92,
 
-        speed:87,
+        speed:
+            87,
 
-        kicking:90,
+        kicking:
+            90,
 
-        reactions:96,
+        reactions:
+            96,
 
-        reach:93,
+        reach:
+            93,
 
         role:
-            "PENALTY GK",
-
-        initials:
-            "EM"
+            "PENALTY GK"
 
     }
 
@@ -1345,24 +1675,24 @@ const goalkeepers = {
 
 
 /* ============================================================
-   DIFFICULTY
+   DIFFICULTIES
 ============================================================ */
 
-const difficulties = {
+const DIFFICULTIES = {
 
-    easy:{
+    easy: {
 
-        keeperReaction:
+        reaction:
             420,
 
-        keeperRead:
-            .25,
+        read:
+            .22,
 
-        saveRadius:
-            45,
+        save:
+            42,
 
-        shotTime:
-            1.15,
+        shot:
+            1.10,
 
         wind:
             .10
@@ -1370,18 +1700,18 @@ const difficulties = {
     },
 
 
-    normal:{
+    normal: {
 
-        keeperReaction:
+        reaction:
             300,
 
-        keeperRead:
-            .45,
+        read:
+            .43,
 
-        saveRadius:
-            56,
+        save:
+            54,
 
-        shotTime:
+        shot:
             1.00,
 
         wind:
@@ -1390,18 +1720,18 @@ const difficulties = {
     },
 
 
-    hard:{
+    hard: {
 
-        keeperReaction:
+        reaction:
             210,
 
-        keeperRead:
-            .66,
+        read:
+            .65,
 
-        saveRadius:
-            67,
+        save:
+            65,
 
-        shotTime:
+        shot:
             .88,
 
         wind:
@@ -1410,19 +1740,19 @@ const difficulties = {
     },
 
 
-    legend:{
+    legend: {
 
-        keeperReaction:
+        reaction:
             145,
 
-        keeperRead:
+        read:
             .80,
 
-        saveRadius:
+        save:
             75,
 
-        shotTime:
-            .75,
+        shot:
+            .76,
 
         wind:
             .58
@@ -1438,53 +1768,71 @@ const difficulties = {
 
 const state = {
 
-    width:1000,
-
-    height:600,
-
     mode:
         "penalty",
 
-    score:0,
+    score:
+        0,
 
-    goals:0,
+    goals:
+        0,
 
-    saves:0,
+    saves:
+        0,
 
-    level:1,
+    level:
+        1,
 
-    combo:0,
+    combo:
+        0,
 
-    bestCombo:0,
+    best:
+        0,
 
-    crossbarHits:0,
+    crossbarHits:
+        0,
 
-    busy:false,
+    busy:
+        false,
 
-    paused:false,
+    paused:
+        false,
 
-    result:false,
+    result:
+        false,
 
-    sound:true,
+    sound:
+        true,
 
-    wind:0,
+    wind:
+        0,
 
-    exactTarget:null,
+    exactTarget:
+        null,
 
     keeperZone:
         "center",
 
-    keeperActive:false,
+    keeperActive:
+        false,
 
-    shotStarted:0,
+    timer:
+        null,
 
-    shotDuration:0,
+    shotStart:
+        0,
 
-    keeperMoveStarted:0,
+    shotDuration:
+        0,
 
-    keeperMoveDuration:0,
+    keeperMoveStart:
+        0,
 
-    timer:null,
+    keeperMoveDuration:
+        400,
+
+    roundId:
+        0,
 
     lastTime:
         performance.now()
@@ -1498,25 +1846,35 @@ const state = {
 
 const ball = {
 
-    x:500,
+    x:
+        600,
 
-    y:500,
+    y:
+        565,
 
-    startX:500,
+    startX:
+        600,
 
-    startY:500,
+    startY:
+        565,
 
-    targetX:500,
+    targetX:
+        600,
 
-    targetY:150,
+    targetY:
+        172,
 
-    progress:0,
+    curve:
+        0,
 
-    curve:0,
+    arc:
+        50,
 
-    arc:60,
+    progress:
+        0,
 
-    radius:13
+    radius:
+        13
 
 };
 
@@ -1527,28 +1885,35 @@ const ball = {
 
 const keeper = {
 
-    x:500,
+    homeX:
+        600,
 
-    y:280,
+    homeY:
+        265,
 
-    homeX:500,
+    x:
+        600,
 
-    homeY:280,
+    y:
+        265,
 
-    targetX:500,
+    targetX:
+        600,
 
-    targetY:280,
+    targetY:
+        265,
 
-    dive:0
+    rotation:
+        0
 
 };
 
 
 /* ============================================================
-   PARTICLES
+   PARTICLE STATE
 ============================================================ */
 
-let particles=[];
+let particles = [];
 
 
 /* ============================================================
@@ -1557,14 +1922,14 @@ let particles=[];
 
 function clamp(
     value,
-    min,
-    max
+    minimum,
+    maximum
 ){
 
     return Math.max(
-        min,
+        minimum,
         Math.min(
-            max,
+            maximum,
             value
         )
     );
@@ -1573,69 +1938,57 @@ function clamp(
 
 
 function lerp(
-    a,
-    b,
-    t
+    start,
+    end,
+    amount
 ){
 
-    return a+
+    return start+
         (
-            b-a
+            end-start
         )*
-        t;
+        amount;
 
 }
 
 
-function smoothStep(
-    t
+function smooth(
+    amount
 ){
 
-    return t*t*
+    return amount*
+        amount*
         (
             3-
-            2*t
+            2*
+            amount
         );
 
 }
 
 
 function random(
-    min,
-    max
+    minimum,
+    maximum
 ){
 
-    return min+
+    return minimum+
         Math.random()*
         (
-            max-min
+            maximum-
+            minimum
         );
 
 }
 
 
-function distanceBetween(
-    ax,
-    ay,
-    bx,
-    by
-){
-
-    return Math.hypot(
-        ax-bx,
-        ay-by
-    );
-
-}
-
-
-function currentPlayer(){
+function player(){
 
     return (
-        players[
+        PLAYER_DATA[
             playerSelect.value
         ] ||
-        players[
+        PLAYER_DATA[
             "Hassan Ali"
         ]
     );
@@ -1643,13 +1996,13 @@ function currentPlayer(){
 }
 
 
-function currentKeeper(){
+function goalkeeper(){
 
     return (
-        goalkeepers[
+        GK_DATA[
             keeperSelect.value
         ] ||
-        goalkeepers[
+        GK_DATA[
             "Hassan Ali"
         ]
     );
@@ -1657,83 +2010,137 @@ function currentKeeper(){
 }
 
 
-function currentDifficulty(){
+function difficulty(){
 
     return (
-        difficulties[
+        DIFFICULTIES[
             difficultySelect.value
         ] ||
-        difficulties.normal
+        DIFFICULTIES.normal
+    );
+
+}
+
+
+function cancelTimer(){
+
+    if(
+        state.timer !== null
+    ){
+
+        clearTimeout(
+            state.timer
+        );
+
+        state.timer =
+            null;
+
+    }
+
+}
+
+
+/* ============================================================
+   SVG HELPERS
+============================================================ */
+
+function setCircle(
+    element,
+    x,
+    y,
+    radius
+){
+
+    if(!element)return;
+
+    element.setAttribute(
+        "cx",
+        String(x)
+    );
+
+    element.setAttribute(
+        "cy",
+        String(y)
+    );
+
+    if(
+        typeof radius ===
+        "number"
+    ){
+
+        element.setAttribute(
+            "r",
+            String(radius)
+        );
+
+    }
+
+}
+
+
+function moveKeeper(
+    x,
+    y,
+    rotation
+){
+
+    fieldKeeper.setAttribute(
+        "transform",
+        "translate("+
+        (
+            x-
+            600
+        )+
+        ","+
+        (
+            y-
+            265
+        )+
+        ") rotate("+
+        rotation+
+        ")"
     );
 
 }
 
 
 /* ============================================================
-   RESIZE
+   SCENE SWITCH
 ============================================================ */
 
-function resizeCanvas(){
+function updateScene(){
 
-    const rect =
-        canvas.getBoundingClientRect();
+    const keeperMode =
+        state.mode===
+        "keeper";
 
-    state.width =
-        Math.max(
-            320,
-            rect.width
+
+    broadcastScene
+        .classList
+        .toggle(
+            "hidden",
+            keeperMode
         );
 
-    state.height =
-        Math.max(
-            390,
-            rect.height
+
+    keeperScene
+        .classList
+        .toggle(
+            "hidden",
+            !keeperMode
         );
-
-    const dpr =
-        Math.min(
-            window.devicePixelRatio||
-            1,
-            2
-        );
-
-    canvas.width =
-        Math.floor(
-            state.width*dpr
-        );
-
-    canvas.height =
-        Math.floor(
-            state.height*dpr
-        );
-
-    ctx.setTransform(
-        dpr,
-        0,
-        0,
-        dpr,
-        0,
-        0
-    );
-
-    positionObjects();
 
 }
 
 
 /* ============================================================
-   GOAL GEOMETRY
+   FIELD CAMERA
 ============================================================ */
 
-function goalGeometry(){
+function updateCamera(){
 
-    let x=.19;
-
-    let width=.62;
-
-    let y=.09;
-
-    let height=.32;
+    let scale =
+        1;
 
 
     if(
@@ -1741,13 +2148,9 @@ function goalGeometry(){
         "close"
     ){
 
-        x=.10;
+        scale=
+            1.10;
 
-        width=.80;
-
-        y=.07;
-
-        height=.39;
     }
 
 
@@ -1756,65 +2159,194 @@ function goalGeometry(){
         "wide"
     ){
 
-        x=.26;
+        scale=
+            .94;
 
-        width=.48;
-
-        y=.14;
-
-        height=.27;
     }
 
 
-    return{
-
-        x:
-            state.width*x,
-
-        y:
-            state.height*y,
-
-        width:
-            state.width*width,
-
-        height:
-            state.height*height
-    };
+    pitchSvg.style.transform =
+        "scale("+
+        scale+
+        ")";
 
 }
 
 
 /* ============================================================
-   POSITION
+   HUD
 ============================================================ */
 
-function positionObjects(){
+function updateHUD(){
 
-    const g =
-        goalGeometry();
-
-
-    keeper.homeX =
-        state.width/2;
-
-    keeper.homeY =
-        g.y+
-        g.height*.76;
+    const p =
+        player();
 
 
-    keeper.x =
-        keeper.homeX;
+    scoreElement.textContent =
+        state.score;
 
-    keeper.y =
-        keeper.homeY;
 
-    keeper.targetX =
-        keeper.homeX;
+    levelElement.textContent =
+        state.level;
 
-    keeper.targetY =
-        keeper.homeY;
 
-    keeper.dive=0;
+    goalsElement.textContent =
+        state.goals;
+
+
+    savesElement.textContent =
+        state.saves;
+
+
+    comboElement.textContent =
+        state.combo;
+
+
+    bestElement.textContent =
+        state.best;
+
+
+    hudBest.textContent =
+        state.best;
+
+
+    playerNameElement.textContent =
+        playerSelect.value;
+
+
+    playerRoleElement.textContent =
+        p.role;
+
+
+    avatarElement.textContent =
+        p.initials;
+
+
+    avatarElement.style.background =
+        "linear-gradient("+
+        "135deg,"+
+        p.color+
+        ",#087f37)";
+
+
+    hudPlayer.textContent =
+        playerSelect.value;
+
+
+    hudKeeper.textContent =
+        "vs "+
+        keeperSelect.value;
+
+
+    statShoot.textContent =
+        p.shoot;
+
+
+    statPower.textContent =
+        p.power;
+
+
+    statAccuracy.textContent =
+        p.accuracy;
+
+
+    statCurve.textContent =
+        p.curve;
+
+
+    statSpeed.textContent =
+        p.speed;
+
+
+    statStamina.textContent =
+        p.stamina;
+
+
+    statLong.textContent =
+        p.long;
+
+
+    hudMode.textContent =
+
+        state.mode===
+        "penalty"
+
+            ? "PENALTY SHOOTOUT"
+
+            :
+            state.mode===
+            "freekick"
+
+                ? "FREE KICK"
+
+                :
+                state.mode===
+                "longshot"
+
+                    ? "LONG SHOT"
+
+                    :
+                    state.mode===
+                    "keeper"
+
+                        ? "GOALKEEPER POV"
+
+                        :
+                        "CROSSBAR CHALLENGE";
+
+
+    windElement.textContent =
+
+        state.wind>=0
+
+            ? "+"+
+                state.wind.toFixed(1)
+
+            :
+                state.wind.toFixed(1);
+
+
+    const remaining =
+        state.goals%3===0
+            ? 3
+            :
+                3-
+                state.goals%3;
+
+
+    challengeElement.textContent =
+
+        state.mode===
+        "crossbar"
+
+            ? "Crossbar hits: "+
+                state.crossbarHits
+
+            :
+                remaining+
+                " more goal"+
+                (
+                    remaining===1
+                        ? ""
+                        : "s"
+                )+
+                " to level up";
+
+
+    updateAbility();
+
+}
+
+
+/* ============================================================
+   ABILITY
+============================================================ */
+
+function updateAbility(){
+
+    const p =
+        player();
 
 
     if(
@@ -1822,21 +2354,78 @@ function positionObjects(){
         "keeper"
     ){
 
+        abilityElement.textContent =
+
+            keeperSelect.value===
+            "Hassan Ali"
+
+                ? "👑 HASSAN ALI — 300 IN EVERY GK STAT"
+
+                :
+                    keeperSelect.value+
+                    " — "+
+                    goalkeeper().role;
+
         return;
     }
 
 
-    ball.x =
-        state.width/2;
+    if(
+        playerSelect.value===
+        "Hassan Ali"
+    ){
 
-    ball.y =
-        state.height*.77;
+        abilityElement.textContent =
+            "👑 HASSAN ALI — 300 IN EVERY STAT";
 
-    ball.startX =
-        ball.x;
+        return;
+    }
 
-    ball.startY =
-        ball.y;
+
+    if(
+        state.mode===
+            "longshot" &&
+        playerSelect.value===
+            "Erling Haaland"
+    ){
+
+        abilityElement.textContent =
+            "🚀 HAALAND — LONG SHOT SPECIALIST";
+
+        return;
+    }
+
+
+    if(
+        state.mode===
+            "freekick" &&
+        playerSelect.value===
+            "Lamine Yamal"
+    ){
+
+        abilityElement.textContent =
+            "🎯 LAMINE YAMAL — FREE KICK SPECIALIST";
+
+        return;
+    }
+
+
+    if(
+        state.mode===
+            "penalty" &&
+        playerSelect.value===
+            "Jude Bellingham"
+    ){
+
+        abilityElement.textContent =
+            "⚽ JUDE BELLINGHAM — PENALTY SPECIALIST";
+
+        return;
+    }
+
+
+    abilityElement.textContent =
+        p.role;
 
 }
 
@@ -1850,10 +2439,11 @@ function setMessage(
     sub
 ){
 
-    gameMessage.textContent =
+    messageElement.textContent =
         main;
 
-    status.textContent =
+
+    statusElement.textContent =
         sub||
         main;
 
@@ -1861,363 +2451,100 @@ function setMessage(
 
 
 /* ============================================================
-   PLAYER UI
+   TARGET POSITIONS
 ============================================================ */
 
-function updatePlayerUI(){
-
-    const name =
-        playerSelect.value;
-
-    const player =
-        currentPlayer();
-
-
-    displayPlayer.textContent =
-        name;
-
-    displayRole.textContent =
-        player.role;
-
-    playerAvatar.textContent =
-        player.initials;
-
-    playerAvatar.style.background =
-        `linear-gradient(
-            135deg,
-            ${player.color},
-            #087d37
-        )`;
-
-
-    statShoot.textContent =
-        player.shoot;
-
-    statPower.textContent =
-        player.power;
-
-    statAccuracy.textContent =
-        player.accuracy;
-
-    statCurve.textContent =
-        player.curve;
-
-    statSpeed.textContent =
-        player.speed;
-
-    statStamina.textContent =
-        player.stamina;
-
-    statLong.textContent =
-        player.long;
-
-
-    matchPlayer.textContent =
-        name;
-
-    matchKeeper.textContent =
-        "vs "+
-        keeperSelect.value;
-
-
-    updateAbility();
-
-}
-
-
-/* ============================================================
-   ABILITY UI
-============================================================ */
-
-function updateAbility(){
-
-    const player =
-        currentPlayer();
-
-
-    if(
-        state.mode===
-        "keeper"
-    ){
-
-        if(
-            keeperSelect.value===
-            "Hassan Ali"
-        ){
-
-            ability.textContent =
-                "👑 HASSAN ALI — 300 REFLEXES • 300 DIVING • 300 REACH";
-
-        }else{
-
-            ability.textContent =
-                keeperSelect.value+
-                " — "+
-                currentKeeper().role;
-        }
-
-        return;
-    }
-
-
-    if(
-        playerSelect.value===
-        "Hassan Ali"
-    ){
-
-        ability.textContent =
-            "👑 HASSAN ALI — 300 IN EVERY STAT";
-
-        return;
-    }
-
-
-    if(
-        state.mode===
-        "longshot" &&
-        playerSelect.value===
-        "Erling Haaland"
-    ){
-
-        ability.textContent =
-            "🚀 HAALAND — LONG SHOT SPECIALIST";
-
-        return;
-    }
-
-
-    if(
-        state.mode===
-        "freekick" &&
-        playerSelect.value===
-        "Lamine Yamal"
-    ){
-
-        ability.textContent =
-            "🎯 LAMINE YAMAL — FREE KICK SPECIALIST";
-
-        return;
-    }
-
-
-    if(
-        state.mode===
-        "penalty" &&
-        playerSelect.value===
-        "Jude Bellingham"
-    ){
-
-        ability.textContent =
-            "⚽ BELLINGHAM — PENALTY SPECIALIST";
-
-        return;
-    }
-
-
-    ability.textContent =
-        player.role;
-
-}
-
-
-/* ============================================================
-   HUD
-============================================================ */
-
-function updateHUD(){
-
-    scoreEl.textContent =
-        state.score;
-
-    levelEl.textContent =
-        state.level;
-
-    goalsEl.textContent =
-        state.goals;
-
-    savesEl.textContent =
-        state.saves;
-
-    comboEl.textContent =
-        state.combo;
-
-    bestComboEl.textContent =
-        state.bestCombo;
-
-
-    updatePlayerUI();
-
-
-    const remainder =
-        state.goals%3;
-
-    const need =
-        remainder===0
-            ? 3
-            : 3-remainder;
-
-
-    challenge.textContent =
-        `Score ${need} more goal${
-            need===1
-                ? ""
-                : "s"
-        } to level up`;
-
-
-    wind.textContent =
-        state.wind>=0
-            ? "+"+
-                state.wind.toFixed(1)
-            :
-                state.wind.toFixed(1);
-
-}
-
-
-/* ============================================================
-   TARGET BY ZONE
-============================================================ */
-
-function targetByZone(
+function targetForZone(
     zone
 ){
 
-    const g =
-        goalGeometry();
-
-
     if(
-        zone==="left"
+        zone===
+        "left"
     ){
 
-        return{
+        return {
 
             x:
-                g.x+
-                g.width*.16,
+                435,
 
             y:
-                g.y+
-                g.height*
                 random(
-                    .16,
-                    .45
+                    145,
+                    205
                 )
+
         };
+
     }
 
 
     if(
-        zone==="right"
+        zone===
+        "right"
     ){
 
-        return{
+        return {
 
             x:
-                g.x+
-                g.width*.84,
+                765,
 
             y:
-                g.y+
-                g.height*
                 random(
-                    .16,
-                    .45
+                    145,
+                    205
                 )
+
         };
+
     }
 
 
-    return{
+    return {
 
         x:
-            g.x+
-            g.width*.50,
+            600,
 
         y:
-            g.y+
-            g.height*
             random(
-                .17,
-                .46
+                145,
+                205
             )
+
     };
 
 }
 
 
 /* ============================================================
-   SPECIAL BONUS
+   ZONE FROM TARGET
 ============================================================ */
 
-function specialMultiplier(){
-
-    const name =
-        playerSelect.value;
-
+function zoneFromX(
+    x
+){
 
     if(
-        name===
-        "Hassan Ali"
+        x<
+        480
     ){
 
-        return 1.45;
+        return "left";
+
     }
 
 
     if(
-        state.mode===
-        "longshot" &&
-        name===
-        "Erling Haaland"
+        x>
+        720
     ){
 
-        return 1.28;
+        return "right";
+
     }
 
 
-    if(
-        state.mode===
-        "freekick" &&
-        name===
-        "Lamine Yamal"
-    ){
-
-        return 1.30;
-    }
-
-
-    if(
-        state.mode===
-        "penalty" &&
-        name===
-        "Jude Bellingham"
-    ){
-
-        return 1.30;
-    }
-
-
-    return 1;
-
-}
-
-
-/* ============================================================
-   FREE KICK WALL COUNT
-============================================================ */
-
-function wallCount(){
-
-    return clamp(
-        4+
-        Math.floor(
-            state.level/2
-        ),
-        4,
-        9
-    );
+    return "center";
 
 }
 
@@ -2231,435 +2558,52 @@ function startDirectionShot(
 ){
 
     if(
-        state.busy||
-        state.paused||
-        state.result||
-        state.mode==="keeper"||
-        state.mode==="longshot"||
-        state.mode==="crossbar"
+        state.busy ||
+        state.paused ||
+        state.result ||
+        state.mode===
+            "keeper" ||
+        state.mode===
+            "longshot" ||
+        state.mode===
+            "crossbar"
     ){
 
         return;
+
     }
 
 
     let target =
-        targetByZone(
+        targetForZone(
             zone
         );
 
 
     /*
-      Bellingham gets a special
-      penalty target placement.
+      Bellingham gets
+      special penalty targeting.
     */
 
     if(
         state.mode===
-        "penalty" &&
+            "penalty" &&
         playerSelect.value===
-        "Jude Bellingham"
+            "Jude Bellingham"
     ){
 
-        const g=
-            goal();
+        target.y=
+            random(
+                142,
+                175
+            );
 
-        target.y =
-            g.y+
-            g.height*.19;
     }
 
 
     startShot(
         target
     );
-
-}
-
-
-/* ============================================================
-   START SHOT
-============================================================ */
-
-function startShot(
-    target
-){
-
-    if(
-        state.busy
-    ){
-
-        return;
-    }
-
-
-    const player =
-        currentPlayer();
-
-    const d =
-        currentDifficulty();
-
-    const goalkeeper =
-        currentKeeper();
-
-
-    state.busy =
-        true;
-
-
-    let start;
-
-
-    if(
-        state.mode===
-        "penalty"
-    ){
-
-        start={
-            x:
-                state.width/2,
-
-            y:
-                state.height*.77
-        };
-
-    }
-
-    else if(
-        state.mode===
-        "freekick"
-    ){
-
-        start={
-            x:
-                state.width/2,
-
-            y:
-                state.height*.76
-        };
-
-    }
-
-    else if(
-        state.mode===
-        "longshot"
-    ){
-
-        start={
-            x:
-                state.width/2,
-
-            y:
-                state.height*.84
-        };
-
-    }
-
-    else{
-
-        start={
-            x:
-                state.width/2,
-
-            y:
-                state.height*.81
-        };
-
-    }
-
-
-    ball.startX =
-        start.x;
-
-    ball.startY =
-        start.y;
-
-    ball.x =
-        start.x;
-
-    ball.y =
-        start.y;
-
-
-    ball.targetX =
-        target.x;
-
-    ball.targetY =
-        target.y;
-
-    ball.progress=0;
-
-
-    let curve =
-        player.curve/
-        100;
-
-
-    if(
-        state.mode===
-        "freekick"
-    ){
-
-        curve *=
-            1.5;
-
-    }
-
-    else{
-
-        curve *=
-            .45;
-    }
-
-
-    if(
-        state.mode===
-        "freekick" &&
-        playerSelect.value===
-        "Lamine Yamal"
-    ){
-
-        curve *=
-            1.3;
-    }
-
-
-    ball.curve =
-        (
-            target.x<
-            state.width/2
-                ? -1
-                : 1
-        )*
-        curve*
-        100;
-
-
-    ball.arc =
-
-        state.mode===
-        "freekick"
-
-            ? 65
-
-            : state.mode===
-              "longshot"
-
-                ? 95
-
-                : 25;
-
-
-    state.shotStarted =
-        performance.now();
-
-
-    const powerFactor =
-        clamp(
-            player.power/
-            100,
-            .5,
-            3
-        );
-
-
-    state.shotDuration =
-
-        state.mode===
-        "longshot"
-
-            ? 1150/
-                (
-                    d.shotTime*
-                    powerFactor
-                )
-
-            : state.mode===
-              "freekick"
-
-                ? 920/
-                    (
-                        d.shotTime*
-                        powerFactor
-                    )
-
-                : 780/
-                    (
-                        d.shotTime*
-                        powerFactor
-                    );
-
-
-    state.keeperMoveStarted =
-        state.shotStarted+
-        d.keeperReaction;
-
-
-    state.keeperMoveDuration =
-        clamp(
-            460-
-            (
-                goalkeeper.reactions-80
-            )*
-            2-
-            state.level*8,
-            150,
-            460
-        );
-
-
-    /*
-      Goalkeeper reads target.
-    */
-
-    const shotZone =
-        target.x<
-        state.width*.38
-            ? "left"
-            :
-            target.x>
-            state.width*.62
-                ? "right"
-                : "center";
-
-
-    let readChance =
-        d.keeperRead+
-        state.level*.018-
-        player.accuracy/
-        1000;
-
-
-    /*
-      Hassan's 300 accuracy
-      makes his intended shot
-      harder to read.
-    */
-
-    if(
-        playerSelect.value===
-        "Hassan Ali"
-    ){
-
-        readChance -=
-            .35;
-    }
-
-
-    readChance =
-        clamp(
-            readChance,
-            .03,
-            .95
-        );
-
-
-    let guessedZone;
-
-
-    if(
-        Math.random()<
-        readChance
-    ){
-
-        guessedZone =
-            shotZone;
-
-    }else{
-
-        const zones=[
-            "left",
-            "center",
-            "right"
-        ];
-
-        guessedZone =
-            zones[
-                Math.floor(
-                    Math.random()*
-                    zones.length
-                )
-            ];
-    }
-
-
-    const keeperTarget =
-        targetByZone(
-            guessedZone
-        );
-
-
-    state.keeperTargetX =
-        keeperTarget.x;
-
-    state.keeperTargetY =
-        keeperTarget.y;
-
-
-    keeper.targetX =
-        keeperTarget.x;
-
-    keeper.targetY =
-        keeperTarget.y;
-
-
-    keeper.dive =
-        guessedZone==="left"
-            ? -.28
-            :
-            guessedZone==="right"
-                ? .28
-                : 0;
-
-
-    powerContainer
-        .classList
-        .remove(
-            "hidden"
-        );
-
-
-    if(
-        state.mode==="longshot"||
-        state.mode==="crossbar"
-    ){
-
-        precisionCard
-            .classList
-            .remove(
-                "hidden"
-            );
-
-        precision.textContent =
-            Math.round(
-                clamp(
-                    player.accuracy-
-                    state.wind*7,
-                    1,
-                    100
-                )
-            )+
-            "%";
-    }
-
-
-    if(
-        state.mode===
-        "penalty"
-    ){
-
-        setMessage(
-
-            playerSelect.value===
-            "Jude Bellingham"
-
-                ? "BELLINGHAM PENALTY! ⚽"
-
-                : "SHOT! ⚡",
-
-            "Pick your target."
-        );
-    }
 
 
     if(
@@ -2676,477 +2620,118 @@ function startShot(
 
                 : "FREE KICK! 🎯",
 
-            "Curve the ball around the wall."
+            "Bend the ball around the wall."
         );
+
     }
 
 
-    if(
-        state.mode===
-        "longshot"
-    ){
+    else{
 
         setMessage(
-            "LONG SHOT! 🚀",
+
             playerSelect.value===
-            "Erling Haaland"
+            "Jude Bellingham"
 
-                ? "LONG SHOT SPECIALIST ACTIVATED!"
+                ? "BELLINGHAM PENALTY! ⚽"
 
-                : "Power from distance!"
+                : "SHOT! ⚡",
+
+            "The goalkeeper is moving."
         );
+
     }
-
-
-    if(
-        state.mode===
-        "crossbar"
-    ){
-
-        setMessage(
-            "CROSSBAR ATTEMPT! 🎯",
-            "Try to hit the bar."
-        );
-    }
-
-
-    beep(
-        350,
-        .07,
-        "triangle"
-    );
 
 }
 
 
 /* ============================================================
-   EXACT AIM
+   START SHOT ENGINE
 ============================================================ */
 
-function chooseExactTarget(
-    event
+function startShot(
+    target
 ){
 
     if(
-        state.busy||
-        state.paused||
-        state.result
+        state.busy
     ){
 
         return;
+
     }
 
 
-    const rect =
-        canvas.getBoundingClientRect();
+    const p =
+        player();
 
-
-    const x =
-        event.clientX-
-        rect.left;
-
-
-    const y =
-        event.clientY-
-        rect.top;
-
-
-    const g =
-        goal();
-
-
-    const inside =
-
-        x>=g.x&&
-
-        x<=
-            g.x+
-            g.width&&
-
-        y>=g.y&&
-
-        y<=
-            g.y+
-            g.height;
-
-
-    if(
-        !inside
-    ){
-
-        setMessage(
-            "AIM INSIDE THE GOAL!",
-            "Tap directly on the net."
-        );
-
-        beep(
-            160,
-            .06,
-            "square"
-        );
-
-        return;
-    }
-
-
-    state.exactTarget={
-
-        x:
-            clamp(
-                x,
-                g.x+8,
-                g.x+
-                g.width-
-                8
-            ),
-
-        y:
-            clamp(
-                y,
-                g.y+8,
-                g.y+
-                g.height-
-                8
-            )
-    };
-
-
-    setMessage(
-        "TARGET LOCKED 🎯",
-        "Press SHOOT."
-    );
-
-
-    beep(
-        700,
-        .07,
-        "triangle"
-    );
-
-}
-
-
-/* ============================================================
-   EXACT SHOOT
-============================================================ */
-
-function shootExact(){
-
-    if(
-        !state.exactTarget
-    ){
-
-        setMessage(
-            "CHOOSE A TARGET FIRST!",
-            "Tap inside the goal."
-        );
-
-        return;
-    }
-
-
-    startShot(
-        state.exactTarget
-    );
-
-}
-
-
-/* ============================================================
-   CHECK CROSSBAR
-============================================================ */
-
-function checkCrossbar(){
-
-    const g =
-        goal();
-
-
-    const verticalDistance =
-        Math.abs(
-            ball.y-
-            g.y
-        );
-
-
-    const horizontal =
-        ball.x>
-        g.x+
-        g.width*.08&&
-        ball.x<
-        g.x+
-        g.width*.92;
-
-
-    return (
-        verticalDistance<
-        20&&
-        horizontal
-    );
-
-}
-
-
-/* ============================================================
-   RESOLVE SHOT
-============================================================ */
-
-function resolveShot(){
-
-    if(
-        state.mode===
-        "crossbar"
-    ){
-
-        if(
-            checkCrossbar()
-        ){
-
-            state.crossbarHits++;
-
-
-            state.score+=
-                5;
-
-
-            state.combo++;
-
-
-            state.bestCombo =
-                Math.max(
-                    state.bestCombo,
-                    state.combo
-                );
-
-
-            particlesBurst(
-                ball.x,
-                ball.y,
-                true,
-                75
-            );
-
-
-            goalSound();
-
-
-            setMessage(
-                "CROSSBAR HIT! 🎯",
-                "+5 bonus points!"
-            );
-
-
-            showResult(
-                "CROSSBAR HIT!",
-                "+5",
-                "Perfect bar accuracy!"
-            );
-
-
-            updateHUD();
-
-            return;
-        }
-
-
-        missShot(
-            "MISSED THE BAR!"
-        );
-
-        return;
-    }
-
-
-    const player =
-        currentPlayer();
-
-    const goalkeeper =
-        currentKeeper();
 
     const d =
-        currentDifficulty();
+        difficulty();
 
 
-    const keeperDistance =
-        distanceBetween(
-
-            keeper.x,
-
-            keeper.y,
-
-            ball.targetX,
-
-            ball.targetY
-        );
+    const k =
+        goalkeeper();
 
 
-    let saveRange =
-        d.saveRadius;
+    state.busy=
+        true;
 
 
-    saveRange *=
-        (
-            .75+
-            goalkeeper.diving/
-            250
-        );
+    state.shotStart =
+        performance.now();
 
 
-    saveRange +=
-        goalkeeper.reflexes/
-        25;
+    ball.startX=
+        600;
 
 
-    /*
-      Hassan is the strongest
-      requested goalkeeper.
-    */
+    ball.startY=
+        565;
 
-    if(
-        keeperSelect.value===
-        "Hassan Ali"
-    ){
 
-        saveRange +=
-            80;
-    }
+    ball.x=
+        600;
+
+
+    ball.y=
+        565;
+
+
+    ball.targetX=
+        target.x;
+
+
+    ball.targetY=
+        target.y;
+
+
+    ball.progress=
+        0;
 
 
     /*
-      High accuracy reduces
-      the effective save range.
+      Curve.
     */
 
-    saveRange -=
-        player.accuracy/
-        9;
+    let curveStrength =
 
+        state.mode===
+        "freekick"
 
-    /*
-      SPECIAL PLAYER EFFECTS
-    */
+            ? 1.55
+
+            : .42;
+
 
     if(
         playerSelect.value===
         "Hassan Ali"
     ){
 
-        saveRange *=
-            .45;
-    }
+        curveStrength*=
+            1.28;
 
-
-    if(
-        state.mode===
-        "longshot" &&
-        playerSelect.value===
-        "Erling Haaland"
-    ){
-
-        saveRange *=
-            .72;
-    }
-
-
-    if(
-        state.mode===
-        "freekick" &&
-        playerSelect.value===
-        "Lamine Yamal"
-    ){
-
-        saveRange *=
-            .68;
-    }
-
-
-    if(
-        state.mode===
-        "penalty" &&
-        playerSelect.value===
-        "Jude Bellingham"
-    ){
-
-        saveRange *=
-            .70;
-    }
-
-
-    if(
-        keeperDistance<
-        saveRange
-    ){
-
-        state.saves++;
-
-
-        state.combo=0;
-
-
-        particlesBurst(
-            ball.targetX,
-            ball.targetY,
-            false,
-            50
-        );
-
-
-        saveSound();
-
-
-        setMessage(
-            keeperSelect.value===
-            "Hassan Ali"
-
-                ? "HASSAN ALI — 300 GK SAVE! 👑🧤"
-
-                : "SAVED! 🧤",
-
-            keeperSelect.value+
-            " reached the shot."
-        );
-
-
-        showResult(
-            "SAVED!",
-            "+0",
-            keeperSelect.value+
-            " made the save."
-        );
-
-
-        updateHUD();
-
-        return;
-    }
-
-
-    /* GOAL */
-
-    let points =
-        state.mode===
-        "penalty"
-            ? 1
-            :
-            state.mode===
-            "freekick"
-                ? 2
-                :
-                state.mode===
-                "longshot"
-                    ? 3
-                    : 4;
-
-
-    if(
-        state.mode===
-        "penalty"&&
-        playerSelect.value===
-        "Jude Bellingham"
-    ){
-
-        points+=
-            2;
     }
 
 
@@ -3157,222 +2742,1075 @@ function resolveShot(){
         "Lamine Yamal"
     ){
 
-        points+=
-            2;
+        curveStrength*=
+            1.30;
+
     }
+
+
+    let curve =
+        p.curve*
+        curveStrength;
 
 
     if(
-        state.mode===
-        "longshot"&&
-        playerSelect.value===
-        "Erling Haaland"
+        target.x<
+        600
     ){
 
-        points+=
-            2;
+        curve*=
+            -0.55;
+
+    }else{
+
+        curve*=
+            0.55;
+
     }
 
+
+    ball.curve=
+        curve;
+
+
+    /*
+      Arc.
+    */
+
+    ball.arc =
+
+        state.mode===
+        "freekick"
+
+            ? 65
+
+            :
+            state.mode===
+            "longshot"
+
+                ? 105
+
+                : 25;
+
+
+    /*
+      Power.
+    */
+
+    const powerFactor =
+        clamp(
+            p.power/
+            100,
+            .5,
+            3
+        );
+
+
+    state.shotDuration =
+
+        state.mode===
+        "longshot"
+
+            ? 1200/
+                (
+                    d.shot*
+                    powerFactor
+                )
+
+            :
+            state.mode===
+            "freekick"
+
+                ? 930/
+                    (
+                        d.shot*
+                        powerFactor
+                    )
+
+                :
+                    800/
+                    (
+                        d.shot*
+                        powerFactor
+                    );
+
+
+    /*
+      Keeper prediction.
+    */
+
+    const shotZone =
+        zoneFromX(
+            target.x
+        );
+
+
+    let keeperRead =
+        d.read+
+        state.level*
+        .015-
+        p.accuracy/
+        1000;
+
+
+    /*
+      300 accuracy makes
+      Hassan's shots harder
+      to predict.
+    */
 
     if(
         playerSelect.value===
         "Hassan Ali"
     ){
 
-        points+=
-            5;
+        keeperRead-=
+            .38;
+
     }
 
 
-    /*
-      Combo bonus.
-    */
-
-    points +=
-        Math.floor(
-            state.combo/
-            3
+    keeperRead=
+        clamp(
+            keeperRead,
+            .02,
+            .93
         );
 
 
-    state.goals++;
-
-
-    state.score +=
-        points;
-
-
-    state.combo++;
-
-
-    state.bestCombo =
-        Math.max(
-            state.bestCombo,
-            state.combo
-        );
-
-
-    const previousLevel =
-        state.level;
-
-
-    state.level =
-        Math.floor(
-            state.goals/
-            3
-        )+
-        1;
-
-
-    particlesBurst(
-        ball.targetX,
-        ball.targetY,
-        true,
-        80
-    );
-
-
-    goalSound();
+    let predictedZone;
 
 
     if(
-        state.level>
-        previousLevel
+        Math.random()<
+        keeperRead
     ){
 
-        setMessage(
-            "LEVEL "+
-            state.level+
-            "! 🏆",
-            "The challenge just increased!"
-        );
-
-    }
-
-    else if(
-        state.combo>=3
-    ){
-
-        setMessage(
-            "HOT STREAK! 🔥",
-            "+"+
-            points+
-            " points"
-        );
+        predictedZone=
+            shotZone;
 
     }
 
     else{
 
-        setMessage(
-            "GOOOOOAL! ⚽🔥",
-            "+"+
-            points+
-            " points"
-        );
+        const zones=[
+            "left",
+            "center",
+            "right"
+        ];
+
+
+        predictedZone=
+            zones[
+                Math.floor(
+                    Math.random()*
+                    zones.length
+                )
+            ];
+
     }
 
 
-    showResult(
-        "GOOOOOAL!",
-        "+"+
-        points,
-        playerSelect.value+
-        " scored!"
-    );
+    const predicted =
+        targetForZone(
+            predictedZone
+        );
 
 
-    updateHUD();
-
-}
-
-
-/* ============================================================
-   MISS
-============================================================ */
-
-function missShot(
-    text
-){
-
-    state.combo=0;
-
-    particlesBurst(
-        ball.x,
-        ball.y,
-        false,
-        35
-    );
-
-    saveSound();
-
-    setMessage(
-        text,
-        "Try again."
-    );
-
-    showResult(
-        text,
-        "+0",
-        "Better luck on the next attempt."
-    );
-
-}
+    keeper.targetX =
+        predicted.x;
 
 
-/* ============================================================
-   RESULT
-============================================================ */
-
-function showResult(
-    title,
-    points,
-    detail
-){
-
-    state.result=
-        true;
+    keeper.targetY =
+        265;
 
 
-    resultTitle.textContent =
-        title;
+    keeper.rotation =
 
-    resultPoints.textContent =
-        points;
+        predictedZone===
+        "left"
 
-    resultText.textContent =
-        detail;
+            ? -18
+
+            :
+            predictedZone===
+            "right"
+
+                ? 18
+
+                : 0;
 
 
-    resultOverlay
+    state.keeperMoveStart =
+        state.shotStart+
+        d.reaction;
+
+
+    state.keeperMoveDuration =
+        clamp(
+            460-
+            (
+                k.reactions-
+                80
+            )*
+            1.6-
+            state.level*
+            7,
+
+            150,
+
+            460
+        );
+
+
+    powerBox
         .classList
         .remove(
             "hidden"
         );
 
+
+    if(
+        state.mode===
+            "longshot" ||
+        state.mode===
+            "crossbar"
+    ){
+
+        precisionCard
+            .classList
+            .remove(
+                "hidden"
+            );
+
+
+        precisionElement.textContent =
+            Math.round(
+                clamp(
+                    p.accuracy-
+                    state.wind*
+                    8,
+
+                    1,
+
+                    100
+                )
+            )+
+            "%";
+
+    }
+
+
+    updateWall();
+
+
+    positionBall(
+        ball.x,
+        ball.y
+    );
+
 }
 
 
 /* ============================================================
-   KEEPER MODE
+   EXACT TARGET
 ============================================================ */
 
-function startKeeperMode(){
+function chooseExactTarget(
+    event
+){
 
-    clearTimeout(
-        state.timer
+    if(
+        state.busy ||
+        state.paused ||
+        state.result
+    ){
+
+        return;
+
+    }
+
+
+    const rect =
+        pitchSvg.getBoundingClientRect();
+
+
+    const x =
+        (
+            event.clientX-
+            rect.left
+        )/
+        rect.width*
+        1200;
+
+
+    const y =
+        (
+            event.clientY-
+            rect.top
+        )/
+        rect.height*
+        650;
+
+
+    const goal =
+        goalBox();
+
+
+    const inside =
+
+        x>=goal.x&&
+
+        x<=
+            goal.x+
+            goal.w&&
+
+        y>=goal.y&&
+
+        y<=
+            goal.y+
+            goal.h;
+
+
+    if(
+        !inside
+    ){
+
+        setMessage(
+            "AIM INSIDE THE GOAL!",
+            "Tap the net."
+        );
+
+        return;
+
+    }
+
+
+    state.exactTarget={
+
+        x:
+            clamp(
+                x,
+                goal.x+
+                    10,
+
+                goal.x+
+                    goal.w-
+                    10
+            ),
+
+        y:
+            clamp(
+                y,
+                goal.y+
+                    10,
+
+                goal.y+
+                    goal.h-
+                    10
+            )
+
+    };
+
+
+    updateAimTarget();
+
+
+    setMessage(
+        "TARGET LOCKED 🎯",
+        "Press SHOOT."
     );
+
+
+    beep(
+        650,
+        .06,
+        "triangle"
+    );
+
+}
+
+
+/* ============================================================
+   GOAL BOX
+============================================================ */
+
+function goalBox(){
+
+    return {
+
+        x:
+            360,
+
+        y:
+            112,
+
+        w:
+            480,
+
+        h:
+            180
+
+    };
+
+}
+
+
+/* ============================================================
+   DRAW / MOVE AIM TARGET
+============================================================ */
+
+function updateAimTarget(){
+
+    if(
+        !state.exactTarget
+    ){
+
+        aimTarget
+            .setAttribute(
+                "display",
+                "none"
+            );
+
+        return;
+
+    }
+
+
+    const x =
+        state.exactTarget.x;
+
+
+    const y =
+        state.exactTarget.y;
+
+
+    aimTarget
+        .setAttribute(
+            "display",
+            "inline"
+        );
+
+
+    const circle =
+        aimTarget.querySelector(
+            "circle"
+        );
+
+
+    const lines =
+        aimTarget.querySelectorAll(
+            "line"
+        );
+
+
+    setCircle(
+        circle,
+        x,
+        y
+    );
+
+
+    lines[0].setAttribute(
+        "x1",
+        String(
+            x-
+            27
+        )
+    );
+
+
+    lines[0].setAttribute(
+        "x2",
+        String(
+            x+
+            27
+        )
+    );
+
+
+    lines[0].setAttribute(
+        "y1",
+        String(
+            y
+        )
+    );
+
+
+    lines[0].setAttribute(
+        "y2",
+        String(
+            y
+        )
+    );
+
+
+    lines[1].setAttribute(
+        "x1",
+        String(
+            x
+        )
+    );
+
+
+    lines[1].setAttribute(
+        "x2",
+        String(
+            x
+        )
+    );
+
+
+    lines[1].setAttribute(
+        "y1",
+        String(
+            y-
+            27
+        )
+    );
+
+
+    lines[1].setAttribute(
+        "y2",
+        String(
+            y+
+            27
+        )
+    );
+
+}
+
+
+/* ============================================================
+   EXACT SHOOT
+============================================================ */
+
+function exactShoot(){
+
+    if(
+        !state.exactTarget
+    ){
+
+        setMessage(
+            "CHOOSE A TARGET FIRST!",
+            "Tap the goal."
+        );
+
+        return;
+
+    }
+
+
+    startShot(
+        state.exactTarget
+    );
+
+
+    setMessage(
+
+        state.mode===
+        "crossbar"
+
+            ? "CROSSBAR SHOT! 🎯"
+
+            : "LONG SHOT! 🚀",
+
+        "Power from distance."
+    );
+
+}
+
+
+/* ============================================================
+   WALL
+============================================================ */
+
+function updateWall(){
+
+    wallGroup.innerHTML =
+        "";
+
+
+    if(
+        state.mode!==
+        "freekick"
+    ){
+
+        wallGroup.setAttribute(
+            "display",
+            "none"
+        );
+
+        return;
+
+    }
+
+
+    const count =
+        clamp(
+            4+
+            Math.floor(
+                state.level/
+                2
+            ),
+
+            4,
+
+            9
+        );
+
+
+    const spacing =
+        clamp(
+            58-
+            state.level*
+            1.5,
+
+            40,
+
+            58
+        );
+
+
+    const start =
+        600-
+        (
+            count-
+            1
+        )*
+        spacing/
+        2;
+
+
+    for(
+        let i=0;
+        i<count;
+        i++
+    ){
+
+        const x =
+            start+
+            i*
+            spacing;
+
+
+        const person =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "g"
+            );
+
+
+        person.setAttribute(
+            "transform",
+            "translate("+
+            x+
+            ",300)"
+        );
+
+
+        const body =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "rect"
+            );
+
+
+        body.setAttribute(
+            "x",
+            "-11"
+        );
+
+
+        body.setAttribute(
+            "y",
+            "-15"
+        );
+
+
+        body.setAttribute(
+            "width",
+            "22"
+        );
+
+
+        body.setAttribute(
+            "height",
+            "28"
+        );
+
+
+        body.setAttribute(
+            "rx",
+            "3"
+        );
+
+
+        body.setAttribute(
+            "fill",
+            "#314e9c"
+        );
+
+
+        const head =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "circle"
+            );
+
+
+        head.setAttribute(
+            "cy",
+            "-25"
+        );
+
+
+        head.setAttribute(
+            "r",
+            "8"
+        );
+
+
+        head.setAttribute(
+            "fill",
+            "#ca8b67"
+        );
+
+
+        const legs =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "path"
+            );
+
+
+        legs.setAttribute(
+            "d",
+            "M-6 13 L-9 34 M6 13 L9 34"
+        );
+
+
+        legs.setAttribute(
+            "stroke",
+            "#172019"
+        );
+
+
+        legs.setAttribute(
+            "stroke-width",
+            "7"
+        );
+
+
+        legs.setAttribute(
+            "stroke-linecap",
+            "round"
+        );
+
+
+        person.appendChild(
+            body
+        );
+
+
+        person.appendChild(
+            head
+        );
+
+
+        person.appendChild(
+            legs
+        );
+
+
+        wallGroup.appendChild(
+            person
+        );
+
+    }
+
+
+    wallGroup.setAttribute(
+        "display",
+        "inline"
+    );
+
+}
+
+
+/* ============================================================
+   BALL POSITION
+============================================================ */
+
+function positionBall(
+    x,
+    y
+){
+
+    setCircle(
+        ballElement,
+        x,
+        y,
+        ball.radius
+    );
+
+}
+
+
+/* ============================================================
+   KEEPER HOME
+============================================================ */
+
+function resetKeeper(){
+
+    keeper.homeX=
+        600;
+
+    keeper.homeY=
+        265;
+
+    keeper.x=
+        600;
+
+    keeper.y=
+        265;
+
+    keeper.targetX=
+        600;
+
+    keeper.targetY=
+        265;
+
+    keeper.rotation=
+        0;
+
+
+    fieldKeeper.removeAttribute(
+        "transform"
+    );
+
+}
+
+
+/* ============================================================
+   RESET ROUND
+============================================================ */
+
+function resetRound(){
+
+    cancelTimer();
+
+
+    state.roundId++;
 
 
     state.busy=
         false;
 
+
+    state.result=
+        false;
+
+
     state.keeperActive=
         false;
 
 
-    const g =
-        goal();
+    state.exactTarget=
+        null;
+
+
+    aimTarget
+        .setAttribute(
+            "display",
+            "none"
+        );
+
+
+    resultOverlay
+        .classList
+        .add(
+            "hidden"
+        );
+
+
+    powerBox
+        .classList
+        .add(
+            "hidden"
+        );
+
+
+    precisionCard
+        .classList
+        .add(
+            "hidden"
+        );
+
+
+    const d =
+        difficulty();
+
+
+    state.wind =
+        random(
+            -d.wind,
+            d.wind
+        );
+
+
+    resetKeeper();
+
+
+    positionBall(
+        600,
+        state.mode===
+        "keeper"
+            ? 100
+            : 565
+    );
+
+
+    if(
+        state.mode===
+        "keeper"
+    ){
+
+        startKeeperChallenge();
+
+    }
+
+
+    updateWall();
+
+    updateScene();
+
+    updateCamera();
+
+    updateHUD();
+
+
+    if(
+        state.mode===
+        "penalty"
+    ){
+
+        distanceElement.textContent =
+            "Distance: 11 m";
+
+
+        setMessage(
+            "CHOOSE YOUR SHOT",
+            playerSelect.value===
+            "Jude Bellingham"
+                ? "⚽ Penalty specialist active."
+                : "LEFT • CENTER • RIGHT"
+        );
+
+    }
+
+
+    if(
+        state.mode===
+        "freekick"
+    ){
+
+        distanceElement.textContent =
+            "Distance: "+
+            (
+                20+
+                state.level*
+                2
+            )+
+            " m";
+
+
+        setMessage(
+            "BEND IT AROUND THE WALL",
+            playerSelect.value===
+            "Lamine Yamal"
+                ? "🎯 Free-kick specialist active."
+                : "Curve around the wall."
+        );
+
+    }
+
+
+    if(
+        state.mode===
+        "longshot"
+    ){
+
+        distanceElement.textContent =
+            "Distance: "+
+            (
+                28+
+                state.level*
+                2
+            )+
+            " m";
+
+
+        setMessage(
+            "CHOOSE YOUR TARGET",
+            playerSelect.value===
+            "Erling Haaland"
+                ? "🚀 Long-shot specialist active."
+                : "Tap inside the goal."
+        );
+
+    }
+
+
+    if(
+        state.mode===
+        "crossbar"
+    ){
+
+        distanceElement.textContent =
+            "Distance: "+
+            (
+                24+
+                state.level*
+                2
+            )+
+            " m";
+
+
+        setMessage(
+            "HIT THE CROSSBAR",
+            "Tap the bar area."
+        );
+
+    }
+
+
+    if(
+        state.mode===
+        "keeper"
+    ){
+
+        setMessage(
+            "GET READY! 🧤",
+            "Watch the incoming shot."
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   KEEPER CHALLENGE
+============================================================ */
+
+function startKeeperChallenge(){
+
+    cancelTimer();
+
+
+    state.keeperActive=
+        false;
 
 
     const zones=[
@@ -3382,7 +3820,7 @@ function startKeeperMode(){
     ];
 
 
-    const zone =
+    state.keeperZone =
         zones[
             Math.floor(
                 Math.random()*
@@ -3391,65 +3829,65 @@ function startKeeperMode(){
         ];
 
 
-    state.keeperZone =
-        zone;
-
-
     const target =
-        targetByZone(
-            zone
+        targetForZone(
+            state.keeperZone
         );
 
 
     ball.startX =
+        target.x+
         random(
-            g.x+
-            g.width*.1,
-
-            g.x+
-            g.width*.9
+            -130,
+            130
         );
 
 
-    ball.startY =
-        g.y-
-        state.height*.30;
+    ball.startY=
+        85;
 
 
-    ball.targetX =
+    ball.targetX=
         target.x;
 
 
-    ball.targetY =
-        state.height*.78;
+    ball.targetY=
+        335;
 
 
-    ball.x =
+    ball.x=
         ball.startX;
 
 
-    ball.y =
+    ball.y=
         ball.startY;
 
 
-    ball.progress=0;
+    ball.curve =
+        random(
+            -28,
+            28
+        );
 
 
-    ball.radius=7;
+    ball.progress=
+        0;
 
 
-    keeper.x =
-        state.width/2;
+    ball.radius=
+        9;
 
 
-    keeper.y =
-        state.height*.80;
-
-
-    setMessage(
-        "GET READY! 🧤",
-        "Watch the ball and react!"
+    setCircle(
+        keeperBallElement,
+        ball.x,
+        ball.y,
+        ball.radius
     );
+
+
+    const round =
+        state.roundId;
 
 
     state.timer =
@@ -3457,13 +3895,32 @@ function startKeeperMode(){
             () => {
 
                 if(
+                    round!==
+                    state.roundId
+                ){
+
+                    return;
+
+                }
+
+
+                if(
                     state.mode!==
-                    "keeper"||
+                    "keeper"
+                ){
+
+                    return;
+
+                }
+
+
+                if(
                     state.paused||
                     state.result
                 ){
 
                     return;
+
                 }
 
 
@@ -3471,7 +3928,7 @@ function startKeeperMode(){
                     true;
 
 
-                state.shotStarted =
+                state.shotStart =
                     performance.now();
 
 
@@ -3482,14 +3939,14 @@ function startKeeperMode(){
 
             },
 
-            550
+            560
         );
 
 }
 
 
 /* ============================================================
-   KEEPER SAVE
+   KEEPER INPUT
 ============================================================ */
 
 function keeperSave(
@@ -3498,13 +3955,14 @@ function keeperSave(
 
     if(
         state.mode!==
-        "keeper"||
-        !state.keeperActive||
-        state.paused||
+            "keeper" ||
+        !state.keeperActive ||
+        state.paused ||
         state.result
     ){
 
         return;
+
     }
 
 
@@ -3512,19 +3970,14 @@ function keeperSave(
         false;
 
 
+    const k =
+        goalkeeper();
+
+
     const targetZone =
-        ball.x<
-        state.width*.38
-
-            ? "left"
-
-            :
-            ball.x>
-            state.width*.62
-
-                ? "right"
-
-                : "center";
+        zoneFromX(
+            ball.x
+        );
 
 
     const correct =
@@ -3532,109 +3985,103 @@ function keeperSave(
         targetZone;
 
 
-    let successChance =
+    let chance =
+
         correct
             ? .62
             : .08;
 
 
-    const gk =
-        currentKeeper();
-
-
-    successChance +=
-        gk.reflexes/
+    chance +=
+        k.reflexes/
         500;
 
+
+    /*
+      Hassan gets the custom
+      300-stat behavior.
+    */
 
     if(
         keeperSelect.value===
         "Hassan Ali"
     ){
 
-        successChance =
+        chance =
             correct
                 ? .999
-                : .15;
+                : .16;
     }
 
 
-    successChance =
+    chance =
         clamp(
-            successChance,
+            chance,
             0,
             .999
         );
 
 
-    if(
+    const saved =
         Math.random()<
-        successChance
+        chance;
+
+
+    if(
+        saved
     ){
 
         state.saves++;
 
 
-        state.score+=
-            2;
+        state.score+=2;
 
 
         state.combo++;
 
 
-        state.bestCombo =
+        state.best =
             Math.max(
-                state.bestCombo,
+                state.best,
                 state.combo
             );
 
 
-        particlesBurst(
-            state.width/2,
-            state.height*.62,
+        createParticles(
+            600,
+            325,
             true,
-            60
+            55
         );
 
 
         saveSound();
 
 
-        setMessage(
+        showResult(
+            "INCREDIBLE SAVE!",
+            "+2",
             keeperSelect.value===
             "Hassan Ali"
 
-                ? "HASSAN ALI — 300 GK SAVE! 👑"
+                ? "Hassan Ali — 300 GK stats!"
 
-                : "INCREDIBLE SAVE! 🧤",
-
-            "+2 points"
+                : "Perfect reaction!"
         );
 
 
-        showResult(
-            "SAVE!",
-            "+2",
-            keeperSelect.value+
-            " stopped the shot!"
-        );
+    }
 
+    else{
 
-    }else{
-
-        state.combo=0;
-
-
-        setMessage(
-            "GOAL! 😱",
-            "The striker got past you."
-        );
+        state.combo=
+            0;
 
 
         showResult(
             "GOAL!",
             "0",
-            "Wrong reaction."
+            "The ball got through."
         );
 
     }
@@ -3658,14 +4105,17 @@ function updateKeeper(
     ){
 
         return;
+
     }
 
 
     const duration =
         Math.max(
-            880,
+            900,
+
             1500-
-            state.level*20
+            state.level*
+            18
         );
 
 
@@ -3673,21 +4123,22 @@ function updateKeeper(
         clamp(
             (
                 time-
-                state.shotStarted
+                state.shotStart
             )/
             duration,
 
             0,
+
             1
         );
 
 
-    ball.progress =
+    ball.progress=
         progress;
 
 
-    const smooth =
-        smoothStep(
+    const amount =
+        smooth(
             progress
         );
 
@@ -3696,7 +4147,7 @@ function updateKeeper(
         lerp(
             ball.startX,
             ball.targetX,
-            smooth
+            amount
         )+
         Math.sin(
             progress*
@@ -3709,16 +4160,22 @@ function updateKeeper(
         lerp(
             ball.startY,
             ball.targetY,
-            smooth
+            amount
         );
 
 
     ball.radius =
-        lerp(
-            7,
-            27,
-            progress
-        );
+        9+
+        20*
+        progress;
+
+
+    setCircle(
+        keeperBallElement,
+        ball.x,
+        ball.y,
+        ball.radius
+    );
 
 
     if(
@@ -3729,14 +4186,16 @@ function updateKeeper(
             false;
 
 
-        state.combo=0;
+        state.combo=
+            0;
 
 
-        result(
+        showResult(
             "TOO LATE",
             "0",
-            "The ball reached the net."
+            "The shot reached the goal."
         );
+
     }
 
 }
@@ -3755,6 +4214,7 @@ function updateShot(
     ){
 
         return;
+
     }
 
 
@@ -3762,21 +4222,22 @@ function updateShot(
         clamp(
             (
                 time-
-                state.shotStarted
+                state.shotStart
             )/
             state.shotDuration,
 
             0,
+
             1
         );
 
 
-    ball.progress =
+    ball.progress=
         progress;
 
 
-    const smooth =
-        smoothStep(
+    const amount =
+        smooth(
             progress
         );
 
@@ -3785,7 +4246,7 @@ function updateShot(
         lerp(
             ball.startX,
             ball.targetX,
-            smooth
+            amount
         );
 
 
@@ -3793,7 +4254,7 @@ function updateShot(
         lerp(
             ball.startY,
             ball.targetY,
-            smooth
+            amount
         )-
         Math.sin(
             progress*
@@ -3802,7 +4263,11 @@ function updateShot(
         ball.arc;
 
 
-    ball.x +=
+    /*
+      Curve.
+    */
+
+    ball.x+=
         Math.sin(
             progress*
             Math.PI
@@ -3811,51 +4276,55 @@ function updateShot(
 
 
     /*
-      Wind
+      Wind.
     */
 
-    ball.x +=
+    ball.x+=
         Math.sin(
             progress*
             Math.PI
         )*
         state.wind*
-        state.width*
-        .03;
+        28;
 
 
     ball.radius =
-        lerp(
-            13,
-            8,
-            progress
-        );
+        13-
+        5*
+        progress;
+
+
+    positionBall(
+        ball.x,
+        ball.y
+    );
 
 
     /*
-      Keeper begins diving
+      Keeper movement.
     */
 
     if(
         time>=
-        state.keeperMoveStarted
+        state.keeperMoveStart
     ){
 
         const keeperProgress =
             clamp(
                 (
                     time-
-                    state.keeperMoveStarted
+                    state.keeperMoveStart
                 )/
                 state.keeperMoveDuration,
 
                 0,
+
                 1
             );
 
 
-        const keeperEase =
-            smoothStep(
+        const keeperAmount =
+            smooth(
                 keeperProgress
             );
 
@@ -3864,7 +4333,7 @@ function updateShot(
             lerp(
                 keeper.homeX,
                 keeper.targetX,
-                keeperEase
+                keeperAmount
             );
 
 
@@ -3872,14 +4341,21 @@ function updateShot(
             lerp(
                 keeper.homeY,
                 keeper.targetY,
-                keeperEase*
-                .70
+                keeperAmount*
+                .55
             );
+
+
+        moveKeeper(
+            keeper.x,
+            keeper.y,
+            keeper.rotation
+        );
 
     }
 
 
-    powerBar.style.width =
+    powerFill.style.width =
         (
             progress*
             100
@@ -3895,7 +4371,7 @@ function updateShot(
             false;
 
 
-        powerContainer
+        powerBox
             .classList
             .add(
                 "hidden"
@@ -3910,24 +4386,512 @@ function updateShot(
 
 
 /* ============================================================
+   SHOT RESOLUTION
+============================================================ */
+
+function resolveShot(){
+
+    const p =
+        player();
+
+
+    const k =
+        goalkeeper();
+
+
+    const d =
+        difficulty();
+
+
+    /*
+      Crossbar.
+    */
+
+    if(
+        state.mode===
+        "crossbar"
+    ){
+
+        const goal =
+            goalBox();
+
+
+        const hit =
+            Math.abs(
+                ball.targetY-
+                goal.y
+            )<
+            25;
+
+
+        const inside =
+            ball.targetX>
+            goal.x+
+            25&&
+
+            ball.targetX<
+            goal.x+
+            goal.w-
+            25;
+
+
+        if(
+            hit&&
+            inside
+        ){
+
+            state.crossbarHits++;
+
+
+            state.score+=5;
+
+
+            state.combo++;
+
+
+            state.best=
+                Math.max(
+                    state.best,
+                    state.combo
+                );
+
+
+            createParticles(
+                ball.targetX,
+                goal.y,
+                true,
+                65
+            );
+
+
+            goalSound();
+
+
+            showResult(
+                "CROSSBAR HIT!",
+                "+5",
+                "Perfect bar accuracy!"
+            );
+
+
+            updateHUD();
+
+            return;
+
+        }
+
+
+        missShot(
+            "MISSED THE BAR!"
+        );
+
+
+        return;
+    }
+
+
+    /*
+      Distance from keeper
+      to target.
+    */
+
+    const keeperDistance =
+        Math.hypot(
+
+            keeper.x-
+            ball.targetX,
+
+            keeper.y-
+            ball.targetY
+
+        );
+
+
+    let saveRange =
+        d.save*
+        (
+            .75+
+            k.diving/
+            240
+        );
+
+
+    saveRange +=
+        k.reflexes/
+        27;
+
+
+    saveRange -=
+        p.accuracy/
+        9;
+
+
+    /*
+      Hassan goalkeeper.
+    */
+
+    if(
+        keeperSelect.value===
+        "Hassan Ali"
+    ){
+
+        saveRange+=
+            82;
+
+    }
+
+
+    /*
+      Player-specific
+      specialties.
+    */
+
+    if(
+        playerSelect.value===
+        "Hassan Ali"
+    ){
+
+        saveRange*=
+            .43;
+
+    }
+
+
+    if(
+        state.mode===
+            "longshot" &&
+        playerSelect.value===
+            "Erling Haaland"
+    ){
+
+        saveRange*=
+            .72;
+
+    }
+
+
+    if(
+        state.mode===
+            "freekick" &&
+        playerSelect.value===
+            "Lamine Yamal"
+    ){
+
+        saveRange*=
+            .66;
+
+    }
+
+
+    if(
+        state.mode===
+            "penalty" &&
+        playerSelect.value===
+            "Jude Bellingham"
+    ){
+
+        saveRange*=
+            .68;
+
+    }
+
+
+    /*
+      SAVE
+    */
+
+    if(
+        keeperDistance<
+        saveRange
+    ){
+
+        state.saves++;
+
+
+        state.combo=
+            0;
+
+
+        createParticles(
+            ball.targetX,
+            ball.targetY,
+            false,
+            50
+        );
+
+
+        saveSound();
+
+
+        showResult(
+            "SAVED!",
+            "+0",
+            keeperSelect.value+
+            " stopped the shot!"
+        );
+
+
+        updateHUD();
+
+        return;
+
+    }
+
+
+    /*
+      GOAL
+    */
+
+    let points =
+
+        state.mode===
+        "penalty"
+
+            ? 1
+
+            :
+            state.mode===
+            "freekick"
+
+                ? 2
+
+                :
+                state.mode===
+                "longshot"
+
+                    ? 3
+
+                    : 4;
+
+
+    /*
+      Specialist bonuses.
+    */
+
+    if(
+        state.mode===
+            "penalty" &&
+        playerSelect.value===
+            "Jude Bellingham"
+    ){
+
+        points+=2;
+
+    }
+
+
+    if(
+        state.mode===
+            "freekick" &&
+        playerSelect.value===
+            "Lamine Yamal"
+    ){
+
+        points+=2;
+
+    }
+
+
+    if(
+        state.mode===
+            "longshot" &&
+        playerSelect.value===
+            "Erling Haaland"
+    ){
+
+        points+=2;
+
+    }
+
+
+    /*
+      Hassan bonus.
+    */
+
+    if(
+        playerSelect.value===
+        "Hassan Ali"
+    ){
+
+        points+=5;
+
+    }
+
+
+    /*
+      Combo bonus.
+    */
+
+    points+=
+        Math.floor(
+            state.combo/
+            3
+        );
+
+
+    state.score+=
+        points;
+
+
+    state.goals++;
+
+
+    state.combo++;
+
+
+    state.best=
+        Math.max(
+            state.best,
+            state.combo
+        );
+
+
+    const previousLevel =
+        state.level;
+
+
+    state.level=
+        Math.floor(
+            state.goals/
+            3
+        )+
+        1;
+
+
+    createParticles(
+        ball.targetX,
+        ball.targetY,
+        true,
+        80
+    );
+
+
+    goalSound();
+
+
+    if(
+        state.level>
+        previousLevel
+    ){
+
+        showResult(
+            "LEVEL "+
+            state.level+
+            "!",
+            "+"+
+            points,
+            "New level unlocked!"
+        );
+
+    }
+
+    else{
+
+        showResult(
+            "GOOOOOAL!",
+            "+"+
+            points,
+            p.role+
+            " scored!"
+        );
+
+    }
+
+
+    updateHUD();
+
+}
+
+
+/* ============================================================
+   MISS
+============================================================ */
+
+function missShot(
+    text
+){
+
+    state.combo=
+        0;
+
+
+    createParticles(
+        ball.x,
+        ball.y,
+        false,
+        30
+    );
+
+
+    saveSound();
+
+
+    showResult(
+        text,
+        "0",
+        "Try again!"
+    );
+
+}
+
+
+/* ============================================================
+   RESULT
+============================================================ */
+
+function showResult(
+    title,
+    points,
+    detail
+){
+
+    state.result=
+        true;
+
+
+    resultTitle.textContent =
+        title;
+
+
+    resultPoints.textContent =
+        points;
+
+
+    resultDetail.textContent =
+        detail;
+
+
+    resultOverlay
+        .classList
+        .remove(
+            "hidden"
+        );
+
+
+    updateHUD();
+
+}
+
+
+/* ============================================================
    PARTICLES
 ============================================================ */
 
-function particlesBurst(
+function createParticles(
     x,
     y,
     good,
     amount
 ){
 
-    const count =
+    const number =
         amount||
         40;
 
 
     for(
         let i=0;
-        i<count;
+        i<number;
         i++
     ){
 
@@ -3937,10 +4901,10 @@ function particlesBurst(
             2;
 
 
-        const speed =
+        const velocity =
             random(
-                70,
-                430
+                60,
+                420
             );
 
 
@@ -3951,21 +4915,25 @@ function particlesBurst(
             y:y,
 
             vx:
-                Math.cos(angle)*
-                speed,
+                Math.cos(
+                    angle
+                )*
+                velocity,
 
             vy:
-                Math.sin(angle)*
-                speed-
+                Math.sin(
+                    angle
+                )*
+                velocity-
                 random(
-                    20,
+                    30,
                     120
                 ),
 
             life:
                 random(
-                    .55,
-                    1.2
+                    .5,
+                    1.1
                 ),
 
             size:
@@ -3976,6 +4944,7 @@ function particlesBurst(
 
             good:
                 good
+
         });
 
     }
@@ -3991,26 +4960,29 @@ function updateParticles(
         const p of particles
     ){
 
-        p.x +=
+        p.x+=
             p.vx*
             dt;
 
-        p.y +=
+
+        p.y+=
             p.vy*
             dt;
 
-        p.vy +=
+
+        p.vy+=
             300*
             dt;
 
-        p.life -=
+
+        p.life-=
             dt*
             1.5;
 
     }
 
 
-    particles =
+    particles=
         particles.filter(
             p=>
                 p.life>0
@@ -4019,1669 +4991,366 @@ function updateParticles(
 }
 
 
-function drawParticles(){
-
-    for(
-        const p of particles
-    ){
-
-        ctx.globalAlpha =
-            clamp(
-                p.life,
-                0,
-                1
-            );
-
-
-        ctx.fillStyle =
-            p.good
-                ? "#ffe33f"
-                : "#ffffff";
-
-
-        ctx.beginPath();
-
-
-        ctx.arc(
-            p.x,
-            p.y,
-            p.size,
-            0,
-            Math.PI*2
-        );
-
-
-        ctx.fill();
-
-    }
-
-
-    ctx.globalAlpha=1;
-
-}
-
-
 /* ============================================================
-   FIELD
+   SOUND
 ============================================================ */
 
-function drawField(){
+let audioContext=
+    null;
 
-    const w =
-        state.width;
 
-    const h =
-        state.height;
-
-
-    const gradient =
-        ctx.createLinearGradient(
-            0,
-            0,
-            0,
-            h
-        );
-
-
-    gradient.addColorStop(
-        0,
-        "#139547"
-    );
-
-
-    gradient.addColorStop(
-        .5,
-        "#087a35"
-    );
-
-
-    gradient.addColorStop(
-        1,
-        "#045926"
-    );
-
-
-    ctx.fillStyle =
-        gradient;
-
-
-    ctx.fillRect(
-        0,
-        0,
-        w,
-        h
-    );
-
-
-    /*
-      Grass stripes
-    */
-
-    for(
-        let i=0;
-        i<18;
-        i++
-    ){
-
-        ctx.fillStyle =
-            i%2===0
-                ? "#ffffff08"
-                : "#00000008";
-
-
-        ctx.fillRect(
-            0,
-            i*
-            h/18,
-            w,
-            h/18
-        );
-
-    }
-
-
-    /*
-      Stadium roof strip
-    */
-
-    ctx.fillStyle =
-        "#15221a";
-
-
-    ctx.fillRect(
-        0,
-        0,
-        w,
-        h*.13
-    );
-
-
-    /*
-      Stadium lights
-    */
-
-    for(
-        let i=0;
-        i<5;
-        i++
-    ){
-
-        const x =
-            w*
-            (
-                .10+
-                i*
-                .20
-            );
-
-
-        ctx.shadowColor =
-            "#ffffff";
-
-        ctx.shadowBlur =
-            18;
-
-
-        ctx.fillStyle =
-            "#ffffff";
-
-
-        ctx.beginPath();
-
-
-        ctx.arc(
-            x,
-            h*.05,
-            7,
-            0,
-            Math.PI*2
-        );
-
-
-        ctx.fill();
-
-    }
-
-
-    ctx.shadowBlur=0;
-
-
-    /*
-      Pitch outline
-    */
-
-    ctx.strokeStyle =
-        "#ffffffcc";
-
-    ctx.lineWidth=
-        3;
-
-
-    ctx.strokeRect(
-        w*.035,
-        h*.15,
-        w*.93,
-        h*.82
-    );
-
-
-    /*
-      Half line
-    */
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        w*.035,
-        h*.56
-    );
-
-    ctx.lineTo(
-        w*.965,
-        h*.56
-    );
-
-    ctx.stroke();
-
-
-    /*
-      Center circle
-    */
-
-    ctx.beginPath();
-
-    ctx.arc(
-        w/2,
-        h*.56,
-        Math.min(w,h)*.12,
-        0,
-        Math.PI*2
-    );
-
-    ctx.stroke();
-
-
-    /*
-      Penalty box
-    */
-
-    ctx.strokeRect(
-        w*.10,
-        h*.15,
-        w*.80,
-        h*.40
-    );
-
-
-    /*
-      Six-yard box
-    */
-
-    ctx.strokeRect(
-        w*.26,
-        h*.15,
-        w*.48,
-        h*.23
-    );
-
-
-    /*
-      Center spot
-    */
-
-    ctx.fillStyle =
-        "#ffffff";
-
-
-    ctx.beginPath();
-
-    ctx.arc(
-        w/2,
-        h*.50,
-        5,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    drawGoal();
-
+function getAudio(){
 
     if(
-        state.mode===
-        "freekick"
+        !state.sound
     ){
 
-        drawWall();
+        return null;
+
+    }
+
+
+    try{
+
+        if(
+            !audioContext
+        ){
+
+            const AudioConstructor =
+                window.AudioContext||
+                window.webkitAudioContext;
+
+
+            if(
+                !AudioConstructor
+            ){
+
+                return null;
+
+            }
+
+
+            audioContext=
+                new AudioConstructor();
+
+        }
+
+
+        return audioContext;
+
+    }
+
+    catch{
+
+        return null;
+
     }
 
 }
 
 
-/* ============================================================
-   GOAL
-============================================================ */
+function beep(
+    frequency,
+    duration,
+    type
+){
 
-function drawGoal(){
+    const audio =
+        getAudio();
 
-    const g =
-        goalGeometry();
-
-
-    /*
-      Net
-    */
-
-    ctx.fillStyle =
-        "#ffffff12";
-
-
-    ctx.fillRect(
-        g.x,
-        g.y,
-        g.width,
-        g.height
-    );
-
-
-    ctx.strokeStyle =
-        "#ffffff35";
-
-
-    ctx.lineWidth=
-        1;
-
-
-    for(
-        let x=g.x;
-        x<=
-        g.x+g.width;
-        x+=18
-    ){
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            x,
-            g.y
-        );
-
-        ctx.lineTo(
-            x,
-            g.y+
-            g.height
-        );
-
-        ctx.stroke();
-
-    }
-
-
-    for(
-        let y=g.y;
-        y<=
-        g.y+g.height;
-        y+=15
-    ){
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            g.x,
-            y
-        );
-
-        ctx.lineTo(
-            g.x+
-            g.width,
-            y
-        );
-
-        ctx.stroke();
-
-    }
-
-
-    /*
-      Goal frame
-    */
-
-    ctx.strokeStyle =
-        "#ffffff";
-
-
-    ctx.lineWidth=
-        9;
-
-
-    ctx.strokeRect(
-        g.x,
-        g.y,
-        g.width,
-        g.height
-    );
-
-
-    ctx.strokeStyle =
-        "#dce6df";
-
-
-    ctx.lineWidth=
-        3;
-
-
-    ctx.strokeRect(
-        g.x+7,
-        g.y+7,
-        g.width-14,
-        g.height-14
-    );
-
-
-    /*
-      Crossbar challenge highlight
-    */
 
     if(
-        state.mode===
+        !audio
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        const oscillator =
+            audio.createOscillator();
+
+
+        const gain =
+            audio.createGain();
+
+
+        oscillator.type =
+            type||
+            "sine";
+
+
+        oscillator.frequency.value =
+            frequency;
+
+
+        gain.gain.value =
+            .035;
+
+
+        oscillator.connect(
+            gain
+        );
+
+
+        gain.connect(
+            audio.destination
+        );
+
+
+        oscillator.start();
+
+
+        gain.gain.exponentialRampToValueAtTime(
+            .0001,
+            audio.currentTime+
+            duration
+        );
+
+
+        oscillator.stop(
+            audio.currentTime+
+            duration
+        );
+
+    }
+
+    catch{
+
+        /* Optional sound. */
+
+    }
+
+}
+
+
+function goalSound(){
+
+    beep(
+        523,
+        .08,
+        "triangle"
+    );
+
+
+    setTimeout(
+        ()=>
+            beep(
+                659,
+                .08,
+                "triangle"
+            ),
+
+        80
+    );
+
+
+    setTimeout(
+        ()=>
+            beep(
+                784,
+                .18,
+                "triangle"
+            ),
+
+        160
+    );
+
+}
+
+
+function saveSound(){
+
+    beep(
+        180,
+        .12,
+        "square"
+    );
+
+
+    setTimeout(
+        ()=>
+            beep(
+                120,
+                .16,
+                "square"
+            ),
+
+        100
+    );
+
+}
+
+
+/* ============================================================
+   PAUSE
+============================================================ */
+
+function togglePause(){
+
+    state.paused=
+        !state.paused;
+
+
+    pauseOverlay
+        .classList
+        .toggle(
+            "hidden",
+            !state.paused
+        );
+
+
+    document
+        .getElementById(
+            "pauseBtn"
+        )
+        .textContent =
+
+        state.paused
+            ? "▶ RESUME"
+            : "⏸ PAUSE";
+
+}
+
+
+/* ============================================================
+   MODE SWITCH
+============================================================ */
+
+function setMode(
+    mode
+){
+
+    const validModes = [
+
+        "penalty",
+        "freekick",
+        "longshot",
+        "keeper",
         "crossbar"
-    ){
 
-        ctx.strokeStyle =
-            "#ffe05a";
+    ];
 
-
-        ctx.lineWidth=
-            5;
-
-
-        ctx.beginPath();
-
-
-        ctx.moveTo(
-            g.x+
-            g.width*.03,
-
-            g.y+
-            2
-        );
-
-
-        ctx.lineTo(
-            g.x+
-            g.width*.97,
-
-            g.y+
-            2
-        );
-
-
-        ctx.stroke();
-    }
-
-}
-
-
-/* ============================================================
-   WALL
-============================================================ */
-
-function drawWall(){
-
-    const count =
-        wallCount();
-
-
-    const spacing =
-        Math.min(
-            state.width*.055,
-            60
-        );
-
-
-    const start =
-        state.width/2-
-        (
-            count-1
-        )*
-        spacing/2;
-
-
-    const y =
-        state.height*.50;
-
-
-    for(
-        let i=0;
-        i<count;
-        i++
-    ){
-
-        drawWallPerson(
-            start+
-            i*spacing,
-            y
-        );
-
-    }
-
-
-    ctx.fillStyle =
-        "#ffffffcc";
-
-
-    ctx.font =
-        "bold 10px Arial";
-
-
-    ctx.textAlign =
-        "center";
-
-
-    ctx.fillText(
-        "DEFENSIVE WALL",
-        state.width/2,
-        y+40
-    );
-
-}
-
-
-function drawWallPerson(
-    x,
-    y
-){
-
-    ctx.save();
-
-
-    ctx.translate(
-        x,
-        y
-    );
-
-
-    ctx.strokeStyle =
-        "#121b15";
-
-
-    ctx.lineWidth=
-        7;
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        -5,
-        14
-    );
-
-
-    ctx.lineTo(
-        -8,
-        33
-    );
-
-
-    ctx.moveTo(
-        5,
-        14
-    );
-
-
-    ctx.lineTo(
-        8,
-        33
-    );
-
-
-    ctx.stroke();
-
-
-    ctx.fillStyle =
-        "#324d9b";
-
-
-    ctx.fillRect(
-        -11,
-        -10,
-        22,
-        27
-    );
-
-
-    ctx.fillStyle =
-        "#ca8b67";
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        0,
-        -22,
-        8,
-        0,
-        Math.PI*2
-    );
-
-
-    ctx.fill();
-
-
-    ctx.restore();
-
-}
-
-
-/* ============================================================
-   PLAYER
-============================================================ */
-
-function drawPlayer(){
 
     if(
-        state.mode===
-        "keeper"
+        !validModes.includes(
+            mode
+        )
     ){
 
         return;
+
     }
 
 
-    const x =
-        state.width/2;
+    state.mode=
+        mode;
 
-    const y =
-        state.height*.82;
 
+    state.busy=
+        false;
 
-    const p =
-        currentPlayer();
 
+    state.result=
+        false;
 
-    ctx.save();
 
+    state.keeperActive=
+        false;
 
-    ctx.translate(
-        x,
-        y
-    );
 
+    state.exactTarget=
+        null;
 
-    /*
-      Shadow
-    */
 
-    ctx.fillStyle =
-        "#00000044";
+    cancelTimer();
 
 
-    ctx.beginPath();
+    resultOverlay
+        .classList
+        .add(
+            "hidden"
+        );
 
 
-    ctx.ellipse(
-        0,
-        25,
-        33,
-        8,
-        0,
-        0,
-        Math.PI*2
-    );
+    document
+        .querySelectorAll(
+            ".mode"
+        )
+        .forEach(
+            button=>{
 
+                button.classList.toggle(
 
-    ctx.fill();
+                    "active",
 
+                    button.dataset.mode===
+                    mode
 
-    /*
-      Legs
-    */
+                );
 
-    ctx.strokeStyle =
-        "#f6f6f6";
+            }
+        );
 
 
-    ctx.lineWidth=
-        10;
+    shotButtons
+        .classList
+        .toggle(
 
+            "hidden",
 
-    ctx.beginPath();
+            mode===
+                "keeper"||
 
+            mode===
+                "longshot"||
 
-    ctx.moveTo(
-        -9,
-        9
-    );
+            mode===
+                "crossbar"
 
+        );
 
-    ctx.lineTo(
-        -15,
-        35
-    );
 
+    saveButtons
+        .classList
+        .toggle(
 
-    ctx.moveTo(
-        9,
-        9
-    );
+            "hidden",
 
+            mode!==
+            "keeper"
 
-    ctx.lineTo(
-        15,
-        35
-    );
+        );
 
 
-    ctx.stroke();
+    exactButton
+        .classList
+        .toggle(
 
+            "hidden",
 
-    /*
-      Shirt
-    */
+            mode!==
+                "longshot"&&
 
-    ctx.fillStyle =
-        p.color;
+            mode!==
+                "crossbar"
 
+        );
 
-    ctx.fillRect(
-        -22,
-        -31,
-        44,
-        44
-    );
 
+    updateScene();
 
-    /*
-      Head
-    */
 
-    ctx.fillStyle =
-        "#d09a70";
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        0,
-        -49,
-        15,
-        0,
-        Math.PI*2
-    );
-
-
-    ctx.fill();
-
-
-    /*
-      Hair
-    */
-
-    ctx.fillStyle =
-        "#21160d";
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        0,
-        -54,
-        14,
-        Math.PI,
-        Math.PI*2
-    );
-
-
-    ctx.fill();
-
-
-    /*
-      Arms
-    */
-
-    ctx.strokeStyle =
-        "#25362c";
-
-
-    ctx.lineWidth=
-        7;
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        -17,
-        -13
-    );
-
-
-    ctx.lineTo(
-        -30,
-        3
-    );
-
-
-    ctx.moveTo(
-        17,
-        -13
-    );
-
-
-    ctx.lineTo(
-        30,
-        3
-    );
-
-
-    ctx.stroke();
-
-
-    ctx.restore();
+    resetRound();
 
 }
 
 
 /* ============================================================
-   KEEPER
-============================================================ */
-
-function drawKeeper(){
-
-    ctx.save();
-
-
-    ctx.translate(
-        keeper.x,
-        keeper.y
-    );
-
-
-    ctx.rotate(
-        keeper.dive
-    );
-
-
-    /*
-      Shadow
-    */
-
-    ctx.fillStyle =
-        "#00000044";
-
-
-    ctx.beginPath();
-
-
-    ctx.ellipse(
-        0,
-        34,
-        40,
-        9,
-        0,
-        0,
-        Math.PI*2
-    );
-
-
-    ctx.fill();
-
-
-    /*
-      Legs
-    */
-
-    ctx.strokeStyle =
-        "#131f17";
-
-
-    ctx.lineWidth=
-        12;
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        -10,
-        11
-    );
-
-
-    ctx.lineTo(
-        -18,
-        43
-    );
-
-
-    ctx.moveTo(
-        10,
-        11
-    );
-
-
-    ctx.lineTo(
-        18,
-        43
-    );
-
-
-    ctx.stroke();
-
-
-    /*
-      Shirt
-    */
-
-    const shirt =
-        ctx.createLinearGradient(
-            -25,
-            -30,
-            25,
-            30
-        );
-
-
-    shirt.addColorStop(
-        0,
-        "#ffe628"
-    );
-
-
-    shirt.addColorStop(
-        1,
-        "#e39300"
-    );
-
-
-    ctx.fillStyle =
-        shirt;
-
-
-    ctx.fillRect(
-        -25,
-        -30,
-        50,
-        50
-    );
-
-
-    /*
-      Head
-    */
-
-    ctx.fillStyle =
-        "#d59a70";
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        0,
-        -47,
-        17,
-        0,
-        Math.PI*2
-    );
-
-
-    ctx.fill();
-
-
-    /*
-      Hair
-    */
-
-    ctx.fillStyle =
-        "#24170e";
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        0,
-        -53,
-        16,
-        Math.PI,
-        Math.PI*2
-    );
-
-
-    ctx.fill();
-
-
-    /*
-      Arms
-    */
-
-    ctx.strokeStyle =
-        "#ffcb18";
-
-
-    ctx.lineWidth=
-        12;
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        -20,
-        -15
-    );
-
-
-    ctx.lineTo(
-        -45,
-        3
-    );
-
-
-    ctx.moveTo(
-        20,
-        -15
-    );
-
-
-    ctx.lineTo(
-        45,
-        3
-    );
-
-
-    ctx.stroke();
-
-
-    /*
-      Gloves
-    */
-
-    ctx.fillStyle =
-        "#ffffff";
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        -45,
-        3,
-        9,
-        0,
-        Math.PI*2
-    );
-
-
-    ctx.fill();
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        45,
-        3,
-        9,
-        0,
-        Math.PI*2
-    );
-
-
-    ctx.fill();
-
-
-    ctx.restore();
-
-}
-
-
-/* ============================================================
-   BALL
-============================================================ */
-
-function drawBall(){
-
-    ctx.save();
-
-
-    const r =
-        ball.radius;
-
-
-    ctx.shadowColor =
-        "#000b";
-
-
-    ctx.shadowBlur=
-        12;
-
-
-    const gradient =
-        ctx.createRadialGradient(
-            ball.x-r*.35,
-            ball.y-r*.45,
-            2,
-            ball.x,
-            ball.y,
-            r
-        );
-
-
-    gradient.addColorStop(
-        0,
-        "#ffffff"
-    );
-
-
-    gradient.addColorStop(
-        1,
-        "#b8c1bb"
-    );
-
-
-    ctx.fillStyle =
-        gradient;
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        ball.x,
-        ball.y,
-        r,
-        0,
-        Math.PI*2
-    );
-
-
-    ctx.fill();
-
-
-    ctx.shadowBlur=0;
-
-
-    ctx.fillStyle =
-        "#222";
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        ball.x-r*.2,
-        ball.y-r*.15,
-        r*.22,
-        0,
-        Math.PI*2
-    );
-
-
-    ctx.fill();
-
-
-    ctx.strokeStyle =
-        "#222";
-
-
-    ctx.lineWidth=
-        1.5;
-
-
-    ctx.stroke();
-
-
-    ctx.restore();
-
-}
-
-
-/* ============================================================
-   TARGET
-============================================================ */
-
-function drawTarget(){
-
-    if(
-        !state.exactTarget
-    ){
-
-        return;
-    }
-
-
-    if(
-        state.busy
-    ){
-
-        return;
-    }
-
-
-    if(
-        state.mode!==
-            "longshot" &&
-        state.mode!==
-            "crossbar"
-    ){
-
-        return;
-    }
-
-
-    const target =
-        state.exactTarget;
-
-
-    ctx.save();
-
-
-    ctx.strokeStyle =
-        state.mode===
-        "crossbar"
-            ? "#ffe35e"
-            : "#ffffff";
-
-
-    ctx.lineWidth=
-        3;
-
-
-    ctx.shadowColor =
-        "#000";
-
-
-    ctx.shadowBlur=
-        10;
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        target.x,
-        target.y,
-        18,
-        0,
-        Math.PI*2
-    );
-
-
-    ctx.stroke();
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        target.x-25,
-        target.y
-    );
-
-
-    ctx.lineTo(
-        target.x+25,
-        target.y
-    );
-
-
-    ctx.moveTo(
-        target.x,
-        target.y-25
-    );
-
-
-    ctx.lineTo(
-        target.x,
-        target.y+25
-    );
-
-
-    ctx.stroke();
-
-
-    ctx.restore();
-
-}
-
-
-/* ============================================================
-   KEEPER POV
-============================================================ */
-
-function drawKeeperPOV(){
-
-    const w =
-        state.width;
-
-    const h =
-        state.height;
-
-
-    const gradient =
-        ctx.createLinearGradient(
-            0,
-            0,
-            0,
-            h
-        );
-
-
-    gradient.addColorStop(
-        0,
-        "#15763a"
-    );
-
-
-    gradient.addColorStop(
-        1,
-        "#043d20"
-    );
-
-
-    ctx.fillStyle =
-        gradient;
-
-
-    ctx.fillRect(
-        0,
-        0,
-        w,
-        h
-    );
-
-
-    /*
-      Goal
-    */
-
-    ctx.strokeStyle =
-        "#ffffff";
-
-
-    ctx.lineWidth=
-        8;
-
-
-    ctx.strokeRect(
-        w*.09,
-        h*.08,
-        w*.82,
-        h*.62
-    );
-
-
-    /*
-      Net
-    */
-
-    ctx.strokeStyle =
-        "#ffffff28";
-
-
-    ctx.lineWidth=
-        1;
-
-
-    for(
-        let x=0;
-        x<=w;
-        x+=28
-    ){
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            x,
-            h*.08
-        );
-
-        ctx.lineTo(
-            x,
-            h*.70
-        );
-
-        ctx.stroke();
-
-    }
-
-
-    for(
-        let y=h*.08;
-        y<=h*.70;
-        y+=22
-    ){
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            0,
-            y
-        );
-
-        ctx.lineTo(
-            w,
-            y
-        );
-
-        ctx.stroke();
-
-    }
-
-
-    /*
-      Ball
-    */
-
-    if(
-        state.keeperActive
-    ){
-
-        ctx.shadowColor =
-            "#ffffff";
-
-
-        ctx.shadowBlur=
-            18;
-
-
-        ctx.fillStyle =
-            "#ffffff";
-
-
-        ctx.beginPath();
-
-
-        ctx.arc(
-            ball.x,
-            ball.y,
-            ball.radius,
-            0,
-            Math.PI*2
-        );
-
-
-        ctx.fill();
-
-
-        ctx.shadowBlur=0;
-
-    }
-
-
-    /*
-      Gloves
-    */
-
-    ctx.fillStyle =
-        "#ffffff";
-
-
-    ctx.beginPath();
-
-
-    ctx.ellipse(
-        w*.16,
-        h*.90,
-        60,
-        28,
-        -.30,
-        0,
-        Math.PI*2
-    );
-
-
-    ctx.fill();
-
-
-    ctx.beginPath();
-
-
-    ctx.ellipse(
-        w*.84,
-        h*.90,
-        60,
-        28,
-        .30,
-        0,
-        Math.PI*2
-    );
-
-
-    ctx.fill();
-
-
-    ctx.fillStyle =
-        "#00000066";
-
-
-    ctx.fillRect(
-        0,
-        h-55,
-        w,
-        55
-    );
-
-
-    ctx.fillStyle =
-        "#ffffff";
-
-
-    ctx.font =
-        "bold 18px Arial";
-
-
-    ctx.textAlign =
-        "center";
-
-
-    ctx.fillText(
-        keeperSelect.value===
-        "Hassan Ali"
-
-            ? "HASSAN ALI — 300 GK STATS"
-
-            : "GOALKEEPER POV",
-
-        w/2,
-        h-25
-    );
-
-}
-
-
-/* ============================================================
-   DRAW
-============================================================ */
-
-function draw(){
-
-    ctx.clearRect(
-        0,
-        0,
-        state.width,
-        state.height
-    );
-
-
-    if(
-        state.mode===
-        "keeper"
-    ){
-
-        drawKeeperPOV();
-
-        drawParticles();
-
-        return;
-    }
-
-
-    drawField();
-
-    drawPlayer();
-
-    drawKeeper();
-
-    drawBall();
-
-    drawTarget();
-
-    drawParticles();
-
-}
-
-
-/* ============================================================
-   GAME LOOP
-============================================================ */
-
-function update(
-    dt,
-    time
-){
-
-    if(
-        state.paused||
-        state.result
-    ){
-
-        return;
-    }
-
-
-    updateParticles(
-        dt
-    );
-
-
-    if(
-        state.mode===
-        "keeper"
-    ){
-
-        updateKeeper(
-            time
-        );
-
-    }else{
-
-        updateShot(
-            time
-        );
-    }
-
-}
-
-
-function gameLoop(
-    time
-){
-
-    const dt =
-        clamp(
-            (
-                time-
-                state.lastTime
-            )/
-            1000,
-
-            0,
-
-            .033
-        );
-
-
-    state.lastTime =
-        time;
-
-
-    update(
-        dt,
-        time
-    );
-
-
-    draw();
-
-
-    requestAnimationFrame(
-        gameLoop
-    );
-
-}
-
-
-/* ============================================================
-   MODE BUTTONS
+   EVENTS: MODES
 ============================================================ */
 
 document
@@ -5695,209 +5364,9 @@ document
                 "click",
                 ()=>{
 
-                    const mode =
-                        button.dataset.mode;
-
-
-                    state.mode =
-                        mode;
-
-
-                    state.busy=
-                        false;
-
-                    state.result=
-                        false;
-
-                    state.keeperActive=
-                        false;
-
-                    state.exactTarget=
-                        null;
-
-
-                    resultOverlay
-                        .classList
-                        .add(
-                            "hidden"
-                        );
-
-
-                    document
-                        .querySelectorAll(
-                            ".mode"
-                        )
-                        .forEach(
-                            item=>{
-
-                                item.classList.toggle(
-                                    "active",
-
-                                    item.dataset.mode===
-                                        mode
-                                );
-
-                            }
-                        );
-
-
-                    shootControls
-                        .classList
-                        .toggle(
-                            "hidden",
-
-                            mode===
-                                "keeper"||
-                            mode===
-                                "longshot"||
-                            mode===
-                                "crossbar"
-                        );
-
-
-                    keeperControls
-                        .classList
-                        .toggle(
-                            "hidden",
-
-                            mode!==
-                                "keeper"
-                        );
-
-
-                    exactShootButton
-                        .classList
-                        .toggle(
-                            "hidden",
-
-                            mode!==
-                                "longshot"&&
-                            mode!==
-                                "crossbar"
-                        );
-
-
-                    precisionCard
-                        .classList
-                        .add(
-                            "hidden"
-                        );
-
-
-                    if(
-                        mode===
-                        "penalty"
-                    ){
-
-                        modeTitle.textContent =
-                            "PENALTY SHOOTOUT";
-
-                        distance.textContent =
-                            "Distance: 11 m";
-
-                        setMessage(
-                            "CHOOSE YOUR SHOT",
-                            "LEFT • CENTER • RIGHT"
-                        );
-
-                    }
-
-
-                    if(
-                        mode===
-                        "freekick"
-                    ){
-
-                        modeTitle.textContent =
-                            "FREE KICK";
-
-                        distance.textContent =
-                            "Distance: "+
-                            (
-                                20+
-                                state.level*2
-                            )+
-                            " m";
-
-                        setMessage(
-                            "BEND IT AROUND THE WALL",
-                            "Use curve to beat the wall."
-                        );
-
-                    }
-
-
-                    if(
-                        mode===
-                        "longshot"
-                    ){
-
-                        modeTitle.textContent =
-                            "LONG SHOT";
-
-                        distance.textContent =
-                            "Distance: "+
-                            (
-                                25+
-                                state.level*3
-                            )+
-                            " m";
-
-                        setMessage(
-                            "CHOOSE YOUR EXACT TARGET",
-                            "Tap inside the goal."
-                        );
-
-                    }
-
-
-                    if(
-                        mode===
-                        "crossbar"
-                    ){
-
-                        modeTitle.textContent =
-                            "CROSSBAR CHALLENGE";
-
-                        distance.textContent =
-                            "Distance: "+
-                            (
-                                23+
-                                state.level*2
-                            )+
-                            " m";
-
-                        setMessage(
-                            "HIT THE CROSSBAR",
-                            "Tap the bar and press SHOOT."
-                        );
-
-                    }
-
-
-                    if(
-                        mode===
-                        "keeper"
-                    ){
-
-                        modeTitle.textContent =
-                            "GOALKEEPER POV";
-
-                        distance.textContent =
-                            "INCOMING SHOT";
-
-                        setMessage(
-                            "GET READY! 🧤",
-                            "Watch the ball!"
-                        );
-
-
-                        startKeeperMode();
-
-                    }
-
-
-                    updateHUD();
+                    setMode(
+                        button.dataset.mode
+                    );
 
                 }
             );
@@ -5907,12 +5376,12 @@ document
 
 
 /* ============================================================
-   SHOOT BUTTONS
+   EVENTS: SHOOT BUTTONS
 ============================================================ */
 
 document
     .querySelectorAll(
-        "#shootControls .shot-button"
+        "#shotButtons button"
     )
     .forEach(
         button=>{
@@ -5936,12 +5405,12 @@ document
 
 
 /* ============================================================
-   KEEPER BUTTONS
+   EVENTS: KEEPER BUTTONS
 ============================================================ */
 
 document
     .querySelectorAll(
-        "#keeperControls .shot-button"
+        "#saveButtons button"
     )
     .forEach(
         button=>{
@@ -5965,10 +5434,10 @@ document
 
 
 /* ============================================================
-   EXACT TARGET SHOOT
+   EVENTS: EXACT AIM
 ============================================================ */
 
-canvas.addEventListener(
+pitchSvg.addEventListener(
     "pointerdown",
     event=>{
 
@@ -5981,55 +5450,20 @@ canvas.addEventListener(
         ){
 
             return;
+
         }
 
 
         if(
             state.mode===
-            "longshot"||
+                "longshot"||
+
             state.mode===
-            "crossbar"
+                "crossbar"
         ){
 
             chooseExactTarget(
                 event
-            );
-
-            return;
-        }
-
-
-        if(
-            state.mode===
-            "keeper"
-        ){
-
-            const rect =
-                canvas.getBoundingClientRect();
-
-
-            const x =
-                event.clientX-
-                rect.left;
-
-
-            const zone =
-                x<
-                state.width/3
-
-                    ? "left"
-
-                    :
-                    x<
-                    state.width*2/3
-
-                        ? "center"
-
-                        : "right";
-
-
-            keeperSave(
-                zone
             );
 
         }
@@ -6041,21 +5475,67 @@ canvas.addEventListener(
 );
 
 
-exactShootButton.addEventListener(
+keeperSvg.addEventListener(
+    "pointerdown",
+    event=>{
+
+        event.preventDefault();
+
+
+        if(
+            state.mode!==
+                "keeper"||
+
+            state.paused||
+            state.result
+        ){
+
+            return;
+
+        }
+
+
+        const rect =
+            keeperSvg.getBoundingClientRect();
+
+
+        const x =
+            (
+                event.clientX-
+                rect.left
+            )/
+            rect.width*
+            1200;
+
+
+        keeperSave(
+            zoneFromX(
+                x
+            )
+        );
+
+    },
+    {
+        passive:false
+    }
+);
+
+
+exactButton.addEventListener(
     "click",
-    shootExact
+    exactShoot
 );
 
 
 /* ============================================================
-   SELECTS
+   SELECT EVENTS
 ============================================================ */
 
 playerSelect.addEventListener(
     "change",
     ()=>{
 
-        updatePlayerUI();
+        updateHUD();
 
         resetRound();
 
@@ -6067,7 +5547,7 @@ keeperSelect.addEventListener(
     "change",
     ()=>{
 
-        updatePlayerUI();
+        updateHUD();
 
         resetRound();
 
@@ -6089,495 +5569,191 @@ cameraSelect.addEventListener(
     "change",
     ()=>{
 
-        resizeCanvas();
+        updateCamera();
 
         resetRound();
 
     }
 );
-
-
-/* ============================================================
-   RESET ROUND
-============================================================ */
-
-function resetRound(){
-
-    clearTimeout(
-        state.timer
-    );
-
-
-    state.busy=
-        false;
-
-    state.result=
-        false;
-
-    state.keeperActive=
-        false;
-
-    state.exactTarget=
-        null;
-
-
-    resultOverlay
-        .classList
-        .add(
-            "hidden"
-        );
-
-
-    const d =
-        currentDifficulty();
-
-
-    state.wind =
-        random(
-            -d.wind,
-            d.wind
-        );
-
-
-    positionObjects();
-
-
-    updateHUD();
-
-
-    if(
-        state.mode===
-        "keeper"
-    ){
-
-        startKeeperMode();
-
-    }
-
-
-    if(
-        state.mode===
-        "penalty"
-    ){
-
-        setMessage(
-            "CHOOSE YOUR SHOT",
-            "LEFT • CENTER • RIGHT"
-        );
-
-    }
-
-
-    if(
-        state.mode===
-        "freekick"
-    ){
-
-        setMessage(
-            "BEND IT AROUND THE WALL",
-            "Free-kick wall active."
-        );
-
-    }
-
-
-    if(
-        state.mode===
-        "longshot"
-    ){
-
-        setMessage(
-            "CHOOSE YOUR EXACT TARGET",
-            "Tap inside the goal."
-        );
-
-    }
-
-
-    if(
-        state.mode===
-        "crossbar"
-    ){
-
-        setMessage(
-            "HIT THE CROSSBAR",
-            "Choose a target."
-        );
-
-    }
-
-}
 
 
 /* ============================================================
    PAUSE
 ============================================================ */
 
-pauseButton.addEventListener(
-    "click",
-    ()=>{
-
-        state.paused=
-            !state.paused;
-
-
-        pauseOverlay
-            .classList
-            .toggle(
-                "hidden",
-                !state.paused
-            );
+document
+    .getElementById(
+        "pauseBtn"
+    )
+    .addEventListener(
+        "click",
+        togglePause
+    );
 
 
-        pauseButton.textContent =
-            state.paused
-                ? "▶ RESUME"
-                : "⏸ PAUSE";
-
-    }
-);
-
-
-resumeButton.addEventListener(
-    "click",
-    ()=>{
-
-        state.paused=
-            false;
-
-
-        pauseOverlay
-            .classList
-            .add(
-                "hidden"
-            );
-
-
-        pauseButton.textContent =
-            "⏸ PAUSE";
-
-    }
-);
-
-
-/* ============================================================
-   RESULT CONTINUE
-============================================================ */
-
-continueButton.addEventListener(
-    "click",
-    ()=>{
-
-        state.result=
-            false;
-
-
-        resultOverlay
-            .classList
-            .add(
-                "hidden"
-            );
-
-
-        resetRound();
-
-    }
-);
+document
+    .getElementById(
+        "resumeButton"
+    )
+    .addEventListener(
+        "click",
+        togglePause
+    );
 
 
 /* ============================================================
    SOUND
 ============================================================ */
 
-let audioContext =
-    null;
+document
+    .getElementById(
+        "soundBtn"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+
+            state.sound=
+                !state.sound;
 
 
-function getAudio(){
+            document
+                .getElementById(
+                    "soundBtn"
+                )
+                .textContent =
 
-    if(
-        !state.sound
-    ){
-
-        return null;
-    }
-
-
-    try{
-
-        if(
-            !audioContext
-        ){
-
-            audioContext =
-                new(
-                    window.AudioContext||
-                    window.webkitAudioContext
-                )();
+                state.sound
+                    ? "🔊 SOUND ON"
+                    : "🔇 SOUND OFF";
 
         }
-
-
-        return audioContext;
-
-    }catch{
-
-        return null;
-    }
-
-}
-
-
-function beep(
-    frequency,
-    duration,
-    type
-){
-
-    const audio =
-        getAudio();
-
-
-    if(
-        !audio
-    ){
-
-        return;
-    }
-
-
-    try{
-
-        const oscillator =
-            audio.createOscillator();
-
-
-        const gain =
-            audio.createGain();
-
-
-        oscillator.type =
-            type||
-            "sine";
-
-
-        oscillator.frequency.value =
-            frequency;
-
-
-        gain.gain.setValueAtTime(
-            .001,
-            audio.currentTime
-        );
-
-
-        gain.gain.exponentialRampToValueAtTime(
-            .10,
-            audio.currentTime+
-            .01
-        );
-
-
-        gain.gain.exponentialRampToValueAtTime(
-            .001,
-            audio.currentTime+
-            duration
-        );
-
-
-        oscillator.connect(
-            gain
-        );
-
-
-        gain.connect(
-            audio.destination
-        );
-
-
-        oscillator.start();
-
-
-        oscillator.stop(
-            audio.currentTime+
-            duration
-        );
-
-    }catch{
-
-        /* Audio is optional. */
-    }
-
-}
-
-
-function goalSound(){
-
-    beep(
-        523,
-        .08,
-        "triangle"
     );
 
 
-    setTimeout(
+/* ============================================================
+   RESULT CONTINUE
+============================================================ */
+
+document
+    .getElementById(
+        "continueButton"
+    )
+    .addEventListener(
+        "click",
         ()=>{
 
-            beep(
-                659,
-                .09,
-                "triangle"
-            );
+            state.result=
+                false;
 
-        },
-        80
+
+            resultOverlay
+                .classList
+                .add(
+                    "hidden"
+                );
+
+
+            resetRound();
+
+        }
     );
-
-
-    setTimeout(
-        ()=>{
-
-            beep(
-                784,
-                .18,
-                "triangle"
-            );
-
-        },
-        160
-    );
-
-}
-
-
-function saveSound(){
-
-    beep(
-        180,
-        .12,
-        "square"
-    );
-
-
-    setTimeout(
-        ()=>{
-
-            beep(
-                120,
-                .16,
-                "square"
-            );
-
-        },
-        100
-    );
-
-}
-
-
-soundButton.addEventListener(
-    "click",
-    ()=>{
-
-        state.sound=
-            !state.sound;
-
-
-        soundButton.textContent =
-            state.sound
-                ? "🔊 SOUND ON"
-                : "🔇 SOUND OFF";
-
-    }
-);
 
 
 /* ============================================================
    RESTART
 ============================================================ */
 
-restartButton.addEventListener(
-    "click",
-    ()=>{
+document
+    .getElementById(
+        "restartButton"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
 
-        clearTimeout(
-            state.timer
-        );
+            state.score=
+                0;
 
+            state.goals=
+                0;
 
-        state.score=
-            0;
+            state.saves=
+                0;
 
-        state.goals=
-            0;
+            state.level=
+                1;
 
-        state.saves=
-            0;
+            state.combo=
+                0;
 
-        state.level=
-            1;
+            state.best=
+                0;
 
-        state.combo=
-            0;
+            state.crossbarHits=
+                0;
 
-        state.bestCombo=
-            0;
+            state.busy=
+                false;
 
-        state.crossbarHits=
-            0;
+            state.result=
+                false;
 
-        state.busy=
-            false;
-
-        state.result=
-            false;
-
-        state.paused=
-            false;
-
-
-        particles=[];
+            state.paused=
+                false;
 
 
-        pauseOverlay
-            .classList
-            .add(
-                "hidden"
+            particles=[];
+
+
+            cancelTimer();
+
+
+            pauseOverlay
+                .classList
+                .add(
+                    "hidden"
+                );
+
+
+            resultOverlay
+                .classList
+                .add(
+                    "hidden"
+                );
+
+
+            document
+                .getElementById(
+                    "pauseBtn"
+                )
+                .textContent=
+                    "⏸ PAUSE";
+
+
+            resetRound();
+
+
+            setMessage(
+                "GAME RESTARTED! ⚽",
+                "New match started."
             );
 
-
-        resultOverlay
-            .classList
-            .add(
-                "hidden"
-            );
-
-
-        pauseButton.textContent =
-            "⏸ PAUSE";
-
-
-        updateHUD();
-
-        resetRound();
-
-
-        setMessage(
-            "GAME RESTARTED! ⚽",
-            "New match!"
-        );
-
-    }
-);
+        }
+    );
 
 
 /* ============================================================
-   WINDOW EVENTS
+   WINDOW RESIZE
 ============================================================ */
 
 window.addEventListener(
     "resize",
-    resizeCanvas
+    ()=>{
+
+        updateCamera();
+
+    }
 );
 
 
@@ -6586,7 +5762,7 @@ window.addEventListener(
     ()=>{
 
         setTimeout(
-            resizeCanvas,
+            updateCamera,
             150
         );
 
@@ -6595,15 +5771,85 @@ window.addEventListener(
 
 
 /* ============================================================
-   START GAME
+   MAIN GAME LOOP
 ============================================================ */
 
-updatePlayerUI();
+function gameLoop(
+    time
+){
 
-resizeCanvas();
+    const delta =
+        clamp(
+            (
+                time-
+                state.lastTime
+            )/
+            1000,
 
-resetRound();
+            0,
+
+            .033
+        );
+
+
+    state.lastTime=
+        time;
+
+
+    if(
+        !state.paused&&
+        !state.result
+    ){
+
+        updateParticles(
+            delta
+        );
+
+
+        if(
+            state.mode===
+            "keeper"
+        ){
+
+            updateKeeper(
+                time
+            );
+
+        }
+
+        else{
+
+            updateShot(
+                time
+            );
+
+        }
+
+    }
+
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+/* ============================================================
+   INITIALIZATION
+============================================================ */
+
+updateCamera();
+
+updateHUD();
+
+setMode(
+    "penalty"
+);
+
 
 requestAnimationFrame(
     gameLoop
 );
+
+})();
