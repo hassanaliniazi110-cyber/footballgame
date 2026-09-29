@@ -1,7 +1,8 @@
 *,
 *::before,
-*::after {
-    box-sizing: border-box;
+*::after{
+
+    box-sizing:border-box;
 
     -webkit-tap-highlight-color:
         transparent;
@@ -9,135 +10,142 @@
 
 
 html,
-body {
-    width: 100%;
-    height: 100%;
+body{
 
-    margin: 0;
+    width:100%;
+    height:100%;
 
-    background: #020c06;
+    margin:0;
 
-    color: #ffffff;
+    overflow:hidden;
+
+    background:#020d07;
+
+    color:white;
 
     font-family:
         Arial,
         Helvetica,
         sans-serif;
-
-    overflow: hidden;
 }
 
 
-body {
-    touch-action: manipulation;
+body{
 
-    overscroll-behavior: none;
+    touch-action:
+        manipulation;
+
+    overscroll-behavior:
+        none;
 }
 
 
 button,
-select {
-    font: inherit;
+select{
+
+    font:inherit;
 }
 
 
-button {
-    cursor: pointer;
+button{
 
-    -webkit-user-select: none;
-    user-select: none;
+    cursor:pointer;
+
+    user-select:none;
+
+    -webkit-user-select:none;
 }
 
 
-/* =====================================================
-   APPLICATION
-===================================================== */
+#app{
 
-#app {
-    width: 100%;
+    width:100%;
+    height:100dvh;
 
-    height: 100dvh;
+    min-height:100vh;
 
-    min-height: 100vh;
-
-    display: grid;
+    display:grid;
 
     grid-template-rows:
+
         auto
         auto
         auto
         auto
-        minmax(380px, 1fr)
+        minmax(390px,1fr)
         auto;
 
     background:
-        #06160c;
+        #06170d;
 }
 
 
-/* =====================================================
+/* =========================================================
    TOP BAR
-===================================================== */
+========================================================= */
 
-.topbar {
-    min-height: 74px;
+.topbar{
 
-    display: flex;
+    display:flex;
 
-    align-items: center;
+    align-items:center;
 
-    justify-content: space-between;
+    justify-content:space-between;
 
-    gap: 14px;
+    gap:18px;
 
     padding:
-        8px 16px;
+        10px 16px;
 
     background:
+
         linear-gradient(
             180deg,
-            #173322,
-            #07130c
+            #183824,
+            #07130b
         );
 
     border-bottom:
-        1px solid #355540;
+        1px solid #365541;
 
     box-shadow:
-        0 8px 25px
-        rgba(0,0,0,.35);
+        0 8px 26px #0008;
 
-    z-index: 30;
+    z-index:20;
 }
 
 
-.brand {
-    font-weight: 1000;
+.brand-title{
 
     font-size:
         clamp(
-            15px,
-            2vw,
-            29px
+            16px,
+            2.4vw,
+            31px
         );
+
+    font-weight:
+        1000;
 
     letter-spacing:
         .5px;
 }
 
 
-.brand span {
+.brand-title span{
+
     color:
-        #8cffaa;
+        #72ff9b;
 }
 
 
-.subtitle {
+.brand-subtitle{
+
     margin-top:
         4px;
 
     color:
-        #91ad9b;
+        #879f91;
 
     font-size:
         8px;
@@ -147,24 +155,21 @@ button {
 }
 
 
-.top-stats {
-    display:
-        flex;
+.scoreboard{
 
-    gap:
-        6px;
+    display:flex;
+
+    gap:7px;
 }
 
 
-.top-stat {
+.score-item{
+
     min-width:
-        60px;
+        62px;
 
     padding:
-        5px 7px;
-
-    text-align:
-        center;
+        5px 8px;
 
     border:
         1px solid #31503a;
@@ -173,21 +178,19 @@ button {
         10px;
 
     background:
-        rgba(
-            255,
-            255,
-            255,
-            .035
-        );
+        #ffffff06;
+
+    text-align:
+        center;
 }
 
 
-.top-stat small {
-    display:
-        block;
+.score-item span{
+
+    display:block;
 
     color:
-        #92a798;
+        #849b8d;
 
     font-size:
         7px;
@@ -197,37 +200,34 @@ button {
 }
 
 
-.top-stat strong {
-    display:
-        block;
+.score-item strong{
+
+    display:block;
 
     margin-top:
         2px;
 
     font-size:
-        18px;
+        19px;
 }
 
 
-/* =====================================================
-   CONTROL DECK
-===================================================== */
+/* =========================================================
+   CONTROLS
+========================================================= */
 
-.control-deck {
-    display:
-        flex;
+.control-panel{
 
-    flex-wrap:
-        wrap;
+    display:flex;
 
-    justify-content:
-        center;
+    align-items:center;
 
-    align-items:
-        center;
+    justify-content:center;
+
+    flex-wrap:wrap;
 
     gap:
-        8px 14px;
+        8px 15px;
 
     padding:
         8px;
@@ -236,41 +236,40 @@ button {
         #092016;
 
     border-bottom:
-        1px solid #294835;
+        1px solid #294935;
 
-    z-index:
-        25;
+    z-index:20;
 }
 
 
-.field-control {
-    display:
-        flex;
+.control-group{
 
-    align-items:
-        center;
+    display:flex;
 
-    gap:
-        6px;
+    align-items:center;
+
+    gap:6px;
 }
 
 
-.field-control label {
+.control-group label{
+
     color:
-        #9aafa1;
+        #95a99d;
 
     font-size:
         8px;
 
     font-weight:
-        900;
+        1000;
 
     letter-spacing:
         1px;
 }
 
 
-.field-control select {
+.control-group select{
+
     min-width:
         130px;
 
@@ -278,13 +277,13 @@ button {
         220px;
 
     padding:
-        8px 24px 8px 9px;
+        8px;
 
     border:
-        1px solid #486650;
+        1px solid #496850;
 
     border-radius:
-        8px;
+        9px;
 
     background:
         #162d1e;
@@ -292,94 +291,32 @@ button {
     color:
         white;
 
-    outline:
-        none;
+    outline:none;
 
     font-size:
         10px;
 
     font-weight:
-        700;
+        bold;
 }
 
 
-.utility-btn {
+.utility-button{
+
     padding:
-        8px 11px;
+        8px 12px;
 
     border:
-        1px solid #3c5b45;
+        1px solid #405d48;
 
     border-radius:
-        8px;
-
-    background:
-        #142a1b;
-
-    color:
-        #dbe9df;
-
-    font-size:
         9px;
 
-    font-weight:
-        900;
-}
-
-
-/* =====================================================
-   MODE BAR
-===================================================== */
-
-.mode-bar {
-    display:
-        flex;
-
-    flex-wrap:
-        wrap;
-
-    justify-content:
-        center;
-
-    gap:
-        7px;
-
-    padding:
-        8px;
-
     background:
-        #06160c;
-
-    border-bottom:
-        1px solid #27432f;
-
-    z-index:
-        25;
-}
-
-
-.mode {
-    min-width:
-        118px;
-
-    padding:
-        10px 12px;
-
-    border:
-        1px solid #3b5943;
-
-    border-radius:
-        10px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #183320,
-            #102319
-        );
+        #142b1c;
 
     color:
-        #e0ede4;
+        white;
 
     font-size:
         9px;
@@ -389,105 +326,150 @@ button {
 }
 
 
-.mode.active {
-    background:
-        linear-gradient(
-            180deg,
-            #24c85e,
-            #0d8d3d
-        );
+/* =========================================================
+   MODES
+========================================================= */
 
-    border-color:
-        #83ffab;
+.mode-bar{
 
-    box-shadow:
-        0 0 20px
-        rgba(
-            35,
-            215,
-            91,
-            .24
-        );
-}
+    display:flex;
 
+    justify-content:center;
 
-/* =====================================================
-   PLAYER PANEL
-===================================================== */
-
-.player-panel {
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    flex-wrap:
-        wrap;
+    flex-wrap:wrap;
 
     gap:
         7px;
+
+    padding:
+        8px;
+
+    background:
+        #06170d;
+
+    border-bottom:
+        1px solid #294631;
+
+    z-index:19;
+}
+
+
+.mode{
+
+    min-width:
+        124px;
+
+    padding:
+        11px 14px;
+
+    border:
+        1px solid #3c5944;
+
+    border-radius:
+        11px;
+
+    background:
+        linear-gradient(
+            #193524,
+            #102419
+        );
+
+    color:
+        #dce9df;
+
+    font-size:
+        9px;
+
+    font-weight:
+        1000;
+}
+
+
+.mode.active{
+
+    background:
+        linear-gradient(
+            #29cf63,
+            #0b8f3d
+        );
+
+    border-color:
+        #84ffab;
+
+    box-shadow:
+        0 0 25px
+        #20e15a44;
+}
+
+
+/* =========================================================
+   PLAYER STATS
+========================================================= */
+
+.player-panel{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:7px;
 
     padding:
         5px 8px;
 
     background:
-        #05120a;
+        #041109;
 
     border-bottom:
-        1px solid #203a28;
+        1px solid #203b29;
 
-    z-index:
-        20;
+    z-index:18;
 }
 
 
-.identity {
+.player-identity{
+
     min-width:
-        180px;
+        195px;
 
-    display:
-        flex;
+    display:flex;
 
-    align-items:
-        center;
+    align-items:center;
 
-    gap:
-        8px;
-
-    padding:
-        4px 8px;
+    gap:9px;
 }
 
 
-.avatar {
-    width:
-        34px;
+.avatar{
 
-    height:
-        34px;
+    width:38px;
 
-    display:
-        grid;
+    height:38px;
 
-    place-items:
-        center;
+    display:grid;
+
+    place-items:center;
 
     border-radius:
         50%;
 
+    border:
+        2px solid #9affb5;
+
     background:
         linear-gradient(
             135deg,
-            #2bd36d,
+            #2be06e,
             #087f37
         );
 
-    border:
-        2px solid #9dffb5;
+    box-shadow:
+        0 0 18px
+        #42ff7c28;
 
     font-size:
         10px;
@@ -497,21 +479,24 @@ button {
 }
 
 
-.player-name {
-    font-size:
-        12px;
+.player-identity strong{
 
-    font-weight:
-        1000;
+    display:block;
+
+    font-size:
+        13px;
 }
 
 
-.player-role {
+.player-identity span{
+
+    display:block;
+
     margin-top:
         2px;
 
     color:
-        #8ba394;
+        #7fa090;
 
     font-size:
         7px;
@@ -521,215 +506,195 @@ button {
 }
 
 
-.mini-stat {
+.player-stat{
+
     min-width:
-        67px;
+        69px;
 
     padding:
-        4px 6px;
-
-    text-align:
-        center;
+        5px;
 
     border:
-        1px solid #294733;
+        1px solid #294834;
 
     border-radius:
-        7px;
+        8px;
 
     background:
-        #102319;
+        #10241a;
+
+    text-align:center;
 }
 
 
-.mini-stat span {
-    display:
-        block;
+.player-stat small{
+
+    display:block;
 
     color:
-        #879e8e;
+        #7b9184;
 
     font-size:
         6px;
 }
 
 
-.mini-stat b {
-    display:
-        block;
+.player-stat b{
 
-    color:
-        #84ffa7;
-
-    font-size:
-        13px;
+    display:block;
 
     margin-top:
-        1px;
+        2px;
+
+    color:
+        #80ffa5;
+
+    font-size:
+        14px;
 }
 
 
-/* =====================================================
+/* =========================================================
    GAME
-===================================================== */
+========================================================= */
 
-#gameArea {
-    position:
-        relative;
+#gameArea{
+
+    position:relative;
 
     min-height:
-        380px;
+        390px;
 
-    overflow:
-        hidden;
-
-    isolation:
-        isolate;
+    overflow:hidden;
 
     background:
         #087731;
+
+    isolation:
+        isolate;
 }
 
 
-#gameCanvas {
-    position:
-        absolute;
+#gameCanvas{
 
-    inset:
-        0;
+    position:absolute;
 
-    display:
-        block;
+    inset:0;
 
-    width:
-        100%;
+    width:100%;
+    height:100%;
 
-    height:
-        100%;
+    display:block;
 
-    z-index:
-        1;
+    z-index:1;
 }
 
 
-/* =====================================================
-   HUD
-===================================================== */
+/* =========================================================
+   GLASS HUD
+========================================================= */
 
-.hud {
-    position:
-        absolute;
+.glass-box{
 
-    top:
-        10px;
+    position:absolute;
 
-    z-index:
-        8;
+    z-index:10;
 
-    pointer-events:
-        none;
-}
-
-
-.top-left {
-    left:
-        10px;
-}
-
-
-.top-right {
-    right:
-        10px;
-}
-
-
-.center-hud {
-    left:
-        50%;
-
-    transform:
-        translateX(-50%);
-
-    text-align:
-        center;
-
-    min-width:
-        min(
-            390px,
-            60vw
-        );
-}
-
-
-.hud-card,
-.center-hud {
     padding:
         8px 12px;
+
+    border:
+        1px solid #ffffff22;
 
     border-radius:
         12px;
 
-    border:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            .16
-        );
-
     background:
-        rgba(
-            3,
-            14,
-            8,
-            .72
-        );
+        #03140dcc;
 
     box-shadow:
-        0 6px 22px
-        rgba(
-            0,
-            0,
-            0,
-            .34
-        );
+        0 8px 25px #0007;
 
     backdrop-filter:
         blur(7px);
 }
 
 
-.hud-card strong {
-    display:
-        block;
+.top-left{
 
-    font-size:
-        12px;
+    left:
+        10px;
+
+    top:
+        10px;
 }
 
 
-.hud-card span {
-    display:
-        block;
+.top-right{
+
+    right:
+        10px;
+
+    top:
+        10px;
+
+    text-align:center;
+}
+
+
+.glass-box strong,
+.glass-box small{
+
+    display:block;
+}
+
+
+.glass-box strong{
+
+    font-size:
+        13px;
+}
+
+
+.glass-box small{
 
     margin-top:
         2px;
 
     color:
-        #99ab9f;
+        #91a69a;
 
     font-size:
         8px;
 }
 
 
-.mode-label {
-    color:
-        #86eda2;
+.center-hud{
 
-    font-size:
-        7px;
+    left:
+        50%;
+
+    top:
+        10px;
+
+    transform:
+        translateX(-50%);
+
+    min-width:
+        min(
+            430px,
+            65vw
+        );
+
+    text-align:
+        center;
+}
+
+
+.center-hud small{
+
+    color:
+        #7fff9e;
 
     font-weight:
         1000;
@@ -739,158 +704,193 @@ button {
 }
 
 
-.main-message {
-    margin-top:
-        2px;
+.center-hud strong{
 
-    font-size:
-        clamp(
-            12px,
-            2vw,
-            21px
-        );
-
-    font-weight:
-        1000;
-}
-
-
-.sub-message {
     margin-top:
         3px;
 
+    font-size:
+        clamp(
+            13px,
+            2vw,
+            23px
+        );
+}
+
+
+.center-hud span{
+
+    margin-top:
+        4px;
+
     color:
-        #c3d2c8;
+        #bfd0c5;
 
     font-size:
         8px;
 }
 
 
-/* =====================================================
-   EXTRA CARDS
-===================================================== */
+/* =========================================================
+   ABILITY
+========================================================= */
 
-.ability-banner,
-.target-guide,
-.power-wrap,
-.aim-card,
-.accuracy-card,
-.wind-card,
-.challenge-card {
-    position:
-        absolute;
+.ability{
 
-    z-index:
-        9;
+    position:absolute;
 
-    pointer-events:
-        none;
-}
-
-
-.ability-banner {
     left:
         50%;
 
     top:
-        96px;
+        98px;
 
     transform:
         translateX(-50%);
+
+    z-index:11;
+
+    max-width:
+        75vw;
 
     padding:
         6px 12px;
 
+    border:
+        1px solid #6ff39b;
+
     border-radius:
         999px;
 
     background:
-        rgba(
-            12,
-            59,
-            27,
-            .86
-        );
-
-    border:
-        1px solid #72f29b;
+        #0b451fdc;
 
     color:
-        #b4ffca;
+        #b5ffca;
 
     font-size:
         8px;
 
     font-weight:
         1000;
-}
-
-
-.target-guide {
-    left:
-        50%;
-
-    top:
-        128px;
-
-    transform:
-        translateX(-50%);
-
-    padding:
-        6px 11px;
-
-    border-radius:
-        999px;
-
-    background:
-        rgba(
-            0,
-            0,
-            0,
-            .35
-        );
-
-    color:
-        rgba(
-            255,
-            255,
-            255,
-            .88
-        );
-
-    font-size:
-        8px;
 
     text-align:
         center;
 }
 
 
-.power-wrap {
-    width:
-        min(
-            330px,
-            52vw
-        );
+/* =========================================================
+   INFO CARDS
+========================================================= */
+
+.info-card{
+
+    position:absolute;
+
+    z-index:11;
+
+    padding:
+        7px 10px;
+
+    border:
+        1px solid #ffffff1d;
+
+    border-radius:
+        9px;
+
+    background:
+        #03140db8;
+}
+
+
+.info-card small{
+
+    display:block;
+
+    color:
+        #83998d;
+
+    font-size:
+        7px;
+}
+
+
+.info-card strong{
+
+    display:block;
+
+    margin-top:
+        2px;
+
+    font-size:
+        10px;
+}
+
+
+.wind-card{
+
+    left:
+        10px;
+
+    top:
+        106px;
+}
+
+
+.challenge-card{
+
+    right:
+        10px;
+
+    top:
+        106px;
+
+    max-width:
+        210px;
+}
+
+
+.precision-card{
+
+    right:
+        10px;
+
+    bottom:
+        84px;
+}
+
+
+/* =========================================================
+   POWER
+========================================================= */
+
+.power-container{
+
+    position:absolute;
 
     left:
         50%;
 
     bottom:
-        100px;
+        105px;
 
     transform:
         translateX(-50%);
-}
 
+    z-index:20;
 
-.power-caption {
-    margin-bottom:
-        4px;
+    width:
+        min(
+            360px,
+            55vw
+        );
 
     text-align:
         center;
+}
+
+
+.power-container small{
 
     font-size:
         7px;
@@ -903,36 +903,29 @@ button {
 }
 
 
-.power-track {
+.power-track{
+
     height:
-        8px;
+        9px;
+
+    margin-top:
+        4px;
+
+    overflow:hidden;
+
+    border:
+        1px solid #ffffff44;
 
     border-radius:
         999px;
 
-    overflow:
-        hidden;
-
-    border:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            .35
-        );
-
     background:
-        rgba(
-            0,
-            0,
-            0,
-            .38
-        );
+        #0008;
 }
 
 
-#powerFill {
+#powerBar{
+
     width:
         0%;
 
@@ -942,121 +935,20 @@ button {
     background:
         linear-gradient(
             90deg,
-            #1acc55,
-            #f0dd37,
-            #ff7541
+            #18c955,
+            #eddf37,
+            #ff6338
         );
 }
 
 
-.aim-card,
-.accuracy-card,
-.wind-card,
-.challenge-card {
-    padding:
-        6px 9px;
+/* =========================================================
+   CONTROLS
+========================================================= */
 
-    border-radius:
-        9px;
+.shoot-controls{
 
-    background:
-        rgba(
-            3,
-            14,
-            8,
-            .66
-        );
-
-    border:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            .13
-        );
-}
-
-
-.aim-card {
-    left:
-        10px;
-
-    bottom:
-        82px;
-}
-
-
-.accuracy-card {
-    right:
-        10px;
-
-    bottom:
-        82px;
-}
-
-
-.wind-card {
-    left:
-        10px;
-
-    top:
-        104px;
-}
-
-
-.challenge-card {
-    right:
-        10px;
-
-    top:
-        104px;
-
-    max-width:
-        220px;
-}
-
-
-.aim-card span,
-.accuracy-card span,
-.wind-card span,
-.challenge-card span {
-    display:
-        block;
-
-    color:
-        #8fa499;
-
-    font-size:
-        7px;
-
-    letter-spacing:
-        1px;
-}
-
-
-.aim-card b,
-.accuracy-card b,
-.wind-card b,
-.challenge-card b {
-    display:
-        block;
-
-    margin-top:
-        2px;
-
-    font-size:
-        10px;
-}
-
-
-/* =====================================================
-   ACTION BUTTONS
-===================================================== */
-
-.action-controls {
-    position:
-        absolute;
+    position:absolute;
 
     left:
         50%;
@@ -1067,124 +959,117 @@ button {
     transform:
         translateX(-50%);
 
-    display:
-        flex;
+    display:flex;
 
     gap:
-        8px;
+        9px;
+
+    width:
+        min(
+            350px,
+            94%
+        );
 
     z-index:
-        20;
+        30;
 }
 
 
-.action-btn {
-    width:
-        102px;
+.shot-button{
+
+    flex:1;
 
     height:
-        56px;
-
-    display:
-        flex;
-
-    flex-direction:
-        column;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
+        59px;
 
     border:
-        0;
+        none;
 
     border-radius:
         15px;
 
     background:
         linear-gradient(
-            180deg,
             #ffffff,
-            #d5e1da
+            #d2dfd7
         );
 
     color:
-        #102018;
+        #112019;
 
     box-shadow:
-        0 8px 18px
-        rgba(
-            0,
-            0,
-            0,
-            .48
-        );
-}
-
-
-.action-btn span {
-    font-size:
-        21px;
-
-    line-height:
-        20px;
-}
-
-
-.action-btn small {
-    font-size:
-        8px;
+        0 8px 22px #000a;
 
     font-weight:
         1000;
 }
 
 
-.action-btn:active {
-    transform:
-        scale(.92);
+.shot-button span{
+
+    display:block;
+
+    font-size:
+        22px;
 }
 
 
-.big-shoot {
-    position:
-        absolute;
+.shot-button small{
+
+    display:block;
+
+    margin-top:
+        2px;
+
+    font-size:
+        8px;
+}
+
+
+.shot-button:active{
+
+    transform:
+        scale(.93);
+}
+
+
+/* =========================================================
+   EXACT SHOOT
+========================================================= */
+
+.exact-button{
+
+    position:absolute;
 
     left:
         50%;
 
     bottom:
-        17px;
+        16px;
 
     transform:
         translateX(-50%);
 
     z-index:
-        25;
-
-    min-width:
-        150px;
+        35;
 
     padding:
-        13px 26px;
+        14px 28px;
 
     border:
-        1px solid #ffe8a2;
+        1px solid #ffe2a0;
 
     border-radius:
         14px;
 
-    color:
-        white;
-
     background:
         linear-gradient(
-            180deg,
-            #ea6b29,
-            #a53212
+            #ee7430,
+            #9d2e0f
         );
+
+    color:
+        white;
 
     font-size:
         12px;
@@ -1193,145 +1078,109 @@ button {
         1000;
 
     box-shadow:
-        0 9px 22px
-        rgba(
-            0,
-            0,
-            0,
-            .5
-        );
+        0 10px 25px #000b;
 }
 
 
-/* =====================================================
+/* =========================================================
    OVERLAYS
-===================================================== */
+========================================================= */
 
-.pause-overlay,
-.result-overlay {
-    position:
-        absolute;
+.overlay{
 
-    inset:
-        0;
+    position:absolute;
 
-    z-index:
-        60;
+    inset:0;
 
-    display:
-        grid;
+    z-index:100;
 
-    place-items:
-        center;
+    display:grid;
+
+    place-items:center;
 
     background:
-        rgba(
-            0,
-            0,
-            0,
-            .55
-        );
+        #00000099;
 
     backdrop-filter:
-        blur(5px);
+        blur(6px);
 }
 
 
-.pause-box,
-.result-box {
+.popup{
+
     min-width:
-        270px;
+        290px;
 
     padding:
-        25px;
+        28px;
+
+    border:
+        1px solid #ffffff2b;
+
+    border-radius:
+        19px;
+
+    background:
+        #071b0ef7;
 
     text-align:
         center;
 
-    border:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            .2
-        );
-
-    border-radius:
-        18px;
-
-    background:
-        rgba(
-            7,
-            24,
-            14,
-            .95
-        );
-
     box-shadow:
-        0 15px 40px
-        rgba(
-            0,
-            0,
-            0,
-            .55
-        );
+        0 20px 55px #000c;
 }
 
 
-.pause-title,
-#resultTitle {
-    font-size:
-        26px;
+.popup h1{
 
-    font-weight:
-        1000;
-}
-
-
-#resultPoints {
-    margin-top:
-        4px;
-
-    color:
-        #8bffad;
+    margin:0;
 
     font-size:
-        24px;
-
-    font-weight:
-        1000;
+        28px;
 }
 
 
-#resultDetail {
+.popup strong{
+
+    display:block;
+
     margin-top:
-        6px;
+        7px;
 
     color:
-        #aabcb1;
+        #83ffa5;
+
+    font-size:
+        28px;
+}
+
+
+.popup p{
+
+    color:
+        #a9bbb0;
 
     font-size:
         10px;
 }
 
 
-#resumeBtn,
-#resultContinue {
+.popup button{
+
     margin-top:
-        18px;
+        14px;
 
     padding:
-        9px 18px;
+        10px 20px;
 
     border:
-        0;
+        none;
 
     border-radius:
         10px;
 
     background:
-        #1caf52;
+        #1bb151;
 
     color:
         white;
@@ -1341,25 +1190,21 @@ button {
 }
 
 
-/* =====================================================
+/* =========================================================
    FOOTER
-===================================================== */
+========================================================= */
 
-.footer {
+footer{
+
     min-height:
         38px;
 
-    display:
-        flex;
+    display:flex;
 
-    align-items:
-        center;
-
-    justify-content:
-        center;
+    align-items:center;
 
     gap:
-        14px;
+        15px;
 
     padding:
         5px 10px;
@@ -1368,28 +1213,32 @@ button {
         #041008;
 
     border-top:
-        1px solid #1e3526;
+        1px solid #1d3526;
 
     color:
-        #84988b;
+        #809489;
 
     font-size:
         9px;
+
+    z-index:
+        20;
 }
 
 
-.footer button {
+footer button{
+
     padding:
-        6px 9px;
+        6px 11px;
 
     border:
-        1px solid #35503d;
+        1px solid #36523e;
 
     border-radius:
         8px;
 
     background:
-        #14281a;
+        #14291a;
 
     color:
         white;
@@ -1398,170 +1247,149 @@ button {
         9px;
 
     font-weight:
-        900;
+        1000;
 }
 
 
-.footer-right {
+.footer-title{
+
     margin-left:
         auto;
 
     color:
-        #63796b;
+        #5f7566;
 }
 
 
-.hidden {
+.hidden{
+
     display:
         none !important;
 }
 
 
-/* =====================================================
-   TABLET
-===================================================== */
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
-@media (
-    max-width: 950px
-) {
+@media(max-width:950px){
 
-    .subtitle {
-        display:
-            none;
+    .brand-subtitle{
+        display:none;
     }
 
-
-    .top-stat {
-        min-width:
-            48px;
+    .score-item{
+        min-width:48px;
     }
 
-
-    .top-stat:nth-child(4),
-    .top-stat:nth-child(5) {
-        display:
-            none;
+    .score-item strong{
+        font-size:15px;
     }
 
-
-    .field-control {
-        flex-direction:
-            column;
-
-        gap:
-            2px;
+    .control-group{
+        flex-direction:column;
+        gap:2px;
     }
 
-
-    .field-control select {
-        min-width:
-            115px;
-
-        max-width:
-            155px;
-
-        padding:
-            6px;
-
-        font-size:
-            9px;
+    .control-group label{
+        font-size:7px;
     }
 
-
-    .player-panel {
-        gap:
-            4px;
-    }
-
-
-    .mini-stat {
-        min-width:
-            55px;
+    .control-group select{
+        min-width:112px;
+        padding:6px;
+        font-size:9px;
     }
 
 }
 
 
-/* =====================================================
-   PHONE / SMALL IPAD
-===================================================== */
+@media(max-width:650px){
 
-@media (
-    max-width: 650px
-) {
+    #app{
 
-    #app {
         grid-template-rows:
             auto
             auto
             auto
             auto
-            minmax(
-                390px,
-                1fr
-            )
+            minmax(390px,1fr)
             0;
     }
 
 
-    .topbar {
-        min-height:
-            56px;
+    .topbar{
 
         padding:
             6px 8px;
+
+        gap:8px;
     }
 
 
-    .brand {
+    .brand-title{
+
         font-size:
             12px;
     }
 
 
-    .top-stats {
-        gap:
-            3px;
+    .scoreboard{
+
+        gap:3px;
     }
 
 
-    .top-stat {
+    .score-item{
+
         min-width:
-            42px;
+            38px;
 
         padding:
             4px;
     }
 
 
-    .top-stat small {
+    .score-item span{
+
         font-size:
-            6px;
+            5px;
     }
 
 
-    .top-stat strong {
+    .score-item strong{
+
         font-size:
             13px;
     }
 
 
-    .control-deck {
-        gap:
-            5px;
+    .score-item:nth-child(4),
+    .score-item:nth-child(5){
+
+        display:none;
     }
 
 
-    .utility-btn {
+    .control-panel{
+
+        gap:
+            4px;
+    }
+
+
+    .utility-button{
+
         padding:
             6px 7px;
 
         font-size:
-            8px;
+            7px;
     }
 
 
-    .mode-bar {
+    .mode-bar{
+
         gap:
             4px;
 
@@ -1570,7 +1398,8 @@ button {
     }
 
 
-    .mode {
+    .mode{
+
         min-width:
             0;
 
@@ -1578,74 +1407,81 @@ button {
             1;
 
         padding:
-            8px 4px;
+            8px 3px;
 
         font-size:
-            8px;
+            7px;
     }
 
 
-    .player-panel {
-        overflow-x:
-            auto;
+    .player-panel{
 
         justify-content:
             flex-start;
 
         flex-wrap:
             nowrap;
+
+        overflow-x:
+            auto;
     }
 
 
-    .identity {
+    .player-identity{
+
         min-width:
-            165px;
+            175px;
     }
 
 
-    .mini-stat {
+    .player-stat{
+
         min-width:
             54px;
     }
 
 
-    .wind-card,
-    .challenge-card {
+    .glass-box{
+
+        padding:
+            6px 8px;
+    }
+
+
+    .center-hud{
+
+        min-width:
+            60vw;
+    }
+
+
+    .ability{
+
         top:
-            95px;
-    }
+            88px;
 
-
-    .challenge-card {
-        max-width:
-            160px;
-    }
-
-
-    .action-btn {
-        width:
-            86px;
-
-        height:
-            50px;
-    }
-
-
-    .action-btn span {
-        font-size:
-            18px;
-    }
-
-
-    .action-btn small {
         font-size:
             7px;
     }
 
 
-    .footer {
-        display:
-            none;
+    .info-card{
+
+        top:
+            88px;
+    }
+
+
+    .challenge-card{
+
+        max-width:
+            145px;
+    }
+
+
+    footer{
+
+        display:none;
     }
 
 }
