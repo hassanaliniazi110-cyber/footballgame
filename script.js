@@ -129,13 +129,8 @@ const players = {
         speed: 100,
         dribbling: 97,
         overall: 96,
-        specialty: "Speed Attacker"
+        specialty: "Speed Master"
     },
-
-    /* ZAYD QUADRI
-       Normal player.
-       Best dribbler.
-    */
 
     zayd: {
         name: "Zayd Quadri",
@@ -146,7 +141,7 @@ const players = {
         speed: 96,
         dribbling: 100,
         overall: 95,
-        specialty: "Best Dribbler"
+        specialty: "Elite Dribbler"
     }
 };
 
