@@ -339,17 +339,8 @@ document.addEventListener("DOMContentLoaded", () => {
             handling: 95,
             positioning: 97,
             overall: 97
-        },
-
-        arham: {
-            name: "Muhammad Arham",
-            avatar: "MA",
-            reflexes: 181,
-            diving: 123,
-            handling: 61,
-            positioning: 112,
-            overall: 98
         }
+        
 
     };
 
