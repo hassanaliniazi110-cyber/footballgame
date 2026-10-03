@@ -109,10 +109,10 @@ document.addEventListener("DOMContentLoaded", () => {
         ehan: {
             name: "Ehan Ali",
             avatar: "EA",
-            shooting: 95,
-            power: 94,
-            accuracy: 94,
-            speed: 96,
+            shooting: 60,
+            power: 64,
+            accuracy: 59,
+            speed: 67,
             special: "Power Finisher"
         },
 
@@ -339,6 +339,16 @@ document.addEventListener("DOMContentLoaded", () => {
             handling: 95,
             positioning: 97,
             overall: 97
+        },
+                
+        arham: {
+            name: "Muhammad Arham",
+            avatar: "MA",
+            reflexes: 154,
+            diving: 152,
+            handling: 149,
+            positioning: 151,
+            overall: 153
         }
 
     };
