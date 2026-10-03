@@ -1,417 +1,422 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
-    <title>Football Hero X</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Football Hero X</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="game-app">
+<div id="app">
 
-    <!-- TOP HUD -->
-    <header class="top-hud">
+<header class="topbar">
 
-        <div class="brand">
-            <div class="football-logo">⚽</div>
+    <div class="brand">
+        <div class="ball-icon">⚽</div>
+        <div>
+            <h1>FOOTBALL HERO X</h1>
+            <p>ULTIMATE FOOTBALL CHALLENGE</p>
+        </div>
+    </div>
 
-            <div>
-                <h1>FOOTBALL HERO X</h1>
-                <p>SKILLS • POWER • REFLEX</p>
-            </div>
+    <div class="top-stats">
+
+        <div class="top-stat">
+            <span>LEVEL</span>
+            <strong id="levelValue">1</strong>
         </div>
 
-        <div class="score-board">
-
-            <div class="score-item">
-                <span>LEVEL</span>
-                <strong id="level">1</strong>
-            </div>
-
-            <div class="score-item">
-                <span>GOALS</span>
-                <strong id="goals">0</strong>
-            </div>
-
-            <div class="score-item">
-                <span>SCORE</span>
-                <strong id="score">0</strong>
-            </div>
-
-            <div class="score-item">
-                <span>SHOTS</span>
-                <strong id="shots">0</strong>
-            </div>
-
+        <div class="top-stat">
+            <span>GOALS</span>
+            <strong id="goalsValue">0</strong>
         </div>
 
-    </header>
+        <div class="top-stat">
+            <span>SCORE</span>
+            <strong id="scoreValue">0</strong>
+        </div>
+
+        <div class="top-stat">
+            <span>SHOTS</span>
+            <strong id="shotsValue">0</strong>
+        </div>
+
+    </div>
+
+</header>
 
 
-    <!-- MAIN -->
-    <main class="main-layout">
+<main class="layout">
 
-        <!-- LEFT CONTROL PANEL -->
-        <aside class="control-panel">
+<aside class="sidebar">
 
-            <section class="panel-block">
+    <section class="panel">
 
-                <h2>GAME MODE</h2>
+        <h2>🎮 GAME MODE</h2>
 
-                <button
-                    class="mode-btn active"
-                    data-mode="penalty"
-                    type="button"
-                >
-                    <span>🎯</span>
-                    <div>
-                        <b>Penalty</b>
-                        <small>Beat the goalkeeper</small>
-                    </div>
-                </button>
+        <div class="mode-grid">
 
-                <button
-                    class="mode-btn"
-                    data-mode="freekick"
-                    type="button"
-                >
-                    <span>🧱</span>
-                    <div>
-                        <b>Free Kick</b>
-                        <small>Curve around the wall</small>
-                    </div>
-                </button>
-
-                <button
-                    class="mode-btn"
-                    data-mode="longshot"
-                    type="button"
-                >
-                    <span>🚀</span>
-                    <div>
-                        <b>Long Shot</b>
-                        <small>Choose your target</small>
-                    </div>
-                </button>
-
-                <button
-                    class="mode-btn"
-                    data-mode="goalkeeper"
-                    type="button"
-                >
-                    <span>🧤</span>
-                    <div>
-                        <b>Goalkeeper</b>
-                        <small>Save the shot</small>
-                    </div>
-                </button>
-
-            </section>
-
-
-            <section class="panel-block">
-
-                <h2>PLAYER</h2>
-
-                <select id="playerSelect">
-
-                    <option value="hassan">Hassan Ali</option>
-                    <option value="ehan">Ehan Ali</option>
-                    <option value="umar">Umar Shoaib</option>
-                    <option value="arham">Muhammad Arham</option>
-                    <option value="ronaldo">Cristiano Ronaldo</option>
-                    <option value="haaland">Erling Haaland</option>
-                    <option value="bellingham">Jude Bellingham</option>
-                    <option value="yamal">Lamine Yamal</option>
-                    <option value="mbappe">Kylian Mbappé</option>
-                    <option value="messi">Lionel Messi</option>
-
-                </select>
-
-                <div class="player-card">
-
-                    <div id="playerInitials" class="player-initials">
-                        HA
-                    </div>
-
-                    <div>
-                        <strong id="playerName">
-                            Hassan Ali
-                        </strong>
-
-                        <span id="playerRole">
-                            Goalkeeper / All-Rounder
-                        </span>
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <section class="panel-block">
-
-                <h2>DIFFICULTY</h2>
-
-                <select id="difficulty">
-
-                    <option value="easy">Easy</option>
-                    <option value="normal" selected>Normal</option>
-                    <option value="hard">Hard</option>
-                    <option value="legend">Legend</option>
-
-                </select>
-
-            </section>
-
-
-            <section class="panel-block">
-
-                <h2>POWER</h2>
-
-                <div class="power-line">
-
-                    <input
-                        id="power"
-                        type="range"
-                        min="20"
-                        max="100"
-                        value="75"
-                    >
-
-                    <strong id="powerText">75%</strong>
-
-                </div>
-
-            </section>
-
-
-            <section class="panel-block stats-panel">
-
-                <h2>PLAYER STATS</h2>
-
-                <div class="stat">
-                    <span>Shooting</span>
-                    <div class="bar">
-                        <i id="shootingStat"></i>
-                    </div>
-                </div>
-
-                <div class="stat">
-                    <span>Power</span>
-                    <div class="bar">
-                        <i id="powerStat"></i>
-                    </div>
-                </div>
-
-                <div class="stat">
-                    <span>Accuracy</span>
-                    <div class="bar">
-                        <i id="accuracyStat"></i>
-                    </div>
-                </div>
-
-                <div class="stat">
-                    <span>Reflex</span>
-                    <div class="bar">
-                        <i id="reflexStat"></i>
-                    </div>
-                </div>
-
-                <div class="stat">
-                    <span>Goalkeeping</span>
-                    <div class="bar">
-                        <i id="keeperStat"></i>
-                    </div>
-                </div>
-
-            </section>
-
-
-            <button
-                id="restartButton"
-                class="restart-button"
-                type="button"
-            >
-                ↻ RESTART GAME
+            <button class="mode active" data-mode="penalty">
+                ⚽
+                <span>
+                    <b>Penalty</b>
+                    <small>1v1 finish</small>
+                </span>
             </button>
 
-        </aside>
+            <button class="mode" data-mode="freekick">
+                🎯
+                <span>
+                    <b>Free Kick</b>
+                    <small>Beat the wall</small>
+                </span>
+            </button>
+
+            <button class="mode" data-mode="longshot">
+                🚀
+                <span>
+                    <b>Long Shot</b>
+                    <small>Power shot</small>
+                </span>
+            </button>
+
+            <button class="mode" data-mode="goalkeeper">
+                🧤
+                <span>
+                    <b>Goalkeeping</b>
+                    <small>Make saves</small>
+                </span>
+            </button>
+
+        </div>
+
+    </section>
 
 
-        <!-- GAME -->
-        <section class="game-area">
+    <section class="panel">
 
-            <div class="game-info">
+        <h2>👟 PLAYER</h2>
 
-                <div>
-                    <span>MODE</span>
-                    <strong id="modeName">
-                        PENALTY
-                    </strong>
-                </div>
+        <select id="playerSelect">
 
-                <div>
-                    <span>DISTANCE</span>
-                    <strong id="distance">
-                        11 m
-                    </strong>
-                </div>
+            <option value="hassan">Hassan Ali</option>
+            <option value="ehan">Ehan Ali</option>
+            <option value="arham">Muhammad Arham</option>
+            <option value="umar">Umar Shoaib</option>
+            <option value="ronaldo">Cristiano Ronaldo</option>
+            <option value="haaland">Erling Haaland</option>
+            <option value="bellingham">Jude Bellingham</option>
+            <option value="yamal">Lamine Yamal</option>
+            <option value="messi">Lionel Messi</option>
+            <option value="mbappe">Kylian Mbappé</option>
 
-                <div>
-                    <span>WIND</span>
-                    <strong id="wind">
-                        0 km/h
-                    </strong>
-                </div>
+        </select>
 
-                <div>
-                    <span>COMBO</span>
-                    <strong id="combo">
-                        0
-                    </strong>
-                </div>
+        <div class="person-card">
 
+            <div class="avatar" id="playerAvatar">HA</div>
+
+            <div>
+                <strong id="playerName">Hassan Ali</strong>
+                <small id="playerSpecial">Complete Specialist</small>
             </div>
 
+        </div>
 
-            <div class="canvas-container">
+    </section>
 
-                <canvas id="footballCanvas"></canvas>
 
-                <div
-                    id="startScreen"
-                    class="screen-overlay"
-                >
+    <section class="panel">
 
-                    <div class="overlay-card">
+        <h2>🧤 GOALKEEPER</h2>
 
-                        <div class="big-ball">⚽</div>
+        <select id="keeperSelect">
 
-                        <h2>FOOTBALL HERO X</h2>
+            <option value="hassan">Hassan Ali — 300</option>
+            <option value="ehan">Ehan Ali</option>
+            <option value="courtois">Thibaut Courtois</option>
+            <option value="donnarumma">Gianluigi Donnarumma</option>
+            <option value="alisson">Alisson</option>
+            <option value="neuer">Manuel Neuer</option>
+            <option value="oblak">Jan Oblak</option>
+            <option value="martinez">Emiliano Martínez</option>
+            <option value="ederson">Ederson</option>
+            <option value="maignan">Mike Maignan</option>
+            <option value="raya">David Raya</option>
+            <option value="szczesny">Wojciech Szczęsny</option>
+            <option value="casillas">Iker Casillas</option>
 
-                        <p>
-                            Choose a mode, aim at the goal,
-                            and become the hero.
-                        </p>
+        </select>
 
-                        <button
-                            id="startButton"
-                            class="main-button"
-                            type="button"
-                        >
-                            START GAME
-                        </button>
+        <div class="person-card">
 
+            <div class="avatar keeper" id="keeperAvatar">HA</div>
+
+            <div>
+                <strong id="keeperName">Hassan Ali</strong>
+                <small id="keeperOverall">OVERALL 300</small>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>⚙️ DIFFICULTY</h2>
+
+        <select id="difficultySelect">
+
+            <option value="easy">Easy</option>
+            <option value="normal" selected>Normal</option>
+            <option value="hard">Hard</option>
+            <option value="legend">Legend</option>
+
+        </select>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>💥 SHOT POWER</h2>
+
+        <input
+            id="powerSlider"
+            type="range"
+            min="20"
+            max="100"
+            value="75"
+        >
+
+        <div class="power-line">
+            <span>POWER</span>
+            <b id="powerValue">75%</b>
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>📊 PLAYER STATS</h2>
+
+        <div class="stat">
+            <span>Shooting</span>
+            <div><i id="shootingStat"></i></div>
+            <b id="shootingNumber">98</b>
+        </div>
+
+        <div class="stat">
+            <span>Power</span>
+            <div><i id="powerStat"></i></div>
+            <b id="powerNumber">98</b>
+        </div>
+
+        <div class="stat">
+            <span>Accuracy</span>
+            <div><i id="accuracyStat"></i></div>
+            <b id="accuracyNumber">98</b>
+        </div>
+
+        <div class="stat">
+            <span>Speed</span>
+            <div><i id="speedStat"></i></div>
+            <b id="speedNumber">96</b>
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>🧤 GOALKEEPER STATS</h2>
+
+        <div class="stat">
+            <span>Reflexes</span>
+            <div><i id="reflexStat"></i></div>
+            <b id="reflexNumber">300</b>
+        </div>
+
+        <div class="stat">
+            <span>Diving</span>
+            <div><i id="divingStat"></i></div>
+            <b id="divingNumber">300</b>
+        </div>
+
+        <div class="stat">
+            <span>Handling</span>
+            <div><i id="handlingStat"></i></div>
+            <b id="handlingNumber">300</b>
+        </div>
+
+        <div class="stat">
+            <span>Positioning</span>
+            <div><i id="positioningStat"></i></div>
+            <b id="positioningNumber">300</b>
+        </div>
+
+    </section>
+
+
+    <button id="restartButton" class="restart">
+        ↻ RESTART GAME
+    </button>
+
+</aside>
+
+
+<section class="game">
+
+    <div class="hud">
+
+        <div>
+            <span>MODE</span>
+            <b id="modeDisplay">PENALTY</b>
+        </div>
+
+        <div>
+            <span>DISTANCE</span>
+            <b id="distanceDisplay">12 YDS</b>
+        </div>
+
+        <div>
+            <span>WIND</span>
+            <b id="windDisplay">0 km/h</b>
+        </div>
+
+        <div>
+            <span>COMBO</span>
+            <b id="comboDisplay">x0</b>
+        </div>
+
+    </div>
+
+
+    <div class="game-box">
+
+        <canvas id="gameCanvas"></canvas>
+
+
+        <div id="startOverlay" class="overlay">
+
+            <div class="overlay-card">
+
+                <div class="large-ball">⚽</div>
+
+                <h2 id="controlTitle">PENALTY SHOOTOUT</h2>
+
+                <p id="controlDescription">
+                    Aim at the goal and beat the goalkeeper.
+                </p>
+
+                <div class="match-info">
+
+                    <div>
+                        <small>PLAYER</small>
+                        <b id="startPlayer">Hassan Ali</b>
+                    </div>
+
+                    <div>
+                        <small>KEEPER</small>
+                        <b id="startKeeper">Hassan Ali</b>
+                    </div>
+
+                    <div>
+                        <small>MODE</small>
+                        <b id="startMode">Penalty</b>
                     </div>
 
                 </div>
 
+                <button id="startButton" class="primary">
+                    START MATCH
+                </button>
 
-                <div
-                    id="resultScreen"
-                    class="screen-overlay hidden"
-                >
+            </div>
 
-                    <div class="overlay-card">
+        </div>
 
-                        <div
-                            id="resultIcon"
-                            class="big-ball"
-                        >
-                            ⚽
-                        </div>
 
-                        <h2 id="resultTitle">
-                            GOAL!
-                        </h2>
+        <div id="resultOverlay" class="overlay hidden">
 
-                        <p id="resultText">
-                            Great shot!
-                        </p>
+            <div class="overlay-card">
 
-                        <button
-                            id="nextButton"
-                            class="main-button"
-                            type="button"
-                        >
-                            NEXT
-                        </button>
+                <div id="resultIcon" class="result-icon">⚽</div>
 
+                <h2 id="resultTitle">GOAL!</h2>
+
+                <p id="resultMessage">
+                    Great shot!
+                </p>
+
+                <div class="result-info">
+
+                    <div>
+                        <small>SCORE</small>
+                        <b id="resultScore">0</b>
+                    </div>
+
+                    <div>
+                        <small>COMBO</small>
+                        <b id="resultCombo">x0</b>
                     </div>
 
                 </div>
 
-            </div>
-
-
-            <!-- CONTROLS -->
-            <div class="game-controls">
-
-                <div class="instruction">
-                    <span>🎯</span>
-
-                    <span id="instructionText">
-                        Tap the pitch to aim
-                    </span>
-                </div>
-
-                <div class="action-buttons">
-
-                    <button
-                        id="shootButton"
-                        class="shoot-button"
-                        type="button"
-                    >
-                        ⚡ SHOOT
-                    </button>
-
-                    <button
-                        id="saveButton"
-                        class="save-button hidden"
-                        type="button"
-                    >
-                        🧤 SAVE
-                    </button>
-
-                </div>
+                <button id="nextButton" class="primary">
+                    NEXT SHOT
+                </button>
 
             </div>
 
+        </div>
 
-            <!-- BOTTOM STATS -->
-            <div class="bottom-stats">
+    </div>
 
-                <div>
-                    <span>GOALS</span>
-                    <strong id="bottomGoals">0</strong>
-                </div>
 
-                <div>
-                    <span>SAVES</span>
-                    <strong id="saves">0</strong>
-                </div>
+    <div class="controls">
 
-                <div>
-                    <span>COMBO</span>
-                    <strong id="bottomCombo">0</strong>
-                </div>
+        <div class="help">
+            <span>← ↑ ↓ → AIM</span>
+            <span>SPACE SHOOT</span>
+        </div>
 
-                <div>
-                    <span>BEST</span>
-                    <strong id="best">0</strong>
-                </div>
+        <button id="shootButton" class="action">
+            ⚽ SHOOT
+        </button>
 
-            </div>
+        <button id="saveButton" class="action save hidden">
+            🧤 SAVE
+        </button>
 
-        </section>
+    </div>
 
-    </main>
+
+    <div class="bottom">
+
+        <div class="bottom-card">
+            <span>PLAYER</span>
+            <b id="playerNameBottom">Hassan Ali</b>
+        </div>
+
+        <div class="special">
+            ⭐ <b id="bottomSpecial">Complete Specialist</b>
+        </div>
+
+        <div class="bottom-card">
+            <span>GOALKEEPER</span>
+            <b id="keeperNameBottom">Hassan Ali</b>
+        </div>
+
+    </div>
+
+</section>
+
+</main>
 
 </div>
 
