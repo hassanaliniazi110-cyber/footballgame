@@ -1,95 +1,65 @@
 "use strict";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
 
-    /*
-        FOOTBALL HERO X
-        ----------------
-        Main game engine.
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
 
-        Important architecture:
-        - Canvas = aiming / drawing only.
-        - Shoot button = shooting only.
-        - Dive button = goalkeeper action only.
-        - No pointerup shooting.
-        - No mixed touch/click shooting.
-        - Everything starts after DOMContentLoaded.
-    */
-
-
-    /* =========================================================
-       DOM
-    ========================================================= */
-
-    const canvas = document.getElementById("gameCanvas");
+    const canvas = document.getElementById("footballCanvas");
     const ctx = canvas.getContext("2d");
 
-    const modeButtons = document.querySelectorAll(".mode-button");
+    const startScreen =
+        document.getElementById("startScreen");
 
-    const playerSelect = document.getElementById("playerSelect");
-    const difficultySelect = document.getElementById("difficultySelect");
+    const resultScreen =
+        document.getElementById("resultScreen");
 
-    const powerSlider = document.getElementById("powerSlider");
-    const powerValue = document.getElementById("powerValue");
+    const startButton =
+        document.getElementById("startButton");
 
-    const shootButton = document.getElementById("shootButton");
-    const diveButton = document.getElementById("diveButton");
+    const nextButton =
+        document.getElementById("nextButton");
 
-    const resetButton = document.getElementById("resetButton");
+    const shootButton =
+        document.getElementById("shootButton");
 
-    const overlay = document.getElementById("messageOverlay");
-    const overlayButton = document.getElementById("overlayButton");
+    const saveButton =
+        document.getElementById("saveButton");
 
-    const messageIcon = document.getElementById("messageIcon");
-    const messageTitle = document.getElementById("messageTitle");
-    const messageText = document.getElementById("messageText");
+    const restartButton =
+        document.getElementById("restartButton");
 
-    const modeTitle = document.getElementById("modeTitle");
-    const distanceValue = document.getElementById("distanceValue");
-    const windValue = document.getElementById("windValue");
+    const playerSelect =
+        document.getElementById("playerSelect");
 
-    const levelValue = document.getElementById("levelValue");
-    const scoreValue = document.getElementById("scoreValue");
-    const shotsValue = document.getElementById("shotsValue");
+    const difficultySelect =
+        document.getElementById("difficulty");
 
-    const goalsValue = document.getElementById("goalsValue");
-    const savesValue = document.getElementById("savesValue");
-    const comboValue = document.getElementById("comboValue");
-    const bestValue = document.getElementById("bestValue");
+    const powerSlider =
+        document.getElementById("power");
 
-    const playerAvatar = document.getElementById("playerAvatar");
-    const playerName = document.getElementById("playerName");
-    const playerRole = document.getElementById("playerRole");
+    const powerText =
+        document.getElementById("powerText");
 
-    const controlText = document.getElementById("controlText");
+    const modeButtons =
+        document.querySelectorAll(".mode-btn");
 
-    const toast = document.getElementById("toast");
+    const resultIcon =
+        document.getElementById("resultIcon");
 
+    const resultTitle =
+        document.getElementById("resultTitle");
 
-    /* =========================================================
-       SAFETY CHECK
-    ========================================================= */
-
-    if (!canvas || !ctx) {
-        document.body.innerHTML = `
-            <div style="
-                padding:40px;
-                font-family:Arial;
-                text-align:center;
-            ">
-                <h1>Game could not start.</h1>
-                <p>The game canvas was not found.</p>
-            </div>
-        `;
-        return;
-    }
+    const resultText =
+        document.getElementById("resultText");
 
 
-    /* =========================================================
+    /* =====================================================
        PLAYER DATA
-    ========================================================= */
+    ===================================================== */
 
-    const players = {
+    const PLAYERS = {
 
         hassan: {
             name: "Hassan Ali",
@@ -100,8 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
             accuracy: 300,
             reflex: 300,
             keeper: 300,
-            freeKick: 300,
-            penalty: 300
+            penalty: 300,
+            freeKick: 300
         },
 
         ehan: {
@@ -111,36 +81,36 @@ document.addEventListener("DOMContentLoaded", () => {
             shooting: 270,
             power: 280,
             accuracy: 275,
-            reflex: 290,
+            reflex: 295,
             keeper: 295,
-            freeKick: 260,
-            penalty: 265
+            penalty: 265,
+            freeKick: 260
         },
 
         umar: {
             name: "Umar Shoaib",
             initials: "US",
             role: "Attacking Player",
-            shooting: 235,
-            power: 240,
-            accuracy: 225,
-            reflex: 210,
+            shooting: 240,
+            power: 245,
+            accuracy: 230,
+            reflex: 220,
             keeper: 180,
-            freeKick: 220,
-            penalty: 230
+            penalty: 235,
+            freeKick: 220
         },
 
         arham: {
             name: "Muhammad Arham",
             initials: "MA",
             role: "All-Round Player",
-            shooting: 230,
-            power: 225,
-            accuracy: 235,
-            reflex: 220,
+            shooting: 235,
+            power: 235,
+            accuracy: 240,
+            reflex: 225,
             keeper: 210,
-            freeKick: 230,
-            penalty: 225
+            penalty: 230,
+            freeKick: 235
         },
 
         ronaldo: {
@@ -149,24 +119,24 @@ document.addEventListener("DOMContentLoaded", () => {
             role: "Power Forward",
             shooting: 290,
             power: 300,
-            accuracy: 275,
-            reflex: 260,
+            accuracy: 280,
+            reflex: 265,
             keeper: 100,
-            freeKick: 270,
-            penalty: 290
+            penalty: 295,
+            freeKick: 275
         },
 
         haaland: {
             name: "Erling Haaland",
             initials: "EH",
             role: "Long-Shot Specialist",
-            shooting: 285,
+            shooting: 290,
             power: 320,
-            accuracy: 265,
+            accuracy: 270,
             reflex: 250,
             keeper: 90,
-            freeKick: 245,
-            penalty: 275
+            penalty: 275,
+            freeKick: 250
         },
 
         bellingham: {
@@ -174,25 +144,25 @@ document.addEventListener("DOMContentLoaded", () => {
             initials: "JB",
             role: "Penalty Specialist",
             shooting: 275,
-            power: 265,
-            accuracy: 290,
-            reflex: 255,
+            power: 270,
+            accuracy: 295,
+            reflex: 265,
             keeper: 100,
-            freeKick: 260,
-            penalty: 310
+            penalty: 320,
+            freeKick: 265
         },
 
         yamal: {
             name: "Lamine Yamal",
             initials: "LY",
             role: "Free-Kick Specialist",
-            shooting: 270,
+            shooting: 275,
             power: 255,
-            accuracy: 300,
-            reflex: 270,
+            accuracy: 305,
+            reflex: 275,
             keeper: 90,
-            freeKick: 315,
-            penalty: 260
+            penalty: 265,
+            freeKick: 320
         },
 
         mbappe: {
@@ -200,12 +170,12 @@ document.addEventListener("DOMContentLoaded", () => {
             initials: "KM",
             role: "Speed Attacker",
             shooting: 285,
-            power: 280,
-            accuracy: 275,
-            reflex: 290,
+            power: 285,
+            accuracy: 280,
+            reflex: 295,
             keeper: 95,
-            freeKick: 235,
-            penalty: 280
+            penalty: 280,
+            freeKick: 245
         },
 
         messi: {
@@ -213,206 +183,175 @@ document.addEventListener("DOMContentLoaded", () => {
             initials: "LM",
             role: "Precision Specialist",
             shooting: 290,
-            power: 245,
+            power: 250,
             accuracy: 315,
-            reflex: 280,
+            reflex: 285,
             keeper: 90,
-            freeKick: 305,
-            penalty: 285
+            penalty: 290,
+            freeKick: 315
         }
 
     };
 
 
-    /* =========================================================
+    /* =====================================================
        DIFFICULTY
-    ========================================================= */
+    ===================================================== */
 
-    const difficultyData = {
+    const DIFFICULTIES = {
 
         easy: {
-            keeperSpeed: 0.62,
-            keeperAccuracy: 0.35,
-            targetSize: 1.18,
-            reaction: 1.15,
-            label: "Easy"
+            keeper: 0.25,
+            error: 0.045,
+            reaction: 0.85
         },
 
         normal: {
-            keeperSpeed: 0.82,
-            keeperAccuracy: 0.50,
-            targetSize: 1,
-            reaction: 1,
-            label: "Normal"
+            keeper: 0.40,
+            error: 0.060,
+            reaction: 1
         },
 
         hard: {
-            keeperSpeed: 1.04,
-            keeperAccuracy: 0.66,
-            targetSize: 0.84,
-            reaction: 0.86,
-            label: "Hard"
+            keeper: 0.56,
+            error: 0.075,
+            reaction: 1.15
         },
 
         legend: {
-            keeperSpeed: 1.28,
-            keeperAccuracy: 0.79,
-            targetSize: 0.70,
-            reaction: 0.70,
-            label: "Legend"
+            keeper: 0.68,
+            error: 0.090,
+            reaction: 1.30
         }
 
     };
 
 
-    /* =========================================================
-       GAME STATE
-    ========================================================= */
+    /* =====================================================
+       STATE
+    ===================================================== */
 
-    const state = {
+    const game = {
+
+        running: false,
 
         mode: "penalty",
 
-        phase: "menu",
+        phase: "ready",
+
+        player: "hassan",
+
+        difficulty: "normal",
+
+        power: 75,
 
         level: 1,
-
-        score: 0,
-
-        shots: 0,
 
         goals: 0,
 
         saves: 0,
 
+        shots: 0,
+
+        score: 0,
+
         combo: 0,
 
-        best: Number(localStorage.getItem("footballHeroBest") || 0),
+        best: 0,
 
         distance: 11,
 
         wind: 0,
 
-        power: 75,
-
-        selectedPlayer: "hassan",
-
-        difficulty: "normal",
-
         aimX: 0.50,
 
-        aimY: 0.42,
+        aimY: 0.30,
 
-        targetX: 0.50,
+        keeperX: 0.50,
 
-        targetY: 0.42,
+        keeperY: 0.35,
 
         ball: null,
 
-        keeper: null,
+        incomingBall: null,
 
         wall: [],
 
-        animationStart: 0,
+        animation: null,
 
         lastTime: 0,
 
-        animationFrame: null,
+        width: 900,
 
-        roundNumber: 0,
+        height: 550,
 
-        goalkeeperTarget: null,
+        pointerDown: false,
 
-        gloveX: 0.50,
-
-        gloveY: 0.72,
-
-        diveX: 0.50,
-
-        diveY: 0.72,
-
-        canDive: false,
-
-        inputPointer: false,
-
-        resultTimer: null,
-
-        resizeTimer: null
+        round: 0
 
     };
 
 
-    /* =========================================================
-       CANVAS SIZE
-    ========================================================= */
+    /* =====================================================
+       BEST SCORE
+    ===================================================== */
 
-    let viewWidth = 900;
-    let viewHeight = 540;
-    let deviceScale = 1;
+    try {
 
+        game.best =
+            Number(
+                localStorage.getItem(
+                    "footballHeroBest"
+                )
+            ) || 0;
 
-    function resizeCanvas() {
+    } catch (error) {
 
-        const rect = canvas.getBoundingClientRect();
-
-        viewWidth = Math.max(320, rect.width);
-        viewHeight = Math.max(320, rect.height);
-
-        deviceScale = Math.min(window.devicePixelRatio || 1, 2);
-
-        canvas.width = Math.round(viewWidth * deviceScale);
-        canvas.height = Math.round(viewHeight * deviceScale);
-
-        ctx.setTransform(
-            deviceScale,
-            0,
-            0,
-            deviceScale,
-            0,
-            0
-        );
-
-        drawScene();
+        game.best = 0;
 
     }
 
 
-    window.addEventListener("resize", () => {
-
-        clearTimeout(state.resizeTimer);
-
-        state.resizeTimer = setTimeout(() => {
-            resizeCanvas();
-        }, 100);
-
-    });
-
-
-    /* =========================================================
-       HELPERS
-    ========================================================= */
+    /* =====================================================
+       UTILITY
+    ===================================================== */
 
     function clamp(value, min, max) {
-        return Math.max(min, Math.min(max, value));
+
+        return Math.max(
+            min,
+            Math.min(max, value)
+        );
+
     }
 
 
     function random(min, max) {
-        return Math.random() * (max - min) + min;
+
+        return Math.random() *
+            (max - min) +
+            min;
+
     }
 
 
-    function lerp(a, b, amount) {
-        return a + (b - a) * amount;
+    function lerp(a, b, t) {
+
+        return a +
+            (b - a) * t;
+
     }
 
 
-    function easeOutCubic(t) {
-        return 1 - Math.pow(1 - t, 3);
+    function ease(t) {
+
+        return 1 -
+            Math.pow(1 - t, 3);
+
     }
 
 
-    function distanceBetween(x1, y1, x2, y2) {
+    function distance(x1, y1, x2, y2) {
 
         return Math.sqrt(
             Math.pow(x2 - x1, 2) +
@@ -422,182 +361,356 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    function getPlayer() {
-        return players[state.selectedPlayer];
-    }
+    function player() {
 
-
-    function getDifficulty() {
-        return difficultyData[state.difficulty];
-    }
-
-
-    function showToast(text) {
-
-        toast.textContent = text;
-
-        toast.classList.add("visible");
-
-        clearTimeout(showToast.timer);
-
-        showToast.timer = setTimeout(() => {
-            toast.classList.remove("visible");
-        }, 1800);
+        return PLAYERS[game.player];
 
     }
 
 
-    function updateHUD() {
+    function difficulty() {
 
-        levelValue.textContent = state.level;
-        scoreValue.textContent = state.score;
-        shotsValue.textContent = state.shots;
-
-        goalsValue.textContent = state.goals;
-        savesValue.textContent = state.saves;
-        comboValue.textContent = state.combo;
-        bestValue.textContent = state.best;
-
-        distanceValue.textContent =
-            `${Math.round(state.distance)} m`;
-
-        windValue.textContent =
-            `${state.wind > 0 ? "+" : ""}${Math.round(state.wind)} km/h`;
+        return DIFFICULTIES[
+            game.difficulty
+        ];
 
     }
 
 
-    function updatePlayerCard() {
+    /* =====================================================
+       CANVAS RESIZE
+    ===================================================== */
 
-        const player = getPlayer();
+    function resizeCanvas() {
 
-        playerAvatar.textContent = player.initials;
-        playerName.textContent = player.name;
-        playerRole.textContent = player.role;
+        const rect =
+            canvas.getBoundingClientRect();
+
+        game.width =
+            Math.max(320, rect.width);
+
+        game.height =
+            Math.max(350, rect.height);
+
+        const dpr =
+            Math.min(
+                window.devicePixelRatio || 1,
+                2
+            );
+
+        canvas.width =
+            Math.round(
+                game.width * dpr
+            );
+
+        canvas.height =
+            Math.round(
+                game.height * dpr
+            );
+
+        ctx.setTransform(
+            dpr,
+            0,
+            0,
+            dpr,
+            0,
+            0
+        );
+
+        draw();
 
     }
 
 
-    function updatePower() {
+    window.addEventListener(
+        "resize",
+        resizeCanvas
+    );
 
-        state.power = Number(powerSlider.value);
 
-        powerValue.textContent =
-            `${state.power}%`;
+    /* =====================================================
+       UI UPDATE
+    ===================================================== */
+
+    function updateUI() {
+
+        document.getElementById("level")
+            .textContent = game.level;
+
+        document.getElementById("goals")
+            .textContent = game.goals;
+
+        document.getElementById("score")
+            .textContent = game.score;
+
+        document.getElementById("shots")
+            .textContent = game.shots;
+
+        document.getElementById("bottomGoals")
+            .textContent = game.goals;
+
+        document.getElementById("saves")
+            .textContent = game.saves;
+
+        document.getElementById("bottomCombo")
+            .textContent = game.combo;
+
+        document.getElementById("combo")
+            .textContent = game.combo;
+
+        document.getElementById("best")
+            .textContent = game.best;
+
+        document.getElementById("distance")
+            .textContent =
+            `${game.distance} m`;
+
+        document.getElementById("wind")
+            .textContent =
+            `${game.wind > 0 ? "+" : ""}${game.wind} km/h`;
+
+        powerText.textContent =
+            `${game.power}%`;
 
     }
 
 
-    /* =========================================================
-       MODE CONFIG
-    ========================================================= */
+    function updatePlayerUI() {
 
-    function configureMode() {
+        const p = player();
 
-        state.phase = "ready";
+        document.getElementById(
+            "playerInitials"
+        ).textContent = p.initials;
 
-        state.ball = null;
+        document.getElementById(
+            "playerName"
+        ).textContent = p.name;
 
-        state.wall = [];
+        document.getElementById(
+            "playerRole"
+        ).textContent = p.role;
 
-        state.wind = Math.round(random(-7, 7));
+        setStat(
+            "shootingStat",
+            p.shooting
+        );
 
-        if (state.mode === "penalty") {
+        setStat(
+            "powerStat",
+            p.power
+        );
 
-            state.distance = 11;
+        setStat(
+            "accuracyStat",
+            p.accuracy
+        );
 
-            modeTitle.textContent = "PENALTY";
+        setStat(
+            "reflexStat",
+            p.reflex
+        );
 
-            controlText.textContent =
-                "Tap the pitch to aim • then press SHOOT";
+        setStat(
+            "keeperStat",
+            p.keeper
+        );
 
-            shootButton.classList.remove("hidden");
-            diveButton.classList.add("hidden");
+    }
+
+
+    function setStat(id, value) {
+
+        const element =
+            document.getElementById(id);
+
+        const percent =
+            clamp(
+                value / 3,
+                0,
+                100
+            );
+
+        element.style.width =
+            `${percent}%`;
+
+    }
+
+
+    /* =====================================================
+       MODE SETUP
+    ===================================================== */
+
+    function setupMode() {
+
+        game.phase = "ready";
+
+        game.ball = null;
+
+        game.incomingBall = null;
+
+        game.wind =
+            Math.round(
+                random(-8, 9)
+            );
+
+        game.aimX = 0.50;
+        game.aimY = 0.30;
+
+        if (game.mode === "penalty") {
+
+            game.distance = 11;
+
+            document.getElementById(
+                "modeName"
+            ).textContent = "PENALTY";
+
+            document.getElementById(
+                "instructionText"
+            ).textContent =
+                "Tap the goal to aim, then SHOOT";
+
+            shootButton.classList.remove(
+                "hidden"
+            );
+
+            saveButton.classList.add(
+                "hidden"
+            );
 
         }
 
-        else if (state.mode === "freekick") {
 
-            state.distance = Math.round(random(19, 29));
+        if (game.mode === "freekick") {
 
-            modeTitle.textContent = "FREE KICK";
+            game.distance =
+                Math.round(
+                    random(18, 29)
+                );
 
-            controlText.textContent =
-                "Aim around the wall • then press SHOOT";
+            document.getElementById(
+                "modeName"
+            ).textContent =
+                "FREE KICK";
+
+            document.getElementById(
+                "instructionText"
+            ).textContent =
+                "Aim around the wall, then SHOOT";
+
+            shootButton.classList.remove(
+                "hidden"
+            );
+
+            saveButton.classList.add(
+                "hidden"
+            );
 
             createWall();
 
-            shootButton.classList.remove("hidden");
-            diveButton.classList.add("hidden");
+        }
+
+
+        if (game.mode === "longshot") {
+
+            game.distance =
+                Math.round(
+                    random(28, 40)
+                );
+
+            document.getElementById(
+                "modeName"
+            ).textContent =
+                "LONG SHOT";
+
+            document.getElementById(
+                "instructionText"
+            ).textContent =
+                "Pick your target and use the power slider";
+
+            shootButton.classList.remove(
+                "hidden"
+            );
+
+            saveButton.classList.add(
+                "hidden"
+            );
 
         }
 
-        else if (state.mode === "longshot") {
 
-            state.distance = Math.round(random(27, 39));
+        if (game.mode === "goalkeeper") {
 
-            modeTitle.textContent = "LONG SHOT";
+            game.distance =
+                Math.round(
+                    random(15, 25)
+                );
 
-            controlText.textContent =
-                "Choose a corner • power matters";
+            document.getElementById(
+                "modeName"
+            ).textContent =
+                "GOALKEEPER";
 
-            shootButton.classList.remove("hidden");
-            diveButton.classList.add("hidden");
+            document.getElementById(
+                "instructionText"
+            ).textContent =
+                "Move your gloves to the ball and press SAVE";
+
+            shootButton.classList.add(
+                "hidden"
+            );
+
+            saveButton.classList.remove(
+                "hidden"
+            );
+
+            game.keeperX = 0.50;
+            game.keeperY = 0.70;
+
+            createIncomingBall();
 
         }
 
-        else if (state.mode === "goalkeeper") {
+        updateUI();
 
-            state.distance = Math.round(random(16, 24));
-
-            modeTitle.textContent = "GOALKEEPER";
-
-            controlText.textContent =
-                "Move your gloves to the ball • then DIVE";
-
-            shootButton.classList.add("hidden");
-            diveButton.classList.remove("hidden");
-
-            state.gloveX = 0.50;
-            state.gloveY = 0.72;
-
-            createGoalkeeperShot();
-
-        }
-
-        updateHUD();
-        drawScene();
+        draw();
 
     }
 
 
-    /* =========================================================
+    /* =====================================================
        WALL
-    ========================================================= */
+    ===================================================== */
 
     function createWall() {
 
-        const count =
-            state.difficulty === "easy"
-                ? 4
-                : state.difficulty === "normal"
-                    ? 5
-                    : state.difficulty === "hard"
-                        ? 6
-                        : 7;
+        game.wall = [];
 
-        state.wall = [];
+        let count = 5;
 
-        const startX = 0.35;
-        const spacing = 0.06;
+        if (game.difficulty === "easy") {
+            count = 3;
+        }
+
+        if (game.difficulty === "hard") {
+            count = 6;
+        }
+
+        if (game.difficulty === "legend") {
+            count = 7;
+        }
+
+        const spacing = 0.055;
+
+        const start =
+            0.50 -
+            ((count - 1) * spacing) / 2;
 
         for (let i = 0; i < count; i++) {
 
-            state.wall.push({
-                x: startX + i * spacing,
-                y: 0.42,
-                height: random(0.10, 0.125),
-                jump: false
+            game.wall.push({
+                x: start + i * spacing,
+                y: 0.47
             });
 
         }
@@ -605,515 +718,585 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =========================================================
-       GOALKEEPER ROUND
-    ========================================================= */
+    /* =====================================================
+       GOALKEEPER SHOT
+    ===================================================== */
 
-    function createGoalkeeperShot() {
+    function createIncomingBall() {
 
-        const corners = [
-            { x: 0.20, y: 0.30 },
-            { x: 0.80, y: 0.30 },
+        const targets = [
+
+            { x: 0.20, y: 0.28 },
+            { x: 0.35, y: 0.25 },
+            { x: 0.50, y: 0.30 },
+            { x: 0.65, y: 0.25 },
+            { x: 0.80, y: 0.28 },
             { x: 0.28, y: 0.48 },
-            { x: 0.72, y: 0.48 },
-            { x: 0.50, y: 0.36 }
+            { x: 0.72, y: 0.48 }
+
         ];
 
-        const choice =
-            corners[Math.floor(Math.random() * corners.length)];
+        const target =
+            targets[
+                Math.floor(
+                    Math.random() *
+                    targets.length
+                )
+            ];
 
-        state.goalkeeperTarget = {
-            x: choice.x,
-            y: choice.y
-        };
+        game.incomingBall = {
 
-        state.ball = {
             x: 0.50,
-            y: 0.92,
+            y: 0.95,
+
             startX: 0.50,
-            startY: 0.92,
-            targetX: choice.x,
-            targetY: choice.y,
-            progress: 0,
-            speed: 0.00052
+            startY: 0.95,
+
+            targetX: target.x,
+            targetY: target.y,
+
+            progress: 0
+
         };
 
-        state.canDive = false;
-
-        setTimeout(() => {
-
-            if (state.mode !== "goalkeeper") {
-                return;
-            }
-
-            if (state.phase !== "ready") {
-                return;
-            }
-
-            state.phase = "keeperShot";
-
-            state.canDive = true;
-
-            showToast("SHOT COMING!");
-
-            startAnimation();
-
-        }, 700);
+        game.phase = "keeperReady";
 
     }
 
 
-    /* =========================================================
-       OVERLAY
-    ========================================================= */
-
-    function showOverlay(
-        icon,
-        title,
-        text,
-        buttonText
-    ) {
-
-        messageIcon.textContent = icon;
-        messageTitle.textContent = title;
-        messageText.textContent = text;
-        overlayButton.textContent = buttonText;
-
-        overlay.classList.remove("hidden");
-
-    }
-
-
-    function hideOverlay() {
-
-        overlay.classList.add("hidden");
-
-    }
-
-
-    /* =========================================================
-       START GAME
-    ========================================================= */
+    /* =====================================================
+       START
+    ===================================================== */
 
     function startGame() {
 
-        state.score = 0;
-        state.shots = 0;
-        state.goals = 0;
-        state.saves = 0;
-        state.combo = 0;
-        state.level = 1;
-        state.roundNumber = 0;
+        game.running = true;
 
-        hideOverlay();
+        game.phase = "ready";
 
-        configureMode();
+        game.goals = 0;
+        game.saves = 0;
+        game.shots = 0;
+        game.score = 0;
+        game.combo = 0;
+        game.level = 1;
+        game.round = 0;
 
-        showToast("Game started!");
+        startScreen.classList.add(
+            "hidden"
+        );
 
-    }
+        resultScreen.classList.add(
+            "hidden"
+        );
 
-
-    /* =========================================================
-       NEW ROUND
-    ========================================================= */
-
-    function newRound() {
-
-        state.roundNumber++;
-
-        state.phase = "ready";
-
-        state.ball = null;
-
-        state.wind = Math.round(random(-7, 7));
-
-        if (state.mode === "freekick") {
-            state.distance = Math.round(random(19, 29));
-            createWall();
-        }
-
-        else if (state.mode === "longshot") {
-            state.distance = Math.round(random(27, 39));
-        }
-
-        else if (state.mode === "penalty") {
-            state.distance = 11;
-        }
-
-        else if (state.mode === "goalkeeper") {
-
-            state.distance = Math.round(random(16, 24));
-
-            state.gloveX = 0.50;
-            state.gloveY = 0.72;
-
-            createGoalkeeperShot();
-
-        }
-
-        state.aimX = 0.50;
-        state.aimY = 0.42;
-
-        state.targetX = 0.50;
-        state.targetY = 0.42;
-
-        updateHUD();
-
-        drawScene();
+        setupMode();
 
     }
 
 
-    /* =========================================================
-       LEVEL
-    ========================================================= */
+    startButton.addEventListener(
+        "click",
+        startGame
+    );
 
-    function checkLevel() {
 
-        const newLevel =
-            Math.floor(state.goals / 3) + 1;
+    /* =====================================================
+       NEXT ROUND
+    ===================================================== */
 
-        if (newLevel > state.level) {
+    function nextRound() {
 
-            state.level = newLevel;
+        resultScreen.classList.add(
+            "hidden"
+        );
 
-            showToast(
-                `LEVEL ${state.level} UNLOCKED!`
+        game.round++;
+
+        game.level =
+            Math.floor(
+                game.goals / 3
+            ) + 1;
+
+        setupMode();
+
+    }
+
+
+    nextButton.addEventListener(
+        "click",
+        nextRound
+    );
+
+
+    /* =====================================================
+       RESTART
+    ===================================================== */
+
+    restartButton.addEventListener(
+        "click",
+        startGame
+    );
+
+
+    /* =====================================================
+       MODE BUTTONS
+    ===================================================== */
+
+    modeButtons.forEach(
+        function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    modeButtons.forEach(
+                        function (b) {
+                            b.classList.remove(
+                                "active"
+                            );
+                        }
+                    );
+
+                    button.classList.add(
+                        "active"
+                    );
+
+                    game.mode =
+                        button.dataset.mode;
+
+                    if (!game.running) {
+                        return;
+                    }
+
+                    setupMode();
+
+                }
             );
 
         }
+    );
 
-    }
+
+    /* =====================================================
+       PLAYER
+    ===================================================== */
+
+    playerSelect.addEventListener(
+        "change",
+        function () {
+
+            game.player =
+                playerSelect.value;
+
+            updatePlayerUI();
+
+            draw();
+
+        }
+    );
 
 
-    /* =========================================================
+    /* =====================================================
+       DIFFICULTY
+    ===================================================== */
+
+    difficultySelect.addEventListener(
+        "change",
+        function () {
+
+            game.difficulty =
+                difficultySelect.value;
+
+            if (game.running) {
+                setupMode();
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       POWER
+    ===================================================== */
+
+    powerSlider.addEventListener(
+        "input",
+        function () {
+
+            game.power =
+                Number(
+                    powerSlider.value
+                );
+
+            updateUI();
+
+        }
+    );
+
+
+    /* =====================================================
        AIMING
-    ========================================================= */
+    ===================================================== */
 
-    function updateAimFromPointer(event) {
+    function aimFromEvent(event) {
 
-        if (state.mode === "goalkeeper") {
+        const rect =
+            canvas.getBoundingClientRect();
 
-            if (
-                state.phase !== "keeperShot" &&
-                state.phase !== "ready"
-            ) {
-                return;
-            }
+        let x =
+            (
+                event.clientX -
+                rect.left
+            ) / rect.width;
 
-        }
-        else {
+        let y =
+            (
+                event.clientY -
+                rect.top
+            ) / rect.height;
 
-            if (state.phase !== "ready") {
-                return;
-            }
+        x = clamp(x, 0.08, 0.92);
+        y = clamp(y, 0.08, 0.80);
 
-        }
+        if (
+            game.mode === "goalkeeper"
+        ) {
 
-        const rect = canvas.getBoundingClientRect();
+            game.keeperX = x;
+            game.keeperY = y;
 
-        const x =
-            (event.clientX - rect.left) /
-            rect.width;
+        } else {
 
-        const y =
-            (event.clientY - rect.top) /
-            rect.height;
-
-        const normalizedX = clamp(x, 0, 1);
-        const normalizedY = clamp(y, 0, 1);
-
-        if (state.mode === "goalkeeper") {
-
-            state.gloveX = normalizedX;
-            state.gloveY = normalizedY;
-
-        }
-        else {
-
-            state.aimX = normalizedX;
-            state.aimY = normalizedY;
-
-            state.targetX = normalizedX;
-            state.targetY = normalizedY;
+            game.aimX = x;
+            game.aimY = y;
 
         }
 
-        drawScene();
+        draw();
 
     }
 
 
     canvas.addEventListener(
         "pointerdown",
-        event => {
+        function (event) {
 
             event.preventDefault();
 
-            state.inputPointer = true;
+            game.pointerDown = true;
 
-            if (
-                canvas.setPointerCapture &&
-                event.pointerId !== undefined
-            ) {
-                try {
-                    canvas.setPointerCapture(event.pointerId);
-                }
-                catch (_) {}
-            }
-
-            updateAimFromPointer(event);
+            aimFromEvent(event);
 
         },
-        { passive: false }
+        {
+            passive: false
+        }
     );
 
 
     canvas.addEventListener(
         "pointermove",
-        event => {
+        function (event) {
 
-            if (!state.inputPointer) {
+            if (!game.pointerDown) {
                 return;
             }
 
             event.preventDefault();
 
-            updateAimFromPointer(event);
+            aimFromEvent(event);
 
         },
-        { passive: false }
+        {
+            passive: false
+        }
     );
 
 
-    canvas.addEventListener(
+    window.addEventListener(
         "pointerup",
-        event => {
+        function () {
 
-            event.preventDefault();
+            game.pointerDown = false;
 
-            state.inputPointer = false;
-
-        },
-        { passive: false }
-    );
-
-
-    canvas.addEventListener(
-        "pointercancel",
-        () => {
-            state.inputPointer = false;
         }
     );
 
 
-    /* =========================================================
+    /* =====================================================
        SHOOT
-    ========================================================= */
+    ===================================================== */
 
-    function shoot() {
+    shootButton.addEventListener(
+        "click",
+        function () {
 
-        if (state.mode === "goalkeeper") {
+            shootBall();
+
+        }
+    );
+
+
+    function shootBall() {
+
+        if (!game.running) {
             return;
         }
 
-        if (state.phase !== "ready") {
+        if (game.phase !== "ready") {
             return;
         }
 
-        state.phase = "shooting";
-
-        state.shots++;
-
-        const player = getPlayer();
-
-        const difficulty = getDifficulty();
-
-        let accuracyBonus =
-            player.accuracy / 400;
-
-        if (state.mode === "penalty") {
-            accuracyBonus += player.penalty / 1200;
+        if (game.mode === "goalkeeper") {
+            return;
         }
 
-        if (state.mode === "freekick") {
-            accuracyBonus += player.freeKick / 1200;
+        game.phase = "shooting";
+
+        game.shots++;
+
+        const p = player();
+
+        const d = difficulty();
+
+        let error =
+            d.error;
+
+        let accuracy =
+            p.accuracy / 300;
+
+        if (game.mode === "penalty") {
+
+            accuracy +=
+                p.penalty / 1000;
+
         }
 
-        if (state.mode === "longshot") {
-            accuracyBonus += player.power / 1500;
+        if (game.mode === "freekick") {
+
+            accuracy +=
+                p.freeKick / 1000;
+
         }
 
-        const powerFactor =
-            state.power / 100;
+        if (game.mode === "longshot") {
 
-        let finalX = state.aimX;
-        let finalY = state.aimY;
+            accuracy +=
+                p.power / 1200;
 
-        const errorBase =
-            0.075 -
-            Math.min(accuracyBonus, 0.35);
+        }
 
-        const error =
+        error =
             Math.max(
-                0.008,
-                errorBase *
-                (1.15 - powerFactor * 0.35)
+                0.006,
+                error -
+                accuracy * 0.055
             );
 
-        finalX += random(-error, error);
-        finalY += random(-error, error);
+        const finalX =
+            clamp(
+                game.aimX +
+                random(-error, error),
+                0.08,
+                0.92
+            );
 
-        finalX = clamp(finalX, 0.08, 0.92);
-        finalY = clamp(finalY, 0.13, 0.73);
+        const finalY =
+            clamp(
+                game.aimY +
+                random(-error, error),
+                0.08,
+                0.72
+            );
 
-        state.ball = {
+        game.ball = {
 
             x: 0.50,
-            y: 0.88,
 
-            startX: 0.50,
-            startY: 0.88,
+            y: 0.86,
 
             targetX: finalX,
+
             targetY: finalY,
 
             progress: 0,
 
-            speed:
-                0.0008 +
-                powerFactor * 0.00045
+            startTime:
+                performance.now()
 
         };
 
-        startAnimation();
+        animateShot();
 
     }
 
 
-    /* =========================================================
-       SHOT RESULT
-    ========================================================= */
+    /* =====================================================
+       SHOT ANIMATION
+    ===================================================== */
 
-    function resolveShot() {
+    function animateShot() {
 
-        if (!state.ball) {
+        if (
+            game.phase !== "shooting"
+        ) {
             return;
         }
 
-        const ballX = state.ball.targetX;
-        const ballY = state.ball.targetY;
+        const now =
+            performance.now();
 
-        const goalLeft = 0.18;
-        const goalRight = 0.82;
+        const elapsed =
+            now -
+            game.ball.startTime;
 
-        const goalTop = 0.16;
-        const goalBottom = 0.58;
+        const duration =
+            game.mode === "longshot"
+                ? 1250
+                : game.mode === "freekick"
+                    ? 900
+                    : 800;
+
+        let t =
+            clamp(
+                elapsed / duration,
+                0,
+                1
+            );
+
+        t = ease(t);
+
+        game.ball.progress = t;
+
+        game.ball.x =
+            lerp(
+                0.50,
+                game.ball.targetX,
+                t
+            );
+
+        game.ball.y =
+            lerp(
+                0.86,
+                game.ball.targetY,
+                t
+            );
+
+        draw();
+
+        if (t < 1) {
+
+            game.animation =
+                requestAnimationFrame(
+                    animateShot
+                );
+
+        } else {
+
+            resolveShot();
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SHOT RESULT
+    ===================================================== */
+
+    function resolveShot() {
+
+        if (!game.ball) {
+            return;
+        }
+
+        const x =
+            game.ball.targetX;
+
+        const y =
+            game.ball.targetY;
 
         const insideGoal =
-            ballX >= goalLeft &&
-            ballX <= goalRight &&
-            ballY >= goalTop &&
-            ballY <= goalBottom;
+            x >= 0.17 &&
+            x <= 0.83 &&
+            y >= 0.12 &&
+            y <= 0.55;
 
-        let scored = insideGoal;
 
-        /* ---------------------------------------------
-           FREE KICK WALL
-        --------------------------------------------- */
+        /* FREE KICK WALL */
 
         if (
-            state.mode === "freekick" &&
-            scored
+            game.mode === "freekick" &&
+            insideGoal
         ) {
 
-            const wallHeight =
-                state.wall.length * 0.012 + 0.08;
-
-            const lowShot =
-                ballY > 0.45;
+            const low =
+                y > 0.42;
 
             const wallChance =
-                lowShot
-                    ? 0.52
-                    : 0.12;
+                low ? 0.35 : 0.08;
 
-            const player = getPlayer();
-
-            const specialistBonus =
-                player.freeKick >= 300
+            const specialist =
+                player().freeKick >= 300
                     ? 0.18
                     : 0;
 
             if (
                 Math.random() <
                 Math.max(
-                    0,
+                    0.02,
                     wallChance -
-                    specialistBonus
+                    specialist
                 )
             ) {
 
-                scored = false;
-
-                state.combo = 0;
-
-                finishShot(
-                    false,
-                    "WALL BLOCK!",
-                    "The wall stopped the shot."
+                miss(
+                    "WALL BLOCKED IT!",
+                    "Try bending the ball over the wall."
                 );
 
                 return;
 
             }
 
-            if (wallHeight < 0) {
-                scored = false;
-            }
-
         }
 
 
-        /* ---------------------------------------------
-           GOALKEEPER SAVE
-        --------------------------------------------- */
+        /* GOALKEEPER */
 
-        if (scored) {
+        if (insideGoal) {
 
-            const difficulty = getDifficulty();
-
-            const player = getPlayer();
+            const d =
+                difficulty();
 
             let saveChance =
-                difficulty.keeperAccuracy;
-
-            const keeperBonus =
-                player.keeper / 1500;
-
-            saveChance += keeperBonus;
+                d.keeper;
 
             const keeperDistance =
-                Math.abs(ballX - 0.50);
+                Math.abs(
+                    x - 0.50
+                );
 
-            saveChance +=
-                Math.max(
-                    0,
-                    0.20 - keeperDistance
+            saveChance -=
+                keeperDistance * 0.25;
+
+            saveChance =
+                clamp(
+                    saveChance,
+                    0.05,
+                    0.75
                 );
 
             if (
                 Math.random() <
-                clamp(saveChance, 0.05, 0.90)
+                saveChance
             ) {
 
-                scored = false;
-
-                finishShot(
-                    false,
+                miss(
                     "SAVED!",
-                    "The goalkeeper got to it."
+                    "The goalkeeper stopped your shot.",
+                    true
                 );
 
                 return;
@@ -1123,66 +1306,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        if (scored) {
+        if (insideGoal) {
 
-            state.goals++;
+            goal();
 
-            state.combo++;
+        } else {
 
-            const basePoints = 100;
-
-            const powerPoints =
-                Math.round(state.power * 1.5);
-
-            const distancePoints =
-                Math.round(state.distance * 4);
-
-            const comboPoints =
-                state.combo * 20;
-
-            const levelMultiplier =
-                state.level * 0.25;
-
-            const points = Math.round(
-                (
-                    basePoints +
-                    powerPoints +
-                    distancePoints +
-                    comboPoints
-                ) *
-                (1 + levelMultiplier)
-            );
-
-            state.score += points;
-
-            if (state.score > state.best) {
-
-                state.best = state.score;
-
-                localStorage.setItem(
-                    "footballHeroBest",
-                    String(state.best)
-                );
-
-            }
-
-            checkLevel();
-
-            finishShot(
-                true,
-                "GOAL!",
-                `+${points} points`
-            );
-
-        }
-        else {
-
-            state.combo = 0;
-
-            finishShot(
-                false,
+            miss(
                 "MISS!",
-                "Aim more precisely."
+                "The ball missed the target."
             );
 
         }
@@ -1190,508 +1322,405 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    function finishShot(
-        success,
+    /* =====================================================
+       GOAL
+    ===================================================== */
+
+    function goal() {
+
+        game.phase = "result";
+
+        game.goals++;
+
+        game.combo++;
+
+        const points =
+            100 +
+            game.power +
+            game.distance * 4 +
+            game.combo * 25 +
+            game.level * 20;
+
+        game.score +=
+            Math.round(points);
+
+        game.level =
+            Math.floor(
+                game.goals / 3
+            ) + 1;
+
+        if (
+            game.score >
+            game.best
+        ) {
+
+            game.best =
+                game.score;
+
+            try {
+
+                localStorage.setItem(
+                    "footballHeroBest",
+                    String(game.best)
+                );
+
+            } catch (error) {}
+
+        }
+
+        showResult(
+            "⚽",
+            "GOAL!",
+            `+${Math.round(points)} points`
+        );
+
+        updateUI();
+
+    }
+
+
+    /* =====================================================
+       MISS / SAVE
+    ===================================================== */
+
+    function miss(
+        title,
+        text,
+        isSave = false
+    ) {
+
+        game.phase = "result";
+
+        if (isSave) {
+
+            game.saves++;
+
+        }
+
+        game.combo = 0;
+
+        showResult(
+            isSave ? "🧤" : "❌",
+            title,
+            text
+        );
+
+        updateUI();
+
+    }
+
+
+    function showResult(
+        icon,
         title,
         text
     ) {
 
-        state.phase = "result";
+        resultIcon.textContent =
+            icon;
 
-        updateHUD();
+        resultTitle.textContent =
+            title;
 
-        if (success) {
+        resultText.textContent =
+            text;
 
-            showOverlay(
-                "⚽",
-                title,
-                text,
-                "NEXT SHOT"
-            );
-
-            showToast("GOAL!");
-
-        }
-        else {
-
-            showOverlay(
-                title === "SAVED!"
-                    ? "🧤"
-                    : "❌",
-                title,
-                text,
-                "TRY AGAIN"
-            );
-
-        }
-
-        drawScene();
+        resultScreen.classList.remove(
+            "hidden"
+        );
 
     }
 
 
-    /* =========================================================
-       GOALKEEPER DIVE
-    ========================================================= */
+    /* =====================================================
+       GOALKEEPER MODE
+    ===================================================== */
 
-    function dive() {
+    function goalkeeperSave() {
 
-        if (state.mode !== "goalkeeper") {
+        if (!game.running) {
             return;
         }
 
-        if (state.phase !== "keeperShot") {
+        if (
+            game.mode !== "goalkeeper"
+        ) {
             return;
         }
 
-        if (!state.ball) {
+        if (
+            game.phase !== "keeperReady"
+        ) {
             return;
         }
 
-        state.phase = "diving";
+        game.phase = "saving";
 
-        state.diveX = state.gloveX;
-        state.diveY = state.gloveY;
+        const ball =
+            game.incomingBall;
 
-        const player = getPlayer();
+        const p =
+            player();
 
-        const distance =
-            distanceBetween(
-                state.diveX,
-                state.diveY,
-                state.ball.targetX,
-                state.ball.targetY
-            );
+        const keeperBonus =
+            p.reflex / 300;
 
-        let saveRadius =
-            0.115;
+        const saveRange =
+            0.105 +
+            keeperBonus * 0.035;
 
-        saveRadius +=
-            player.reflex / 5000;
-
-        saveRadius =
-            clamp(
-                saveRadius,
-                0.08,
-                0.22
+        const gap =
+            distance(
+                game.keeperX,
+                game.keeperY,
+                ball.targetX,
+                ball.targetY
             );
 
         const saved =
-            distance <= saveRadius;
+            gap <= saveRange;
 
         if (saved) {
 
-            state.saves++;
-            state.combo++;
+            game.saves++;
 
-            const points =
+            game.combo++;
+
+            game.score +=
                 150 +
-                state.level * 30;
+                game.combo * 30;
 
-            state.score += points;
+            if (
+                game.score >
+                game.best
+            ) {
 
-            if (state.score > state.best) {
+                game.best =
+                    game.score;
 
-                state.best = state.score;
+                try {
 
-                localStorage.setItem(
-                    "footballHeroBest",
-                    String(state.best)
-                );
+                    localStorage.setItem(
+                        "footballHeroBest",
+                        String(game.best)
+                    );
+
+                } catch (error) {}
 
             }
 
-            state.phase = "result";
+            game.phase =
+                "result";
 
-            showOverlay(
+            showResult(
                 "🧤",
                 "INCREDIBLE SAVE!",
-                `+${points} points`,
-                "NEXT SHOT"
+                "You got to the ball!"
             );
 
-            showToast("WHAT A SAVE!");
+            updateUI();
 
-        }
-        else {
+            draw();
 
-            state.combo = 0;
-
-            state.phase = "result";
-
-            showOverlay(
-                "⚽",
-                "GOAL!",
-                "The shot was too far away.",
-                "TRY AGAIN"
-            );
+            return;
 
         }
 
-        updateHUD();
-        drawScene();
+
+        game.phase =
+            "result";
+
+        game.combo = 0;
+
+        showResult(
+            "⚽",
+            "GOAL!",
+            "The shot was out of reach."
+        );
+
+        updateUI();
+
+        draw();
 
     }
 
 
-    /* =========================================================
-       BUTTONS
-    ========================================================= */
-
-    shootButton.addEventListener("click", () => {
-        shoot();
-    });
-
-
-    diveButton.addEventListener("click", () => {
-        dive();
-    });
-
-
-    overlayButton.addEventListener("click", () => {
-
-        if (state.phase === "menu") {
-            startGame();
-            return;
-        }
-
-        if (state.phase === "result") {
-
-            hideOverlay();
-
-            newRound();
-
-        }
-
-    });
-
-
-    resetButton.addEventListener("click", () => {
-
-        hideOverlay();
-
-        startGame();
-
-        showToast("Game reset.");
-
-    });
-
-
-    /* =========================================================
-       MODE BUTTONS
-    ========================================================= */
-
-    modeButtons.forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            modeButtons.forEach(item => {
-                item.classList.remove("active");
-            });
-
-            button.classList.add("active");
-
-            state.mode =
-                button.dataset.mode;
-
-            configureMode();
-
-            showToast(
-                button.textContent.trim()
-            );
-
-        });
-
-    });
-
-
-    /* =========================================================
-       PLAYER SELECT
-    ========================================================= */
-
-    playerSelect.addEventListener(
-        "change",
-        () => {
-
-            state.selectedPlayer =
-                playerSelect.value;
-
-            updatePlayerCard();
-
-            showToast(
-                `${getPlayer().name} selected`
-            );
-
-            drawScene();
-
-        }
+    saveButton.addEventListener(
+        "click",
+        goalkeeperSave
     );
 
 
-    /* =========================================================
-       DIFFICULTY
-    ========================================================= */
-
-    difficultySelect.addEventListener(
-        "change",
-        () => {
-
-            state.difficulty =
-                difficultySelect.value;
-
-            configureMode();
-
-            showToast(
-                `${getDifficulty().label} difficulty`
-            );
-
-        }
-    );
-
-
-    /* =========================================================
-       POWER
-    ========================================================= */
-
-    powerSlider.addEventListener(
-        "input",
-        updatePower
-    );
-
-
-    /* =========================================================
+    /* =====================================================
        KEYBOARD
-    ========================================================= */
+    ===================================================== */
 
     document.addEventListener(
         "keydown",
-        event => {
+        function (event) {
 
-            if (event.code === "Space") {
+            if (
+                event.code === "Space"
+            ) {
 
                 event.preventDefault();
 
                 if (
-                    state.mode === "goalkeeper"
+                    game.mode ===
+                    "goalkeeper"
                 ) {
-                    dive();
-                }
-                else {
-                    shoot();
+
+                    goalkeeperSave();
+
+                } else {
+
+                    shootBall();
+
                 }
 
             }
 
-            if (event.key === "ArrowLeft") {
+
+            const amount = 0.035;
+
+
+            if (
+                event.key ===
+                "ArrowLeft"
+            ) {
 
                 if (
-                    state.mode === "goalkeeper"
+                    game.mode ===
+                    "goalkeeper"
                 ) {
-                    state.gloveX -= 0.035;
-                }
-                else {
-                    state.aimX -= 0.035;
+
+                    game.keeperX -=
+                        amount;
+
+                } else {
+
+                    game.aimX -=
+                        amount;
+
                 }
 
             }
 
-            if (event.key === "ArrowRight") {
+
+            if (
+                event.key ===
+                "ArrowRight"
+            ) {
 
                 if (
-                    state.mode === "goalkeeper"
+                    game.mode ===
+                    "goalkeeper"
                 ) {
-                    state.gloveX += 0.035;
-                }
-                else {
-                    state.aimX += 0.035;
+
+                    game.keeperX +=
+                        amount;
+
+                } else {
+
+                    game.aimX +=
+                        amount;
+
                 }
 
             }
 
-            if (event.key === "ArrowUp") {
+
+            if (
+                event.key ===
+                "ArrowUp"
+            ) {
 
                 if (
-                    state.mode === "goalkeeper"
+                    game.mode ===
+                    "goalkeeper"
                 ) {
-                    state.gloveY -= 0.035;
-                }
-                else {
-                    state.aimY -= 0.035;
+
+                    game.keeperY -=
+                        amount;
+
+                } else {
+
+                    game.aimY -=
+                        amount;
+
                 }
 
             }
 
-            if (event.key === "ArrowDown") {
+
+            if (
+                event.key ===
+                "ArrowDown"
+            ) {
 
                 if (
-                    state.mode === "goalkeeper"
+                    game.mode ===
+                    "goalkeeper"
                 ) {
-                    state.gloveY += 0.035;
-                }
-                else {
-                    state.aimY += 0.035;
+
+                    game.keeperY +=
+                        amount;
+
+                } else {
+
+                    game.aimY +=
+                        amount;
+
                 }
 
             }
 
-            state.aimX =
-                clamp(state.aimX, 0.05, 0.95);
 
-            state.aimY =
-                clamp(state.aimY, 0.10, 0.80);
+            game.aimX =
+                clamp(
+                    game.aimX,
+                    0.05,
+                    0.95
+                );
 
-            state.gloveX =
-                clamp(state.gloveX, 0.05, 0.95);
+            game.aimY =
+                clamp(
+                    game.aimY,
+                    0.08,
+                    0.80
+                );
 
-            state.gloveY =
-                clamp(state.gloveY, 0.12, 0.90);
+            game.keeperX =
+                clamp(
+                    game.keeperX,
+                    0.05,
+                    0.95
+                );
 
-            drawScene();
+            game.keeperY =
+                clamp(
+                    game.keeperY,
+                    0.12,
+                    0.90
+                );
+
+            draw();
 
         }
     );
 
 
-    /* =========================================================
-       ANIMATION
-    ========================================================= */
+    /* =====================================================
+       DRAWING
+    ===================================================== */
 
-    function startAnimation() {
-
-        cancelAnimationFrame(
-            state.animationFrame
-        );
-
-        state.animationStart =
-            performance.now();
-
-        state.lastTime =
-            state.animationStart;
-
-        state.animationFrame =
-            requestAnimationFrame(
-                animate
-            );
-
-    }
-
-
-    function animate(time) {
-
-        const elapsed =
-            time - state.animationStart;
-
-        if (
-            state.ball &&
-            (
-                state.phase === "shooting" ||
-                state.phase === "keeperShot"
-            )
-        ) {
-
-            const duration =
-                state.mode === "longshot"
-                    ? 1450
-                    : state.mode === "freekick"
-                        ? 1050
-                        : 900;
-
-            const progress =
-                clamp(
-                    elapsed / duration,
-                    0,
-                    1
-                );
-
-            state.ball.progress =
-                easeOutCubic(progress);
-
-            if (
-                state.phase === "keeperShot"
-            ) {
-
-                state.ball.progress =
-                    clamp(
-                        elapsed /
-                        (
-                            1250 *
-                            getDifficulty().reaction
-                        ),
-                        0,
-                        1
-                    );
-
-            }
-
-            state.ball.x =
-                lerp(
-                    state.ball.startX,
-                    state.ball.targetX,
-                    state.ball.progress
-                );
-
-            state.ball.y =
-                lerp(
-                    state.ball.startY,
-                    state.ball.targetY,
-                    state.ball.progress
-                );
-
-            drawScene();
-
-            if (progress >= 1) {
-
-                if (
-                    state.phase === "shooting"
-                ) {
-
-                    resolveShot();
-
-                }
-                else if (
-                    state.phase === "keeperShot"
-                ) {
-
-                    state.phase = "result";
-
-                    state.combo = 0;
-
-                    showOverlay(
-                        "⚽",
-                        "GOAL!",
-                        "You did not reach the ball.",
-                        "TRY AGAIN"
-                    );
-
-                    drawScene();
-
-                }
-
-                return;
-
-            }
-
-            state.animationFrame =
-                requestAnimationFrame(
-                    animate
-                );
-
-        }
-
-    }
-
-
-    /* =========================================================
-       DRAWING HELPERS
-    ========================================================= */
-
-    function clearCanvas() {
+    function clear() {
 
         ctx.clearRect(
             0,
             0,
-            viewWidth,
-            viewHeight
+            game.width,
+            game.height
         );
 
     }
@@ -1704,84 +1733,71 @@ document.addEventListener("DOMContentLoaded", () => {
                 0,
                 0,
                 0,
-                viewHeight
+                game.height
             );
 
         gradient.addColorStop(
             0,
-            "#123c24"
+            "#07111f"
         );
 
         gradient.addColorStop(
             1,
-            "#061d12"
+            "#020617"
         );
 
-        ctx.fillStyle = gradient;
+        ctx.fillStyle =
+            gradient;
 
         ctx.fillRect(
             0,
             0,
-            viewWidth,
-            viewHeight
+            game.width,
+            game.height
         );
-
-    }
-
-
-    function drawStadiumLights() {
-
-        for (let i = 0; i < 12; i++) {
-
-            const x =
-                (i / 11) *
-                viewWidth;
-
-            ctx.beginPath();
-
-            ctx.arc(
-                x,
-                22,
-                4,
-                0,
-                Math.PI * 2
-            );
-
-            ctx.fillStyle =
-                "rgba(255,255,255,0.8)";
-
-            ctx.fill();
-
-        }
 
     }
 
 
     function drawPitch() {
 
-        const left = viewWidth * 0.06;
-        const right = viewWidth * 0.94;
+        const left =
+            game.width * 0.05;
 
-        const top = viewHeight * 0.06;
-        const bottom = viewHeight * 0.95;
+        const right =
+            game.width * 0.95;
 
-        ctx.save();
+        const top =
+            game.height * 0.05;
 
-        ctx.fillStyle = "#168347";
+        const bottom =
+            game.height * 0.95;
+
+        const width =
+            right - left;
+
+        const height =
+            bottom - top;
+
+
+        ctx.fillStyle =
+            "#16803f";
 
         ctx.fillRect(
             left,
             top,
-            right - left,
-            bottom - top
+            width,
+            height
         );
 
-        /* stripes */
 
-        const stripeWidth =
-            (right - left) / 12;
+        /* GRASS STRIPES */
 
-        for (let i = 0; i < 12; i++) {
+        for (
+            let i = 0;
+            i < 12;
+            i++
+        ) {
 
             if (i % 2 === 0) {
 
@@ -1789,17 +1805,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     "rgba(255,255,255,0.035)";
 
                 ctx.fillRect(
-                    left + i * stripeWidth,
+                    left +
+                    i * width / 12,
                     top,
-                    stripeWidth,
-                    bottom - top
+                    width / 12,
+                    height
                 );
 
             }
 
         }
 
-        /* outer lines */
+
+        /* LINES */
 
         ctx.strokeStyle =
             "rgba(255,255,255,0.9)";
@@ -1809,36 +1827,36 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.strokeRect(
             left,
             top,
-            right - left,
-            bottom - top
+            width,
+            height
         );
 
-        /* halfway line */
+
+        /* CENTRE */
 
         ctx.beginPath();
 
         ctx.moveTo(
             left,
-            (top + bottom) / 2
+            top + height / 2
         );
 
         ctx.lineTo(
             right,
-            (top + bottom) / 2
+            top + height / 2
         );
 
         ctx.stroke();
 
-        /* centre circle */
 
         ctx.beginPath();
 
         ctx.arc(
-            viewWidth / 2,
-            (top + bottom) / 2,
+            game.width / 2,
+            top + height / 2,
             Math.min(
-                viewWidth,
-                viewHeight
+                width,
+                height
             ) * 0.12,
             0,
             Math.PI * 2
@@ -1846,557 +1864,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
         ctx.stroke();
 
-        ctx.restore();
-
     }
 
 
     function drawGoal() {
 
-        const goalLeft =
-            viewWidth * 0.16;
-
-        const goalRight =
-            viewWidth * 0.84;
-
-        const goalTop =
-            viewHeight * 0.10;
-
-        const goalBottom =
-            viewHeight * 0.30;
-
-        /* net */
-
-        ctx.save();
-
-        ctx.fillStyle =
-            "rgba(235,245,255,0.12)";
-
-        ctx.fillRect(
-            goalLeft,
-            goalTop,
-            goalRight - goalLeft,
-            goalBottom - goalTop
-        );
-
-        ctx.strokeStyle =
-            "rgba(255,255,255,0.28)";
-
-        ctx.lineWidth = 1;
-
-        for (
-            let x = goalLeft;
-            x <= goalRight;
-            x += 18
-        ) {
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                x,
-                goalTop
-            );
-
-            ctx.lineTo(
-                x,
-                goalBottom
-            );
-
-            ctx.stroke();
-
-        }
-
-        for (
-            let y = goalTop;
-            y <= goalBottom;
-            y += 16
-        ) {
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                goalLeft,
-                y
-            );
-
-            ctx.lineTo(
-                goalRight,
-                y
-            );
-
-            ctx.stroke();
-
-        }
-
-        /* posts */
-
-        ctx.strokeStyle =
-            "#ffffff";
-
-        ctx.lineWidth = 7;
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            goalLeft,
-            goalBottom
-        );
-
-        ctx.lineTo(
-            goalLeft,
-            goalTop
-        );
-
-        ctx.lineTo(
-            goalRight,
-            goalTop
-        );
-
-        ctx.lineTo(
-            goalRight,
-            goalBottom
-        );
-
-        ctx.stroke();
-
-        ctx.restore();
-
-    }
-
-
-    function drawPenaltySpot() {
-
-        const x =
-            viewWidth * 0.50;
-
-        const y =
-            viewHeight * 0.72;
-
-        ctx.beginPath();
-
-        ctx.arc(
-            x,
-            y,
-            5,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fillStyle =
-            "#ffffff";
-
-        ctx.fill();
-
-    }
-
-
-    function drawWall() {
-
-        for (const person of state.wall) {
-
-            const x =
-                person.x * viewWidth;
-
-            const y =
-                person.y * viewHeight;
-
-            const h =
-                person.height * viewHeight;
-
-            ctx.save();
-
-            /* head */
-
-            ctx.beginPath();
-
-            ctx.arc(
-                x,
-                y - h * 0.48,
-                h * 0.18,
-                0,
-                Math.PI * 2
-            );
-
-            ctx.fillStyle =
-                "#f1c39b";
-
-            ctx.fill();
-
-            /* body */
-
-            ctx.fillStyle =
-                "#243dff";
-
-            ctx.fillRect(
-                x - h * 0.22,
-                y - h * 0.28,
-                h * 0.44,
-                h * 0.55
-            );
-
-            /* legs */
-
-            ctx.strokeStyle =
-                "#111827";
-
-            ctx.lineWidth = 4;
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                x - h * 0.08,
-                y + h * 0.27
-            );
-
-            ctx.lineTo(
-                x - h * 0.15,
-                y + h * 0.52
-            );
-
-            ctx.moveTo(
-                x + h * 0.08,
-                y + h * 0.27
-            );
-
-            ctx.lineTo(
-                x + h * 0.15,
-                y + h * 0.52
-            );
-
-            ctx.stroke();
-
-            ctx.restore();
-
-        }
-
-    }
-
-
-    function drawAimTarget() {
-
-        if (
-            state.phase !== "ready"
-        ) {
-            return;
-        }
-
-        if (
-            state.mode === "goalkeeper"
-        ) {
-            return;
-        }
-
-        const x =
-            state.aimX * viewWidth;
-
-        const y =
-            state.aimY * viewHeight;
-
-        const radius = 22;
-
-        ctx.save();
-
-        ctx.strokeStyle =
-            "rgba(255,255,255,0.95)";
-
-        ctx.lineWidth = 3;
-
-        ctx.beginPath();
-
-        ctx.arc(
-            x,
-            y,
-            radius,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.stroke();
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            x - radius - 8,
-            y
-        );
-
-        ctx.lineTo(
-            x + radius + 8,
-            y
-        );
-
-        ctx.moveTo(
-            x,
-            y - radius - 8
-        );
-
-        ctx.lineTo(
-            x,
-            y + radius + 8
-        );
-
-        ctx.stroke();
-
-        ctx.fillStyle =
-            "rgba(255,255,255,0.9)";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            x,
-            y,
-            4,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
-
-        ctx.restore();
-
-    }
-
-
-    function drawBall() {
-
-        if (!state.ball) {
-            return;
-        }
-
-        const x =
-            state.ball.x * viewWidth;
-
-        const y =
-            state.ball.y * viewHeight;
-
-        const progress =
-            state.ball.progress;
-
-        const size =
-            11 -
-            progress * 2;
-
-        /* shadow */
-
-        ctx.beginPath();
-
-        ctx.ellipse(
-            x,
-            y + 9,
-            size * 1.3,
-            size * 0.45,
-            0,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fillStyle =
-            "rgba(0,0,0,0.30)";
-
-        ctx.fill();
-
-        /* ball */
-
-        const gradient =
-            ctx.createRadialGradient(
-                x - 3,
-                y - 3,
-                1,
-                x,
-                y,
-                size
-            );
-
-        gradient.addColorStop(
-            0,
-            "#ffffff"
-        );
-
-        gradient.addColorStop(
-            1,
-            "#cbd5e1"
-        );
-
-        ctx.beginPath();
-
-        ctx.arc(
-            x,
-            y,
-            size,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fillStyle =
-            gradient;
-
-        ctx.fill();
-
-        ctx.strokeStyle =
-            "#111827";
-
-        ctx.lineWidth = 1;
-
-        ctx.stroke();
-
-    }
-
-
-    function drawPlayer() {
-
-        if (
-            state.mode === "goalkeeper"
-        ) {
-            return;
-        }
-
-        const x =
-            viewWidth * 0.50;
-
-        const y =
-            viewHeight * 0.86;
-
-        ctx.save();
-
-        /* shadow */
-
-        ctx.beginPath();
-
-        ctx.ellipse(
-            x,
-            y + 15,
-            30,
-            9,
-            0,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fillStyle =
-            "rgba(0,0,0,0.25)";
-
-        ctx.fill();
-
-        /* legs */
-
-        ctx.strokeStyle =
-            "#101827";
-
-        ctx.lineWidth = 7;
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            x - 7,
-            y + 4
-        );
-
-        ctx.lineTo(
-            x - 15,
-            y + 28
-        );
-
-        ctx.moveTo(
-            x + 7,
-            y + 4
-        );
-
-        ctx.lineTo(
-            x + 15,
-            y + 28
-        );
-
-        ctx.stroke();
-
-        /* body */
-
-        ctx.fillStyle =
-            "#2563eb";
-
-        ctx.fillRect(
-            x - 18,
-            y - 32,
-            36,
-            40
-        );
-
-        /* head */
-
-        ctx.beginPath();
-
-        ctx.arc(
-            x,
-            y - 48,
-            13,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fillStyle =
-            "#dca77d";
-
-        ctx.fill();
-
-        /* name */
-
-        ctx.font =
-            "bold 12px Arial";
-
-        ctx.textAlign =
-            "center";
-
-        ctx.fillStyle =
-            "#ffffff";
-
-        ctx.fillText(
-            getPlayer().initials,
-            x,
-            y - 75
-        );
-
-        ctx.restore();
-
-    }
-
-
-    /* =========================================================
-       GOALKEEPER POV
-    ========================================================= */
-
-    function drawGoalkeeperScene() {
-
-        clearCanvas();
-
-        drawBackground();
-
-        /* stadium */
-
-        ctx.fillStyle =
-            "#111827";
-
-        ctx.fillRect(
-            0,
-            0,
-            viewWidth,
-            viewHeight * 0.25
-        );
-
-        /* goal frame */
-
         const left =
-            viewWidth * 0.08;
+            game.width * 0.16;
 
         const right =
-            viewWidth * 0.92;
+            game.width * 0.84;
 
         const top =
-            viewHeight * 0.10;
+            game.height * 0.08;
 
         const bottom =
-            viewHeight * 0.82;
+            game.height * 0.28;
+
+
+        /* NET */
 
         ctx.fillStyle =
-            "rgba(255,255,255,0.08)";
+            "rgba(255,255,255,0.10)";
 
         ctx.fillRect(
             left,
@@ -2405,17 +1894,17 @@ document.addEventListener("DOMContentLoaded", () => {
             bottom - top
         );
 
-        /* net */
 
         ctx.strokeStyle =
-            "rgba(255,255,255,0.22)";
+            "rgba(255,255,255,0.25)";
 
         ctx.lineWidth = 1;
+
 
         for (
             let x = left;
             x <= right;
-            x += 22
+            x += 18
         ) {
 
             ctx.beginPath();
@@ -2434,10 +1923,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
+
         for (
             let y = top;
             y <= bottom;
-            y += 20
+            y += 16
         ) {
 
             ctx.beginPath();
@@ -2456,7 +1946,501 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-        /* posts */
+
+        /* POSTS */
+
+        ctx.strokeStyle =
+            "#ffffff";
+
+        ctx.lineWidth = 7;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            left,
+            bottom
+        );
+
+        ctx.lineTo(
+            left,
+            top
+        );
+
+        ctx.lineTo(
+            right,
+            top
+        );
+
+        ctx.lineTo(
+            right,
+            bottom
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    function drawBall(
+        x,
+        y,
+        radius = 10
+    ) {
+
+        /* shadow */
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+            x,
+            y + radius,
+            radius * 1.35,
+            radius * 0.4,
+            0,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle =
+            "rgba(0,0,0,0.35)";
+
+        ctx.fill();
+
+
+        /* ball */
+
+        const gradient =
+            ctx.createRadialGradient(
+                x - 3,
+                y - 3,
+                1,
+                x,
+                y,
+                radius
+            );
+
+        gradient.addColorStop(
+            0,
+            "#ffffff"
+        );
+
+        gradient.addColorStop(
+            1,
+            "#cbd5e1"
+        );
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y,
+            radius,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle =
+            gradient;
+
+        ctx.fill();
+
+        ctx.strokeStyle =
+            "#111827";
+
+        ctx.lineWidth = 1;
+
+        ctx.stroke();
+
+
+        /* black pattern */
+
+        ctx.fillStyle =
+            "#111827";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y,
+            radius * 0.25,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+    }
+
+
+    function drawPlayer() {
+
+        const x =
+            game.width * 0.50;
+
+        const y =
+            game.height * 0.86;
+
+
+        ctx.fillStyle =
+            "rgba(0,0,0,0.3)";
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+            x,
+            y + 20,
+            32,
+            8,
+            0,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        /* legs */
+
+        ctx.strokeStyle =
+            "#111827";
+
+        ctx.lineWidth = 7;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x - 7,
+            y
+        );
+
+        ctx.lineTo(
+            x - 15,
+            y + 27
+        );
+
+        ctx.moveTo(
+            x + 7,
+            y
+        );
+
+        ctx.lineTo(
+            x + 15,
+            y + 27
+        );
+
+        ctx.stroke();
+
+
+        /* shirt */
+
+        ctx.fillStyle =
+            "#2563eb";
+
+        ctx.fillRect(
+            x - 18,
+            y - 35,
+            36,
+            42
+        );
+
+
+        /* head */
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y - 50,
+            14,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle =
+            "#d6a078";
+
+        ctx.fill();
+
+
+        /* name */
+
+        ctx.font =
+            "bold 12px Arial";
+
+        ctx.textAlign =
+            "center";
+
+        ctx.fillStyle =
+            "#ffffff";
+
+        ctx.fillText(
+            player().initials,
+            x,
+            y - 75
+        );
+
+    }
+
+
+    function drawAim() {
+
+        if (
+            game.phase !== "ready"
+        ) {
+            return;
+        }
+
+        if (
+            game.mode === "goalkeeper"
+        ) {
+            return;
+        }
+
+        const x =
+            game.aimX *
+            game.width;
+
+        const y =
+            game.aimY *
+            game.height;
+
+
+        ctx.strokeStyle =
+            "#ffffff";
+
+        ctx.lineWidth = 3;
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y,
+            20,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.stroke();
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x - 29,
+            y
+        );
+
+        ctx.lineTo(
+            x + 29,
+            y
+        );
+
+        ctx.moveTo(
+            x,
+            y - 29
+        );
+
+        ctx.lineTo(
+            x,
+            y + 29
+        );
+
+        ctx.stroke();
+
+
+        ctx.fillStyle =
+            "#ffffff";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y,
+            4,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+    }
+
+
+    function drawWall() {
+
+        for (
+            const person of game.wall
+        ) {
+
+            const x =
+                person.x *
+                game.width;
+
+            const y =
+                person.y *
+                game.height;
+
+
+            /* head */
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                y - 22,
+                9,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fillStyle =
+                "#d5a078";
+
+            ctx.fill();
+
+
+            /* body */
+
+            ctx.fillStyle =
+                "#263dff";
+
+            ctx.fillRect(
+                x - 11,
+                y - 12,
+                22,
+                30
+            );
+
+
+            /* legs */
+
+            ctx.strokeStyle =
+                "#111827";
+
+            ctx.lineWidth = 4;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x - 4,
+                y + 18
+            );
+
+            ctx.lineTo(
+                x - 9,
+                y + 34
+            );
+
+            ctx.moveTo(
+                x + 4,
+                y + 18
+            );
+
+            ctx.lineTo(
+                x + 9,
+                y + 34
+            );
+
+            ctx.stroke();
+
+        }
+
+    }
+
+
+    /* =====================================================
+       GOALKEEPER VIEW
+    ===================================================== */
+
+    function drawGoalkeeperView() {
+
+        clear();
+
+        drawBackground();
+
+
+        /* GOAL AREA */
+
+        const left =
+            game.width * 0.07;
+
+        const right =
+            game.width * 0.93;
+
+        const top =
+            game.height * 0.08;
+
+        const bottom =
+            game.height * 0.82;
+
+
+        ctx.fillStyle =
+            "rgba(255,255,255,0.08)";
+
+        ctx.fillRect(
+            left,
+            top,
+            right - left,
+            bottom - top
+        );
+
+
+        /* NET */
+
+        ctx.strokeStyle =
+            "rgba(255,255,255,0.22)";
+
+        ctx.lineWidth = 1;
+
+
+        for (
+            let x = left;
+            x <= right;
+            x += 20
+        ) {
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x,
+                top
+            );
+
+            ctx.lineTo(
+                x,
+                bottom
+            );
+
+            ctx.stroke();
+
+        }
+
+
+        for (
+            let y = top;
+            y <= bottom;
+            y += 18
+        ) {
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                left,
+                y
+            );
+
+            ctx.lineTo(
+                right,
+                y
+            );
+
+            ctx.stroke();
+
+        }
+
+
+        /* GOAL FRAME */
 
         ctx.strokeStyle =
             "#ffffff";
@@ -2487,30 +2471,74 @@ document.addEventListener("DOMContentLoaded", () => {
 
         ctx.stroke();
 
-        /* keeper gloves */
 
-        drawGloves();
+        /* GLOVES */
 
-        /* incoming ball */
+        const gx =
+            game.keeperX *
+            game.width;
 
-        drawBall();
+        const gy =
+            game.keeperY *
+            game.height;
 
-        /* target indicator */
+
+        drawGlove(
+            gx - 28,
+            gy
+        );
+
+        drawGlove(
+            gx + 28,
+            gy
+        );
+
+
+        /* BALL */
 
         if (
-            state.goalkeeperTarget &&
-            state.phase === "keeperShot"
+            game.incomingBall
+        ) {
+
+            const b =
+                game.incomingBall;
+
+            const bx =
+                b.x *
+                game.width;
+
+            const by =
+                b.y *
+                game.height;
+
+            const size =
+                15 -
+                b.progress * 5;
+
+            drawBall(
+                bx,
+                by,
+                size
+            );
+
+        }
+
+
+        /* TARGET */
+
+        if (
+            game.incomingBall &&
+            game.phase === "keeperReady"
         ) {
 
             const tx =
-                state.goalkeeperTarget.x *
-                viewWidth;
+                game.incomingBall.targetX *
+                game.width;
 
             const ty =
-                state.goalkeeperTarget.y *
-                viewHeight;
+                game.incomingBall.targetY *
+                game.height;
 
-            ctx.save();
 
             ctx.strokeStyle =
                 "rgba(255,80,80,0.7)";
@@ -2522,88 +2550,63 @@ document.addEventListener("DOMContentLoaded", () => {
             ctx.arc(
                 tx,
                 ty,
-                24,
+                22,
                 0,
                 Math.PI * 2
             );
 
             ctx.stroke();
 
-            ctx.restore();
-
         }
 
     }
 
 
-    function drawGloves() {
-
-        const x =
-            state.gloveX * viewWidth;
-
-        const y =
-            state.gloveY * viewHeight;
-
-        ctx.save();
-
-        /* left glove */
-
-        drawSingleGlove(
-            x - 28,
-            y
-        );
-
-        /* right glove */
-
-        drawSingleGlove(
-            x + 28,
-            y
-        );
-
-        ctx.restore();
-
-    }
-
-
-    function drawSingleGlove(
+    function drawGlove(
         x,
         y
     ) {
 
-        ctx.beginPath();
-
-        ctx.arc(
-            x,
-            y,
-            19,
-            0,
-            Math.PI * 2
-        );
-
         ctx.fillStyle =
             "#facc15";
-
-        ctx.fill();
 
         ctx.strokeStyle =
             "#111827";
 
         ctx.lineWidth = 3;
 
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y,
+            18,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
         ctx.stroke();
 
-        for (let i = 0; i < 4; i++) {
+
+        for (
+            let i = 0;
+            i < 4;
+            i++
+        ) {
 
             ctx.beginPath();
 
             ctx.moveTo(
                 x - 10 + i * 7,
-                y - 10
+                y - 8
             );
 
             ctx.lineTo(
-                x - 12 + i * 8,
-                y - 25
+                x - 12 + i * 7,
+                y - 24
             );
 
             ctx.strokeStyle =
@@ -2618,107 +2621,208 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =========================================================
-       NORMAL SCENE
-    ========================================================= */
+    /* =====================================================
+       MAIN DRAW
+    ===================================================== */
 
-    function drawNormalScene() {
+    function draw() {
 
-        clearCanvas();
+        if (
+            game.mode ===
+            "goalkeeper"
+        ) {
+
+            drawGoalkeeperView();
+
+            return;
+
+        }
+
+
+        clear();
 
         drawBackground();
-
-        drawStadiumLights();
 
         drawPitch();
 
         drawGoal();
 
-        drawPenaltySpot();
-
         if (
-            state.mode === "freekick"
+            game.mode ===
+            "freekick"
         ) {
+
             drawWall();
+
         }
+
 
         drawPlayer();
 
-        drawAimTarget();
+        drawAim();
 
-        drawBall();
 
-        /* distance marker */
+        if (game.ball) {
 
-        ctx.save();
+            drawBall(
+                game.ball.x *
+                    game.width,
+                game.ball.y *
+                    game.height,
+                10
+            );
 
-        ctx.fillStyle =
-            "rgba(0,0,0,0.35)";
-
-        ctx.fillRect(
-            viewWidth * 0.04,
-            viewHeight * 0.84,
-            105,
-            30
-        );
-
-        ctx.font =
-            "bold 13px Arial";
-
-        ctx.fillStyle =
-            "#ffffff";
-
-        ctx.textAlign =
-            "center";
-
-        ctx.fillText(
-            `${Math.round(state.distance)}m`,
-            viewWidth * 0.04 + 52,
-            viewHeight * 0.84 + 20
-        );
-
-        ctx.restore();
+        }
 
     }
 
 
-    /* =========================================================
-       MAIN DRAW
-    ========================================================= */
+    /* =====================================================
+       GOALKEEPER BALL ANIMATION
+    ===================================================== */
 
-    function drawScene() {
+    function animateKeeperShot() {
 
         if (
-            state.mode === "goalkeeper"
+            game.phase !==
+            "keeperReady"
         ) {
-            drawGoalkeeperScene();
+            return;
         }
-        else {
-            drawNormalScene();
+
+        if (!game.incomingBall) {
+            return;
+        }
+
+        if (
+            !game.incomingBall.startTime
+        ) {
+
+            game.incomingBall.startTime =
+                performance.now();
+
+        }
+
+        const elapsed =
+            performance.now() -
+            game.incomingBall.startTime;
+
+        const duration =
+            1400 *
+            difficulty().reaction;
+
+        let t =
+            clamp(
+                elapsed / duration,
+                0,
+                1
+            );
+
+        t = ease(t);
+
+        game.incomingBall.progress =
+            t;
+
+        game.incomingBall.x =
+            lerp(
+                game.incomingBall.startX,
+                game.incomingBall.targetX,
+                t
+            );
+
+        game.incomingBall.y =
+            lerp(
+                game.incomingBall.startY,
+                game.incomingBall.targetY,
+                t
+            );
+
+        draw();
+
+        if (t < 1) {
+
+            game.animation =
+                requestAnimationFrame(
+                    animateKeeperShot
+                );
+
+        } else {
+
+            game.phase =
+                "result";
+
+            game.combo = 0;
+
+            showResult(
+                "⚽",
+                "GOAL!",
+                "You didn't reach the shot."
+            );
+
+            updateUI();
+
         }
 
     }
 
 
-    /* =========================================================
-       INITIALIZATION
-    ========================================================= */
+    /* =====================================================
+       KEEP GAMEKEEPER SHOT MOVING
+    ===================================================== */
 
-    updatePlayerCard();
+    const oldSetupMode =
+        setupMode;
 
-    updatePower();
 
-    updateHUD();
+    setupMode = function () {
+
+        oldSetupMode();
+
+        if (
+            game.mode ===
+            "goalkeeper"
+        ) {
+
+            setTimeout(
+                function () {
+
+                    if (
+                        game.running &&
+                        game.phase ===
+                        "keeperReady"
+                    ) {
+
+                        animateKeeperShot();
+
+                    }
+
+                },
+                650
+            );
+
+        }
+
+    };
+
+
+    /* =====================================================
+       INITIAL STATE
+    ===================================================== */
+
+    game.player =
+        playerSelect.value;
+
+    game.difficulty =
+        difficultySelect.value;
+
+    game.power =
+        Number(powerSlider.value);
+
+
+    updatePlayerUI();
+
+    updateUI();
 
     resizeCanvas();
-
-    showOverlay(
-        "⚽",
-        "FOOTBALL HERO X",
-        "Choose your mode, aim your shot, and score.",
-        "PLAY"
-    );
-
-    drawScene();
 
 });
