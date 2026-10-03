@@ -1,1605 +1,415 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,
+                   maximum-scale=1.0, user-scalable=no">
 
-    <meta
-        name="viewport"
-        content="width=device-width,
-        initial-scale=1.0,
-        maximum-scale=1.0,
-        user-scalable=no,
-        viewport-fit=cover"
-    >
+    <title>Football Masters</title>
 
-    <meta
-        name="theme-color"
-        content="#03150a"
-    >
-
-    <title>
-        Football Legends Arena X7
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
+    <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
-<div id="app">
+    <div id="game">
 
-
-    <!-- =====================================================
-         HEADER
-    ====================================================== -->
-
-    <header class="topbar">
-
-        <div class="brand">
-
-            <div class="brand-title">
-                ⚽ FOOTBALL LEGENDS ARENA
-                <b>X7</b>
+        <!-- TOP BAR -->
+        <header class="top-bar">
+            <div class="brand">
+                <span class="brand-ball">⚽</span>
+                <span>FOOTBALL MASTERS</span>
             </div>
 
-            <div class="brand-sub">
-                ULTIMATE SHOOTING • FREE KICKS •
-                LONG SHOTS • GOALKEEPING
+            <div class="top-stats">
+                <div class="stat-box">
+                    <span class="stat-label">LEVEL</span>
+                    <span id="levelDisplay">1</span>
+                </div>
+
+                <div class="stat-box">
+                    <span class="stat-label">SCORE</span>
+                    <span id="scoreDisplay">0</span>
+                </div>
+
+                <div class="stat-box">
+                    <span class="stat-label">COINS</span>
+                    <span id="coinsDisplay">100</span>
+                </div>
             </div>
+        </header>
 
-        </div>
 
+        <!-- HOME SCREEN -->
+        <section id="homeScreen" class="screen active">
 
-        <div class="scoreboard">
+            <div class="hero">
+                <div class="hero-ball">⚽</div>
 
-            <div>
-                <span>SCORE</span>
-                <strong id="score">
-                    0
-                </strong>
-            </div>
-
-
-            <div>
-                <span>LEVEL</span>
-                <strong id="level">
-                    1
-                </strong>
-            </div>
-
-
-            <div>
-                <span>GOALS</span>
-                <strong id="goals">
-                    0
-                </strong>
-            </div>
-
-
-            <div>
-                <span>SAVES</span>
-                <strong id="saves">
-                    0
-                </strong>
-            </div>
-
-
-            <div>
-                <span>COMBO</span>
-                <strong id="combo">
-                    0
-                </strong>
-            </div>
-
-
-            <div>
-                <span>BEST</span>
-                <strong id="best">
-                    0
-                </strong>
-            </div>
-
-        </div>
-
-    </header>
-
-
-
-    <!-- =====================================================
-         CONTROL BAR
-    ====================================================== -->
-
-    <section class="toolbar">
-
-
-        <div class="field">
-
-            <label>
-                PLAYER
-            </label>
-
-            <select id="playerSelect">
-
-                <option>
-                    Hassan Ali
-                </option>
-
-                <option>
-                    Muhammad Arham
-                </option>
-
-                <option>
-                    Ehan Ali
-                </option>
-
-                <option>
-                    Umar Shoaib
-                </option>
-
-                <option>
-                    Cristiano Ronaldo
-                </option>
-
-                <option>
-                    Lionel Messi
-                </option>
-
-                <option>
-                    Kylian Mbappe
-                </option>
-
-                <option>
-                    Erling Haaland
-                </option>
-
-                <option>
-                    Lamine Yamal
-                </option>
-
-                <option>
-                    Jude Bellingham
-                </option>
-
-                <option>
-                    Vinicius Jr
-                </option>
-
-                <option>
-                    Neymar
-                </option>
-
-                <option>
-                    Mohamed Salah
-                </option>
-
-                <option>
-                    Kevin De Bruyne
-                </option>
-
-                <option>
-                    Robert Lewandowski
-                </option>
-
-                <option>
-                    Harry Kane
-                </option>
-
-                <option>
-                    Son Heung-min
-                </option>
-
-                <option>
-                    Rodri
-                </option>
-
-                <option>
-                    Antoine Griezmann
-                </option>
-
-                <option>
-                    Ousmane Dembele
-                </option>
-
-                <option>
-                    Jamal Musiala
-                </option>
-
-                <option>
-                    Phil Foden
-                </option>
-
-                <option>
-                    Raphinha
-                </option>
-
-            </select>
-
-        </div>
-
-
-
-        <div class="field">
-
-            <label>
-                GOALKEEPER
-            </label>
-
-            <select id="keeperSelect">
-
-                <option>
-                    Hassan Ali
-                </option>
-
-                <option>
-                    Muhammad Arham
-                </option>
-
-                <option>
-                    Ehan Ali
-                </option>
-
-                <option>
-                    Thibaut Courtois
-                </option>
-
-                <option>
-                    Alisson
-                </option>
-
-                <option>
-                    Manuel Neuer
-                </option>
-
-                <option>
-                    Gianluigi Donnarumma
-                </option>
-
-                <option>
-                    Ederson
-                </option>
-
-                <option>
-                    Jan Oblak
-                </option>
-
-                <option>
-                    Marc-Andre ter Stegen
-                </option>
-
-                <option>
-                    Emiliano Martinez
-                </option>
-
-            </select>
-
-        </div>
-
-
-
-        <div class="field">
-
-            <label>
-                DIFFICULTY
-            </label>
-
-            <select id="difficulty">
-
-                <option value="easy">
-                    Easy
-                </option>
-
-                <option
-                    value="normal"
-                    selected
-                >
-                    Normal
-                </option>
-
-                <option value="hard">
-                    Hard
-                </option>
-
-                <option value="legend">
-                    Legend
-                </option>
-
-            </select>
-
-        </div>
-
-
-
-        <div class="field">
-
-            <label>
-                CAMERA
-            </label>
-
-            <select id="camera">
-
-                <option value="broadcast">
-                    Broadcast
-                </option>
-
-                <option value="close">
-                    Close
-                </option>
-
-                <option value="wide">
-                    Wide
-                </option>
-
-            </select>
-
-        </div>
-
-
-
-        <button
-            id="soundBtn"
-            class="utility"
-        >
-            🔊 SOUND ON
-        </button>
-
-
-        <button
-            id="pauseBtn"
-            class="utility"
-        >
-            ⏸ PAUSE
-        </button>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         GAME MODE BAR
-    ====================================================== -->
-
-    <nav class="modes">
-
-
-        <button
-            class="mode active"
-            data-mode="penalty"
-        >
-            ⚽ PENALTY
-        </button>
-
-
-        <button
-            class="mode"
-            data-mode="freekick"
-        >
-            🎯 FREE KICK
-        </button>
-
-
-        <button
-            class="mode"
-            data-mode="longshot"
-        >
-            🚀 LONG SHOT
-        </button>
-
-
-        <button
-            class="mode"
-            data-mode="keeper"
-        >
-            🧤 GOALKEEPER
-        </button>
-
-
-        <button
-            class="mode"
-            data-mode="crossbar"
-        >
-            🎯 CROSSBAR
-        </button>
-
-
-    </nav>
-
-
-
-    <!-- =====================================================
-         PLAYER STATS
-    ====================================================== -->
-
-    <section class="player-bar">
-
-
-        <div class="identity">
-
-            <div
-                id="avatar"
-                class="avatar"
-            >
-                HA
-            </div>
-
-
-            <div>
-
-                <strong id="playerName">
-                    Hassan Ali
-                </strong>
-
-                <small id="playerRole">
-                    300 ALL-STATS MASTER
-                </small>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="stat">
-            <span>SHOOTING</span>
-            <b id="sShoot">
-                300
-            </b>
-        </div>
-
-
-        <div class="stat">
-            <span>POWER</span>
-            <b id="sPower">
-                300
-            </b>
-        </div>
-
-
-        <div class="stat">
-            <span>ACCURACY</span>
-            <b id="sAccuracy">
-                300
-            </b>
-        </div>
-
-
-        <div class="stat">
-            <span>CURVE</span>
-            <b id="sCurve">
-                300
-            </b>
-        </div>
-
-
-        <div class="stat">
-            <span>SPEED</span>
-            <b id="sSpeed">
-                300
-            </b>
-        </div>
-
-
-        <div class="stat">
-            <span>STAMINA</span>
-            <b id="sStamina">
-                300
-            </b>
-        </div>
-
-
-        <div class="stat">
-            <span>LONG SHOT</span>
-            <b id="sLong">
-                300
-            </b>
-        </div>
-
-
-    </section>
-
-
-
-    <!-- =====================================================
-         GAME
-    ====================================================== -->
-
-    <main id="gameArea">
-
-
-        <!-- =================================================
-             BROADCAST SCENE
-        ================================================== -->
-
-        <div
-            id="broadcastScene"
-            class="scene"
-        >
-
-
-            <svg
-                id="pitchSvg"
-                viewBox="0 0 1200 650"
-                preserveAspectRatio="none"
-            >
-
-
-                <defs>
-
-                    <linearGradient
-                        id="grassGradient"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                    >
-
-                        <stop
-                            offset="0%"
-                            stop-color="#159f49"
-                        >
-
-                        </stop>
-
-                        <stop
-                            offset="100%"
-                            stop-color="#056326"
-                        >
-
-                        </stop>
-
-                    </linearGradient>
-
-
-                    <linearGradient
-                        id="stadiumGradient"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                    >
-
-                        <stop
-                            offset="0%"
-                            stop-color="#26362c"
-                        >
-
-                        </stop>
-
-                        <stop
-                            offset="100%"
-                            stop-color="#101a14"
-                        >
-
-                        </stop>
-
-                    </linearGradient>
-
-                </defs>
-
-
-
-                <!-- GRASS -->
-
-                <rect
-                    x="0"
-                    y="0"
-                    width="1200"
-                    height="650"
-                    fill="url(#grassGradient)"
-                />
-
-
-
-                <!-- STADIUM -->
-
-                <rect
-                    x="0"
-                    y="0"
-                    width="1200"
-                    height="100"
-                    fill="url(#stadiumGradient)"
-                />
-
-
-
-                <!-- LIGHTS -->
-
-                <g
-                    fill="#ffffff"
-                    opacity=".9"
-                >
-
-                    <circle
-                        cx="110"
-                        cy="36"
-                        r="7"
-                    />
-
-                    <circle
-                        cx="300"
-                        cy="31"
-                        r="7"
-                    />
-
-                    <circle
-                        cx="500"
-                        cy="38"
-                        r="7"
-                    />
-
-                    <circle
-                        cx="700"
-                        cy="31"
-                        r="7"
-                    />
-
-                    <circle
-                        cx="900"
-                        cy="38"
-                        r="7"
-                    />
-
-                    <circle
-                        cx="1090"
-                        cy="31"
-                        r="7"
-                    />
-
-                </g>
-
-
-
-                <!-- GRASS STRIPES -->
-
-                <g
-                    opacity=".06"
-                >
-
-                    <rect
-                        x="0"
-                        y="100"
-                        width="1200"
-                        height="65"
-                        fill="#ffffff"
-                    />
-
-                    <rect
-                        x="0"
-                        y="230"
-                        width="1200"
-                        height="65"
-                        fill="#000000"
-                    />
-
-                    <rect
-                        x="0"
-                        y="360"
-                        width="1200"
-                        height="65"
-                        fill="#ffffff"
-                    />
-
-                    <rect
-                        x="0"
-                        y="490"
-                        width="1200"
-                        height="65"
-                        fill="#000000"
-                    />
-
-                    <rect
-                        x="0"
-                        y="595"
-                        width="1200"
-                        height="55"
-                        fill="#ffffff"
-                    />
-
-                </g>
-
-
-
-                <!-- FIELD LINES -->
-
-                <g
-                    fill="none"
-                    stroke="#ffffff"
-                    stroke-width="3"
-                    opacity=".92"
-                >
-
-                    <rect
-                        x="40"
-                        y="100"
-                        width="1120"
-                        height="510"
-                    />
-
-                    <line
-                        x1="40"
-                        y1="350"
-                        x2="1160"
-                        y2="350"
-                    />
-
-                    <circle
-                        cx="600"
-                        cy="350"
-                        r="78"
-                    />
-
-                    <circle
-                        cx="600"
-                        cy="350"
-                        r="4"
-                        fill="#ffffff"
-                    />
-
-                    <rect
-                        x="120"
-                        y="100"
-                        width="960"
-                        height="250"
-                    />
-
-                    <rect
-                        x="310"
-                        y="100"
-                        width="580"
-                        height="145"
-                    />
-
-                </g>
-
-
-
-                <!-- GOAL -->
-
-                <g id="goalGroup">
-
-                    <rect
-                        x="360"
-                        y="112"
-                        width="480"
-                        height="180"
-                        fill="#ffffff0c"
-                        stroke="#ffffff"
-                        stroke-width="9"
-                    />
-
-                    <!-- NET -->
-
-                    <g
-                        stroke="#ffffff40"
-                        stroke-width="1"
-                    >
-
-                        <line
-                            x1="390"
-                            y1="112"
-                            x2="390"
-                            y2="292"
-                        />
-
-                        <line
-                            x1="430"
-                            y1="112"
-                            x2="430"
-                            y2="292"
-                        />
-
-                        <line
-                            x1="470"
-                            y1="112"
-                            x2="470"
-                            y2="292"
-                        />
-
-                        <line
-                            x1="510"
-                            y1="112"
-                            x2="510"
-                            y2="292"
-                        />
-
-                        <line
-                            x1="550"
-                            y1="112"
-                            x2="550"
-                            y2="292"
-                        />
-
-                        <line
-                            x1="590"
-                            y1="112"
-                            x2="590"
-                            y2="292"
-                        />
-
-                        <line
-                            x1="630"
-                            y1="112"
-                            x2="630"
-                            y2="292"
-                        />
-
-                        <line
-                            x1="670"
-                            y1="112"
-                            x2="670"
-                            y2="292"
-                        />
-
-                        <line
-                            x1="710"
-                            y1="112"
-                            x2="710"
-                            y2="292"
-                        />
-
-                        <line
-                            x1="750"
-                            y1="112"
-                            x2="750"
-                            y2="292"
-                        />
-
-                        <line
-                            x1="790"
-                            y1="112"
-                            x2="790"
-                            y2="292"
-                        />
-
-                    </g>
-
-
-                    <!-- NET DEPTH -->
-
-                    <g
-                        stroke="#ffffff30"
-                        stroke-width="1"
-                    >
-
-                        <line
-                            x1="360"
-                            y1="112"
-                            x2="840"
-                            y2="292"
-                        />
-
-                        <line
-                            x1="400"
-                            y1="112"
-                            x2="840"
-                            y2="275"
-                        />
-
-                        <line
-                            x1="440"
-                            y1="112"
-                            x2="840"
-                            y2="258"
-                        />
-
-                        <line
-                            x1="480"
-                            y1="112"
-                            x2="840"
-                            y2="241"
-                        />
-
-                        <line
-                            x1="520"
-                            y1="112"
-                            x2="840"
-                            y2="224"
-                        />
-
-                        <line
-                            x1="560"
-                            y1="112"
-                            x2="840"
-                            y2="207"
-                        />
-
-                        <line
-                            x1="600"
-                            y1="112"
-                            x2="840"
-                            y2="190"
-                        />
-
-                    </g>
-
-
-                    <rect
-                        x="368"
-                        y="120"
-                        width="464"
-                        height="164"
-                        fill="none"
-                        stroke="#dfe8e2"
-                        stroke-width="2"
-                    />
-
-                </g>
-
-
-
-                <!-- WALL -->
-
-                <g
-                    id="wallGroup"
-                    display="none"
-                ></g>
-
-
-
-                <!-- SHOOTER -->
-
-                <g id="fieldPlayer">
-
-                    <ellipse
-                        cx="600"
-                        cy="597"
-                        rx="34"
-                        ry="9"
-                        fill="#000"
-                        opacity=".25"
-                    />
-
-                    <line
-                        x1="590"
-                        y1="575"
-                        x2="580"
-                        y2="620"
-                        stroke="#f2f2f2"
-                        stroke-width="10"
-                        stroke-linecap="round"
-                    />
-
-                    <line
-                        x1="610"
-                        y1="575"
-                        x2="620"
-                        y2="620"
-                        stroke="#f2f2f2"
-                        stroke-width="10"
-                        stroke-linecap="round"
-                    />
-
-                    <rect
-                        x="575"
-                        y="525"
-                        width="50"
-                        height="55"
-                        rx="8"
-                        fill="#2658b8"
-                    />
-
-                    <circle
-                        cx="600"
-                        cy="510"
-                        r="18"
-                        fill="#ce966d"
-                    />
-
-                    <path
-                        d="M582 505 Q600 478 618 505 L616 492 Q600 476 584 492Z"
-                        fill="#21170e"
-                    />
-
-                </g>
-
-
-
-                <!-- GOALKEEPER -->
-
-                <g id="fieldKeeper">
-
-                    <ellipse
-                        cx="600"
-                        cy="315"
-                        rx="45"
-                        ry="10"
-                        fill="#000"
-                        opacity=".25"
-                    />
-
-                    <line
-                        x1="590"
-                        y1="302"
-                        x2="580"
-                        y2="337"
-                        stroke="#152119"
-                        stroke-width="13"
-                        stroke-linecap="round"
-                    />
-
-                    <line
-                        x1="610"
-                        y1="302"
-                        x2="620"
-                        y2="337"
-                        stroke="#152119"
-                        stroke-width="13"
-                        stroke-linecap="round"
-                    />
-
-                    <rect
-                        x="570"
-                        y="255"
-                        width="60"
-                        height="52"
-                        rx="8"
-                        fill="#f5c51e"
-                    />
-
-                    <circle
-                        cx="600"
-                        cy="238"
-                        r="19"
-                        fill="#d39a70"
-                    />
-
-                    <path
-                        d="M580 233 Q600 204 620 233 L617 219 Q600 203 583 219Z"
-                        fill="#24180f"
-                    />
-
-                    <line
-                        x1="578"
-                        y1="270"
-                        x2="545"
-                        y2="290"
-                        stroke="#ffcf1d"
-                        stroke-width="14"
-                        stroke-linecap="round"
-                    />
-
-                    <line
-                        x1="622"
-                        y1="270"
-                        x2="655"
-                        y2="290"
-                        stroke="#ffcf1d"
-                        stroke-width="14"
-                        stroke-linecap="round"
-                    />
-
-                    <circle
-                        cx="542"
-                        cy="292"
-                        r="11"
-                        fill="#ffffff"
-                    />
-
-                    <circle
-                        cx="658"
-                        cy="292"
-                        r="11"
-                        fill="#ffffff"
-                    />
-
-                </g>
-
-
-
-                <!-- BALL -->
-
-                <circle
-                    id="ball"
-                    cx="600"
-                    cy="565"
-                    r="13"
-                    fill="#ffffff"
-                    stroke="#222222"
-                    stroke-width="2"
-                />
-
-
-
-                <!-- TARGET -->
-
-                <g
-                    id="aimTarget"
-                    display="none"
-                    stroke="#ffe45f"
-                    fill="none"
-                    stroke-width="3"
-                >
-
-                    <circle
-                        cx="600"
-                        cy="180"
-                        r="20"
-                    />
-
-                    <line
-                        x1="575"
-                        y1="180"
-                        x2="625"
-                        y2="180"
-                    />
-
-                    <line
-                        x1="600"
-                        y1="155"
-                        x2="600"
-                        y2="205"
-                    />
-
-                </g>
-
-            </svg>
-
-        </div>
-
-
-
-        <!-- =================================================
-             GOALKEEPER POV
-        ================================================== -->
-
-        <div
-            id="keeperScene"
-            class="scene hidden"
-        >
-
-            <svg
-                id="keeperSvg"
-                viewBox="0 0 1200 650"
-                preserveAspectRatio="none"
-            >
-
-                <defs>
-
-                    <linearGradient
-                        id="keeperGrass"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                    >
-
-                        <stop
-                            offset="0%"
-                            stop-color="#167d3c"
-                        />
-
-                        <stop
-                            offset="100%"
-                            stop-color="#043d1f"
-                        />
-
-                    </linearGradient>
-
-                </defs>
-
-
-                <rect
-                    width="1200"
-                    height="650"
-                    fill="url(#keeperGrass)"
-                />
-
-
-                <rect
-                    x="90"
-                    y="60"
-                    width="1020"
-                    height="430"
-                    fill="#ffffff06"
-                    stroke="#ffffff"
-                    stroke-width="9"
-                />
-
-
-                <g
-                    stroke="#ffffff30"
-                    stroke-width="1"
-                >
-
-                    <line x1="120" y1="60" x2="120" y2="490"/>
-                    <line x1="180" y1="60" x2="180" y2="490"/>
-                    <line x1="240" y1="60" x2="240" y2="490"/>
-                    <line x1="300" y1="60" x2="300" y2="490"/>
-                    <line x1="360" y1="60" x2="360" y2="490"/>
-                    <line x1="420" y1="60" x2="420" y2="490"/>
-                    <line x1="480" y1="60" x2="480" y2="490"/>
-                    <line x1="540" y1="60" x2="540" y2="490"/>
-                    <line x1="600" y1="60" x2="600" y2="490"/>
-                    <line x1="660" y1="60" x2="660" y2="490"/>
-                    <line x1="720" y1="60" x2="720" y2="490"/>
-                    <line x1="780" y1="60" x2="780" y2="490"/>
-                    <line x1="840" y1="60" x2="840" y2="490"/>
-                    <line x1="900" y1="60" x2="900" y2="490"/>
-                    <line x1="960" y1="60" x2="960" y2="490"/>
-                    <line x1="1020" y1="60" x2="1020" y2="490"/>
-                    <line x1="1080" y1="60" x2="1080" y2="490"/>
-
-                    <line x1="90" y1="100" x2="1110" y2="100"/>
-                    <line x1="90" y1="150" x2="1110" y2="150"/>
-                    <line x1="90" y1="200" x2="1110" y2="200"/>
-                    <line x1="90" y1="250" x2="1110" y2="250"/>
-                    <line x1="90" y1="300" x2="1110" y2="300"/>
-                    <line x1="90" y1="350" x2="1110" y2="350"/>
-                    <line x1="90" y1="400" x2="1110" y2="400"/>
-                    <line x1="90" y1="450" x2="1110" y2="450"/>
-
-                </g>
-
-
-                <circle
-                    id="keeperBall"
-                    cx="600"
-                    cy="100"
-                    r="9"
-                    fill="#ffffff"
-                    stroke="#222"
-                    stroke-width="2"
-                />
-
-
-                <ellipse
-                    cx="170"
-                    cy="590"
-                    rx="75"
-                    ry="34"
-                    fill="#ffffff"
-                    transform="rotate(-22 170 590)"
-                />
-
-
-                <ellipse
-                    cx="1030"
-                    cy="590"
-                    rx="75"
-                    ry="34"
-                    fill="#ffffff"
-                    transform="rotate(22 1030 590)"
-                />
-
-
-                <rect
-                    x="0"
-                    y="600"
-                    width="1200"
-                    height="50"
-                    fill="#000"
-                    opacity=".45"
-                />
-
-
-                <text
-                    x="600"
-                    y="632"
-                    text-anchor="middle"
-                    fill="#ffffff"
-                    font-size="22"
-                    font-family="Arial"
-                    font-weight="bold"
-                >
-                    GOALKEEPER POV
-                </text>
-
-            </svg>
-
-        </div>
-
-
-
-        <!-- =================================================
-             HUD
-        ================================================== -->
-
-        <div
-            class="hud left"
-        >
-
-            <strong
-                id="hudPlayer"
-            >
-                Hassan Ali
-            </strong>
-
-            <small
-                id="hudKeeper"
-            >
-                vs Hassan Ali
-            </small>
-
-        </div>
-
-
-
-        <div
-            class="hud center"
-        >
-
-            <small
-                id="hudMode"
-            >
-                PENALTY SHOOTOUT
-            </small>
-
-            <strong
-                id="message"
-            >
-                CHOOSE YOUR SHOT
-            </strong>
-
-            <span
-                id="distance"
-            >
-                Distance: 11 m
-            </span>
-
-        </div>
-
-
-
-        <div
-            class="hud right"
-        >
-
-            <small>
-                BEST COMBO
-            </small>
-
-            <strong
-                id="hudBest"
-            >
-                0
-            </strong>
-
-        </div>
-
-
-
-        <!-- SPECIAL ABILITY -->
-
-        <div
-            id="ability"
-            class="ability"
-        >
-            👑 HASSAN ALI — 300 IN EVERY STAT
-        </div>
-
-
-
-        <!-- WIND -->
-
-        <div
-            id="windCard"
-            class="info-card wind-card"
-        >
-
-            <small>
-                WIND
-            </small>
-
-            <strong
-                id="wind"
-            >
-                0.0
-            </strong>
-
-        </div>
-
-
-
-        <!-- CHALLENGE -->
-
-        <div
-            class="info-card challenge-card"
-        >
-
-            <small>
-                CHALLENGE
-            </small>
-
-            <strong
-                id="challenge"
-            >
-                3 more goals to level up
-            </strong>
-
-        </div>
-
-
-
-        <!-- PRECISION -->
-
-        <div
-            id="precisionCard"
-            class="info-card precision-card hidden"
-        >
-
-            <small>
-                PRECISION
-            </small>
-
-            <strong
-                id="precision"
-            >
-                100%
-            </strong>
-
-        </div>
-
-
-
-        <!-- POWER BAR -->
-
-        <div
-            id="powerBox"
-            class="power-box hidden"
-        >
-
-            <small>
-                SHOT POWER
-            </small>
-
-            <div class="power-track">
-
-                <span id="powerFill"></span>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- NORMAL SHOOTING -->
-
-        <div
-            id="shotButtons"
-            class="action-row"
-        >
-
-            <button
-                data-zone="left"
-            >
-
-                <span>
-                    ↖
-                </span>
-
-                <small>
-                    LEFT
-                </small>
-
-            </button>
-
-
-            <button
-                data-zone="center"
-            >
-
-                <span>
-                    ↑
-                </span>
-
-                <small>
-                    CENTER
-                </small>
-
-            </button>
-
-
-            <button
-                data-zone="right"
-            >
-
-                <span>
-                    ↗
-                </span>
-
-                <small>
-                    RIGHT
-                </small>
-
-            </button>
-
-        </div>
-
-
-
-        <!-- GOALKEEPING -->
-
-        <div
-            id="saveButtons"
-            class="action-row hidden"
-        >
-
-            <button
-                data-save="left"
-            >
-
-                <span>
-                    ↖
-                </span>
-
-                <small>
-                    DIVE LEFT
-                </small>
-
-            </button>
-
-
-            <button
-                data-save="center"
-            >
-
-                <span>
-                    ↑
-                </span>
-
-                <small>
-                    STAY
-                </small>
-
-            </button>
-
-
-            <button
-                data-save="right"
-            >
-
-                <span>
-                    ↗
-                </span>
-
-                <small>
-                    DIVE RIGHT
-                </small>
-
-            </button>
-
-        </div>
-
-
-
-        <!-- EXACT SHOOT -->
-
-        <button
-            id="exactButton"
-            class="exact hidden"
-        >
-            🚀 SHOOT
-        </button>
-
-
-
-        <!-- PAUSE -->
-
-        <div
-            id="pauseOverlay"
-            class="overlay hidden"
-        >
-
-            <div class="popup">
-
-                <h1>
-                    PAUSED
-                </h1>
+                <h1>FOOTBALL<br><span>MASTERS</span></h1>
 
                 <p>
-                    Match paused.
+                    Become the ultimate free-kick,
+                    penalty and goalkeeping champion.
+                </p>
+            </div>
+
+            <div class="mode-grid">
+
+                <button class="mode-card" data-mode="freeKick">
+                    <span class="mode-icon">🌀</span>
+                    <span class="mode-title">FREE KICK</span>
+                    <span class="mode-description">
+                        Beat the wall and curl the ball into the goal.
+                    </span>
+                </button>
+
+                <button class="mode-card" data-mode="penalty">
+                    <span class="mode-icon">🎯</span>
+                    <span class="mode-title">PENALTY</span>
+                    <span class="mode-description">
+                        Pick your corner and beat the goalkeeper.
+                    </span>
+                </button>
+
+                <button class="mode-card" data-mode="goalkeeping">
+                    <span class="mode-icon">🧤</span>
+                    <span class="mode-title">GOALKEEPING</span>
+                    <span class="mode-description">
+                        Become the goalkeeper and make saves.
+                    </span>
+                </button>
+
+            </div>
+
+            <div class="home-buttons">
+                <button id="playersButton" class="secondary-button">
+                    👤 PLAYERS
+                </button>
+
+                <button id="settingsButton" class="secondary-button">
+                    ⚙️ SETTINGS
+                </button>
+            </div>
+
+        </section>
+
+
+        <!-- PLAYER SCREEN -->
+        <section id="playerScreen" class="screen">
+
+            <div class="screen-heading">
+                <button class="back-button" data-back="homeScreen">
+                    ←
+                </button>
+
+                <div>
+                    <h2>CHOOSE PLAYER</h2>
+                    <p>Select your footballer</p>
+                </div>
+            </div>
+
+            <div id="playerGrid" class="player-grid"></div>
+
+        </section>
+
+
+        <!-- GAME SCREEN -->
+        <section id="gameScreen" class="screen">
+
+            <div class="game-header">
+
+                <button id="gameBackButton" class="back-button">
+                    ←
+                </button>
+
+                <div class="game-title-area">
+                    <span id="gameModeLabel">FREE KICK</span>
+                    <span id="difficultyLabel">NORMAL</span>
+                </div>
+
+                <div class="game-score">
+                    <span id="gameScore">0</span>
+                </div>
+
+            </div>
+
+
+            <!-- GAME INFORMATION -->
+
+            <div class="game-info">
+
+                <div>
+                    <small>DISTANCE</small>
+                    <strong id="distanceDisplay">22m</strong>
+                </div>
+
+                <div>
+                    <small>ATTEMPTS</small>
+                    <strong id="attemptDisplay">1 / 5</strong>
+                </div>
+
+                <div>
+                    <small>POWER</small>
+                    <strong id="powerDisplay">0%</strong>
+                </div>
+
+            </div>
+
+
+            <!-- FOOTBALL PITCH -->
+
+            <div id="pitchContainer">
+
+                <canvas id="footballCanvas"></canvas>
+
+                <div id="aimMarker"></div>
+
+                <div id="powerBarContainer">
+
+                    <div class="power-label">
+                        POWER
+                    </div>
+
+                    <div id="powerBar">
+                        <div id="powerFill"></div>
+                    </div>
+
+                </div>
+
+                <div id="pitchMessage">
+                    TAP TO AIM
+                </div>
+
+            </div>
+
+
+            <!-- CONTROLS -->
+
+            <div id="shootControls">
+
+                <div class="control-row">
+
+                    <button id="leftButton" class="control-button">
+                        ◀
+                    </button>
+
+                    <button id="shootButton" class="shoot-button">
+                        SHOOT
+                    </button>
+
+                    <button id="rightButton" class="control-button">
+                        ▶
+                    </button>
+
+                </div>
+
+                <button id="longShotButton" class="long-shot-button">
+                    💥 LONG SHOT
+                </button>
+
+            </div>
+
+
+            <!-- GOALKEEPER CONTROLS -->
+
+            <div id="keeperControls" class="hidden">
+
+                <div class="keeper-instruction">
+                    SWIPE OR TAP TO DIVE
+                </div>
+
+                <div class="keeper-buttons">
+
+                    <button data-dive="left">↙</button>
+                    <button data-dive="center">⬇</button>
+                    <button data-dive="right">↘</button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RESULT SCREEN -->
+        <section id="resultScreen" class="screen">
+
+            <div class="result-card">
+
+                <div id="resultIcon" class="result-icon">
+                    ⚽
+                </div>
+
+                <h2 id="resultTitle">
+                    GOAL!
+                </h2>
+
+                <p id="resultMessage">
+                    Incredible finish!
                 </p>
 
-                <button
-                    id="resumeButton"
-                >
-                    ▶ RESUME
+                <div class="result-stats">
+
+                    <div>
+                        <span>SCORE</span>
+                        <strong id="resultScore">0</strong>
+                    </div>
+
+                    <div>
+                        <span>XP</span>
+                        <strong id="resultXP">0</strong>
+                    </div>
+
+                    <div>
+                        <span>COINS</span>
+                        <strong id="resultCoins">0</strong>
+                    </div>
+
+                </div>
+
+                <button id="nextAttemptButton" class="primary-button">
+                    NEXT ATTEMPT
+                </button>
+
+                <button id="resultHomeButton" class="secondary-button">
+                    HOME
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- SETTINGS SCREEN -->
+        <section id="settingsScreen" class="screen">
+
+            <div class="screen-heading">
+
+                <button class="back-button" data-back="homeScreen">
+                    ←
+                </button>
+
+                <div>
+                    <h2>SETTINGS</h2>
+                    <p>Customize your game</p>
+                </div>
+
+            </div>
+
+            <div class="settings-list">
+
+                <div class="setting-row">
+                    <div>
+                        <strong>Sound</strong>
+                        <span>Game sound effects</span>
+                    </div>
+
+                    <button class="toggle active"
+                            data-setting="sound">
+                        ON
+                    </button>
+                </div>
+
+                <div class="setting-row">
+                    <div>
+                        <strong>Difficulty</strong>
+                        <span id="difficultySetting">
+                            Normal
+                        </span>
+                    </div>
+
+                    <button id="difficultyButton"
+                            class="setting-action">
+                        CHANGE
+                    </button>
+                </div>
+
+                <div class="setting-row">
+                    <div>
+                        <strong>Reset Progress</strong>
+                        <span>Delete your local progress</span>
+                    </div>
+
+                    <button id="resetButton"
+                            class="danger-button">
+                        RESET
+                    </button>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PLAYER DETAILS -->
+
+        <div id="playerModal" class="modal hidden">
+
+            <div class="modal-content">
+
+                <button id="closePlayerModal"
+                        class="modal-close">
+                    ×
+                </button>
+
+                <div id="modalPlayerIcon"
+                     class="modal-player-icon">
+                    ⚽
+                </div>
+
+                <h2 id="modalPlayerName">
+                    Player
+                </h2>
+
+                <p id="modalPlayerRole">
+                    Forward
+                </p>
+
+                <div class="stat-list">
+
+                    <div class="player-stat">
+                        <span>POWER</span>
+                        <div class="stat-track">
+                            <div id="modalPower"
+                                 class="stat-fill"></div>
+                        </div>
+                        <b id="modalPowerText">90</b>
+                    </div>
+
+                    <div class="player-stat">
+                        <span>CURVE</span>
+                        <div class="stat-track">
+                            <div id="modalCurve"
+                                 class="stat-fill"></div>
+                        </div>
+                        <b id="modalCurveText">90</b>
+                    </div>
+
+                    <div class="player-stat">
+                        <span>ACCURACY</span>
+                        <div class="stat-track">
+                            <div id="modalAccuracy"
+                                 class="stat-fill"></div>
+                        </div>
+                        <b id="modalAccuracyText">90</b>
+                    </div>
+
+                    <div class="player-stat">
+                        <span>REFLEXES</span>
+                        <div class="stat-track">
+                            <div id="modalReflex"
+                                 class="stat-fill"></div>
+                        </div>
+                        <b id="modalReflexText">90</b>
+                    </div>
+
+                </div>
+
+                <button id="selectPlayerButton"
+                        class="primary-button">
+                    SELECT PLAYER
                 </button>
 
             </div>
@@ -1607,70 +417,15 @@
         </div>
 
 
+        <!-- NOTIFICATION -->
 
-        <!-- RESULT -->
-
-        <div
-            id="resultOverlay"
-            class="overlay hidden"
-        >
-
-            <div class="popup">
-
-                <h1 id="resultTitle">
-                    GOOOOAL!
-                </h1>
-
-                <strong id="resultPoints">
-                    +1
-                </strong>
-
-                <p id="resultDetail">
-                    Fantastic finish!
-                </p>
-
-                <button
-                    id="continueButton"
-                >
-                    CONTINUE
-                </button>
-
-            </div>
-
+        <div id="notification"
+             class="notification">
         </div>
 
+    </div>
 
-    </main>
-
-
-
-    <!-- =====================================================
-         FOOTER
-    ====================================================== -->
-
-    <footer>
-
-        <button
-            id="restartButton"
-        >
-            🔄 RESTART
-        </button>
-
-        <span id="status">
-            Choose where to shoot.
-        </span>
-
-        <span>
-            Football Legends Arena X7
-        </span>
-
-    </footer>
-
-
-</div>
-
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>
