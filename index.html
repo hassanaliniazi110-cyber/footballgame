@@ -2,55 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Football Hero X</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="game-shell">
+<div class="app">
 
-    <!-- =========================
-         TOP BAR
-    ========================== -->
+    <!-- ================= TOP BAR ================= -->
 
-    <header class="top-bar">
+    <header class="topbar">
 
         <div class="brand">
-
-            <span class="brand-ball">⚽</span>
-
+            <div class="brand-ball">⚽</div>
             <div>
                 <h1>FOOTBALL HERO X</h1>
-                <p>Ultimate Football Challenge</p>
+                <p>ULTIMATE FOOTBALL CHALLENGE</p>
             </div>
-
         </div>
-
 
         <div class="top-stats">
 
             <div class="top-stat">
                 <span>LEVEL</span>
-                <strong id="levelDisplay">1</strong>
+                <strong id="levelValue">1</strong>
             </div>
 
             <div class="top-stat">
                 <span>GOALS</span>
-                <strong id="goalsDisplay">0</strong>
+                <strong id="goalsValue">0</strong>
             </div>
 
             <div class="top-stat">
                 <span>SCORE</span>
-                <strong id="scoreDisplay">0</strong>
+                <strong id="scoreValue">0</strong>
             </div>
 
             <div class="top-stat">
                 <span>SHOTS</span>
-                <strong id="shotsDisplay">0</strong>
+                <strong id="shotsValue">0</strong>
             </div>
 
         </div>
@@ -58,266 +50,161 @@
     </header>
 
 
-    <!-- =========================
-         MAIN GAME
-    ========================== -->
+    <!-- ================= MAIN LAYOUT ================= -->
 
-    <main class="game-layout">
+    <main class="main-layout">
 
-
-        <!-- =========================
-             SIDEBAR
-        ========================== -->
+        <!-- ================= SIDEBAR ================= -->
 
         <aside class="sidebar">
 
+            <section class="panel">
 
-            <!-- GAME MODE -->
+                <div class="panel-title">
+                    <span>🎮</span>
+                    GAME MODE
+                </div>
+
+                <div class="mode-buttons">
+
+                    <button class="mode-button active" data-mode="penalty">
+                        <span>⚽</span>
+                        <div>
+                            <strong>Penalty</strong>
+                            <small>1v1 finish</small>
+                        </div>
+                    </button>
+
+                    <button class="mode-button" data-mode="freekick">
+                        <span>🎯</span>
+                        <div>
+                            <strong>Free Kick</strong>
+                            <small>Beat the wall</small>
+                        </div>
+                    </button>
+
+                    <button class="mode-button" data-mode="longshot">
+                        <span>🚀</span>
+                        <div>
+                            <strong>Long Shot</strong>
+                            <small>Power from distance</small>
+                        </div>
+                    </button>
+
+                    <button class="mode-button" data-mode="goalkeeper">
+                        <span>🧤</span>
+                        <div>
+                            <strong>Goalkeeping</strong>
+                            <small>Save the shot</small>
+                        </div>
+                    </button>
+
+                </div>
+
+            </section>
+
 
             <section class="panel">
 
-                <h2>GAME MODE</h2>
+                <div class="panel-title">
+                    <span>👟</span>
+                    PLAYER
+                </div>
 
+                <select id="playerSelect">
 
-                <button
-                    class="mode-button active"
-                    data-mode="penalty"
-                >
+                    <option value="hassan">Hassan Ali</option>
+                    <option value="ehan">Ehan Ali</option>
+                    <option value="arham">Muhammad Arham</option>
+                    <option value="umar">Umar Shoaib</option>
 
-                    <span>⚽</span>
+                    <option value="ronaldo">Cristiano Ronaldo</option>
+                    <option value="haaland">Erling Haaland</option>
+                    <option value="bellingham">Jude Bellingham</option>
+                    <option value="yamal">Lamine Yamal</option>
+                    <option value="messi">Lionel Messi</option>
+                    <option value="mbappe">Kylian Mbappé</option>
+                    <option value="zayd">Zayd Quadri</option>
+                </select>
 
-                    <div>
-                        <strong>Penalty</strong>
-                        <small>Beat the goalkeeper</small>
+                <div class="player-card">
+
+                    <div class="avatar" id="playerAvatar">HA</div>
+
+                    <div class="player-card-info">
+                        <strong id="playerName">Hassan Ali</strong>
+                        <span id="playerSpecial">Complete Specialist</span>
                     </div>
 
-                </button>
+                </div>
+
+            </section>
 
 
-                <button
-                    class="mode-button"
-                    data-mode="freekick"
-                >
+            <section class="panel">
 
-                    <span>〰️</span>
-
-                    <div>
-                        <strong>Free Kick</strong>
-                        <small>Curve it around the wall</small>
-                    </div>
-
-                </button>
-
-
-                <button
-                    class="mode-button"
-                    data-mode="longshot"
-                >
-
-                    <span>🚀</span>
-
-                    <div>
-                        <strong>Long Shot</strong>
-                        <small>Choose your target</small>
-                    </div>
-
-                </button>
-
-
-                <button
-                    class="mode-button"
-                    data-mode="goalkeeping"
-                >
-
+                <div class="panel-title">
                     <span>🧤</span>
+                    GOALKEEPER
+                </div>
 
-                    <div>
-                        <strong>Goalkeeping</strong>
-                        <small>Save the shot</small>
+                <select id="keeperSelect">
+
+                    <option value="hassan">Hassan Ali — 300</option>
+                    <option value="ehan">Ehan Ali</option>
+                    <option value="courtois">Thibaut Courtois</option>
+                    <option value="donnarumma">Gianluigi Donnarumma</option>
+                    <option value="alisson">Alisson</option>
+                    <option value="neuer">Manuel Neuer</option>
+                    <option value="oblak">Jan Oblak</option>
+                    <option value="martinez">Emiliano Martínez</option>
+                    <option value="ederson">Ederson</option>
+                    <option value="maignan">Mike Maignan</option>
+                    <option value="raya">David Raya</option>
+                    <option value="szczesny">Wojciech Szczęsny</option>
+                    <option value="casillas">Iker Casillas</option>
+
+                </select>
+
+                <div class="player-card">
+
+                    <div class="avatar keeper-avatar" id="keeperAvatar">HA</div>
+
+                    <div class="player-card-info">
+                        <strong id="keeperName">Hassan Ali</strong>
+                        <span id="keeperOverall">OVERALL 300</span>
                     </div>
 
-                </button>
+                </div>
 
             </section>
 
 
-            <!-- PLAYER -->
-
             <section class="panel">
 
-                <h2>PLAYER</h2>
+                <div class="panel-title">
+                    <span>⚙️</span>
+                    DIFFICULTY
+                </div>
 
-                <select
-                    id="playerSelect"
-                    class="game-select"
-                >
+                <select id="difficultySelect">
 
-                    <option value="hassan">
-                        Hassan Ali
-                    </option>
-
-                    <option value="ehan">
-                        Ehan Ali
-                    </option>
-
-                    <option value="arham">
-                        Muhammad Arham
-                    </option>
-
-                    <option value="umar">
-                        Umar Shoaib
-                    </option>
-
-                    <option value="ronaldo">
-                        Cristiano Ronaldo
-                    </option>
-
-                    <option value="haaland">
-                        Erling Haaland
-                    </option>
-
-                    <option value="bellingham">
-                        Jude Bellingham
-                    </option>
-
-                    <option value="yamal">
-                        Lamine Yamal
-                    </option>
-
-                    <option value="messi">
-                        Lionel Messi
-                    </option>
-
-                    <option value="mbappe">
-                        Kylian Mbappé
-                    </option>
-
-                    <!-- ZAYD ADDED HERE -->
-                    <option value="zayd">
-                        Zayd Quadri
-                    </option>
+                    <option value="easy">Easy</option>
+                    <option value="normal" selected>Normal</option>
+                    <option value="hard">Hard</option>
+                    <option value="legend">Legend</option>
 
                 </select>
 
             </section>
 
 
-            <!-- GOALKEEPER -->
-
             <section class="panel">
 
-                <h2>GOALKEEPER</h2>
-
-                <select
-                    id="goalkeeperSelect"
-                    class="game-select"
-                >
-
-                    <option value="hassan">
-                        Hassan Ali
-                    </option>
-
-                    <option value="ehan">
-                        Ehan Ali
-                    </option>
-
-                    <option value="courtois">
-                        Thibaut Courtois
-                    </option>
-
-                    <option value="donnarumma">
-                        Gianluigi Donnarumma
-                    </option>
-
-                    <option value="alisson">
-                        Alisson
-                    </option>
-
-                    <option value="neuer">
-                        Manuel Neuer
-                    </option>
-
-                    <option value="oblak">
-                        Jan Oblak
-                    </option>
-
-                    <option value="martinez">
-                        Emiliano Martínez
-                    </option>
-
-                    <option value="ederson">
-                        Ederson
-                    </option>
-
-                    <option value="maignan">
-                        Mike Maignan
-                    </option>
-
-                    <option value="raya">
-                        David Raya
-                    </option>
-
-                    <option value="szczesny">
-                        Wojciech Szczęsny
-                    </option>
-
-                    <option value="casillas">
-                        Iker Casillas
-                    </option>
-
-                </select>
-
-            </section>
-
-
-            <!-- DIFFICULTY -->
-
-            <section class="panel">
-
-                <h2>DIFFICULTY</h2>
-
-                <div class="difficulty-buttons">
-
-                    <button
-                        class="difficulty active"
-                        data-difficulty="easy"
-                    >
-                        Easy
-                    </button>
-
-                    <button
-                        class="difficulty"
-                        data-difficulty="normal"
-                    >
-                        Normal
-                    </button>
-
-                    <button
-                        class="difficulty"
-                        data-difficulty="hard"
-                    >
-                        Hard
-                    </button>
-
+                <div class="panel-title">
+                    <span>💥</span>
+                    SHOT POWER
                 </div>
-
-            </section>
-
-
-            <!-- SHOT POWER -->
-
-            <section class="panel">
-
-                <div class="power-heading">
-
-                    <h2>SHOT POWER</h2>
-
-                    <strong id="powerValue">
-                        75%
-                    </strong>
-
-                </div>
-
 
                 <input
                     id="powerSlider"
@@ -327,207 +214,174 @@
                     value="75"
                 >
 
+                <div class="power-row">
+                    <span>POWER</span>
+                    <strong id="powerValue">75%</strong>
+                </div>
+
             </section>
 
-
-            <!-- PLAYER STATS -->
 
             <section class="panel stats-panel">
 
-                <h2>PLAYER STATS</h2>
-
-
-                <div class="stat-row">
-
-                    <span>Finishing</span>
-
-                    <div class="stat-bar">
-                        <i id="finishingStat"></i>
-                    </div>
-
-                    <b id="finishingValue">
-                        0
-                    </b>
-
+                <div class="panel-title">
+                    <span>📊</span>
+                    PLAYER STATS
                 </div>
 
+                <div class="stat-row">
+                    <span>Shooting</span>
+                    <div class="stat-bar">
+                        <i id="shootingStat"></i>
+                    </div>
+                    <b id="shootingNumber">95</b>
+                </div>
 
                 <div class="stat-row">
-
                     <span>Power</span>
-
                     <div class="stat-bar">
                         <i id="powerStat"></i>
                     </div>
-
-                    <b id="powerStatValue">
-                        0
-                    </b>
-
+                    <b id="powerNumber">95</b>
                 </div>
 
-
                 <div class="stat-row">
-
-                    <span>Curve</span>
-
-                    <div class="stat-bar">
-                        <i id="curveStat"></i>
-                    </div>
-
-                    <b id="curveValue">
-                        0
-                    </b>
-
-                </div>
-
-
-                <div class="stat-row">
-
                     <span>Accuracy</span>
-
                     <div class="stat-bar">
                         <i id="accuracyStat"></i>
                     </div>
-
-                    <b id="accuracyValue">
-                        0
-                    </b>
-
+                    <b id="accuracyNumber">95</b>
                 </div>
 
-
                 <div class="stat-row">
-
                     <span>Speed</span>
-
                     <div class="stat-bar">
                         <i id="speedStat"></i>
                     </div>
-
-                    <b id="speedValue">
-                        0
-                    </b>
-
-                </div>
-
-
-                <div class="stat-row">
-
-                    <span>Dribbling</span>
-
-                    <div class="stat-bar">
-                        <i id="dribblingStat"></i>
-                    </div>
-
-                    <b id="dribblingValue">
-                        0
-                    </b>
-
-                </div>
-
-
-                <div class="overall">
-
-                    <span>OVERALL</span>
-
-                    <strong id="overallValue">
-                        0
-                    </strong>
-
+                    <b id="speedNumber">95</b>
                 </div>
 
             </section>
 
 
-            <!-- RESTART -->
+            <section class="panel stats-panel">
 
-            <button
-                id="restartButton"
-                class="restart-button"
-            >
-                ↻ RESTART
+                <div class="panel-title">
+                    <span>🧤</span>
+                    GOALKEEPER STATS
+                </div>
+
+                <div class="stat-row">
+                    <span>Reflexes</span>
+                    <div class="stat-bar">
+                        <i id="reflexStat"></i>
+                    </div>
+                    <b id="reflexNumber">300</b>
+                </div>
+
+                <div class="stat-row">
+                    <span>Diving</span>
+                    <div class="stat-bar">
+                        <i id="divingStat"></i>
+                    </div>
+                    <b id="divingNumber">300</b>
+                </div>
+
+                <div class="stat-row">
+                    <span>Handling</span>
+                    <div class="stat-bar">
+                        <i id="handlingStat"></i>
+                    </div>
+                    <b id="handlingNumber">300</b>
+                </div>
+
+                <div class="stat-row">
+                    <span>Positioning</span>
+                    <div class="stat-bar">
+                        <i id="positioningStat"></i>
+                    </div>
+                    <b id="positioningNumber">300</b>
+                </div>
+
+            </section>
+
+
+            <button id="restartButton" class="restart-button">
+                ↻ RESTART GAME
             </button>
 
         </aside>
 
 
-        <!-- =========================
-             GAME AREA
-        ========================== -->
+        <!-- ================= GAME ================= -->
 
         <section class="game-area">
 
+            <div class="game-hud">
 
-            <!-- GAME HEADER -->
-
-            <div class="game-header">
-
-                <div>
-
-                    <span id="modeTitle">
-                        PENALTY
-                    </span>
-
-                    <small id="modeDescription">
-                        Beat the goalkeeper and score!
-                    </small>
-
+                <div class="hud-item">
+                    <span>MODE</span>
+                    <strong id="modeDisplay">PENALTY</strong>
                 </div>
 
+                <div class="hud-item">
+                    <span>DISTANCE</span>
+                    <strong id="distanceDisplay">12 YDS</strong>
+                </div>
 
-                <div class="distance-display">
+                <div class="hud-item">
+                    <span>WIND</span>
+                    <strong id="windDisplay">0 km/h</strong>
+                </div>
 
-                    DISTANCE
-
-                    <strong id="distanceDisplay">
-                        12 m
-                    </strong>
-
+                <div class="hud-item">
+                    <span>COMBO</span>
+                    <strong id="comboDisplay">x0</strong>
                 </div>
 
             </div>
 
 
-            <!-- =========================
-                 CANVAS
-            ========================== -->
-
             <div class="canvas-wrapper">
 
-                <canvas
-                    id="gameCanvas"
-                    width="1000"
-                    height="650"
-                ></canvas>
+                <canvas id="gameCanvas"></canvas>
 
 
-                <!-- START SCREEN -->
+                <!-- START OVERLAY -->
 
-                <div
-                    id="startOverlay"
-                    class="game-overlay"
-                >
+                <div id="startOverlay" class="game-overlay">
 
                     <div class="overlay-card">
 
-                        <div class="big-ball">
-                            ⚽
-                        </div>
+                        <div class="big-ball">⚽</div>
 
-                        <h2>
-                            READY?
-                        </h2>
+                        <h2 id="controlTitle">PENALTY SHOOTOUT</h2>
 
-                        <p id="startText">
-                            Step up and take your penalty.
+                        <p id="controlDescription">
+                            Aim at the goal and shoot past the goalkeeper.
                         </p>
 
-                        <button
-                            id="startButton"
-                            class="primary-button"
-                        >
-                            START GAME
+                        <div class="start-info">
+
+                            <div>
+                                <span>PLAYER</span>
+                                <strong id="startPlayer">Hassan Ali</strong>
+                            </div>
+
+                            <div>
+                                <span>KEEPER</span>
+                                <strong id="startKeeper">Hassan Ali</strong>
+                            </div>
+
+                            <div>
+                                <span>MODE</span>
+                                <strong id="startMode">Penalty</strong>
+                            </div>
+
+                        </div>
+
+                        <button id="startButton" class="primary-button">
+                            START MATCH
                         </button>
 
                     </div>
@@ -535,49 +389,35 @@
                 </div>
 
 
-                <!-- RESULT SCREEN -->
+                <!-- RESULT OVERLAY -->
 
-                <div
-                    id="resultOverlay"
-                    class="game-overlay hidden"
-                >
+                <div id="resultOverlay" class="game-overlay hidden">
 
-                    <div class="overlay-card">
+                    <div class="overlay-card result-card">
 
-                        <div
-                            id="resultIcon"
-                            class="big-ball"
-                        >
-                            ⚽
-                        </div>
+                        <div id="resultIcon" class="result-icon">⚽</div>
 
-                        <h2 id="resultTitle">
-                            GOAL!
-                        </h2>
+                        <h2 id="resultTitle">GOAL!</h2>
 
-                        <p id="resultText">
-                            Amazing finish!
+                        <p id="resultMessage">
+                            Perfect finish!
                         </p>
-
 
                         <div class="result-score">
 
-                            <span>
-                                +
-                                <strong id="resultPoints">
-                                    0
-                                </strong>
-                            </span>
+                            <div>
+                                <span>SCORE</span>
+                                <strong id="resultScore">100</strong>
+                            </div>
 
-                            POINTS
+                            <div>
+                                <span>COMBO</span>
+                                <strong id="resultCombo">x1</strong>
+                            </div>
 
                         </div>
 
-
-                        <button
-                            id="nextButton"
-                            class="primary-button"
-                        >
+                        <button id="nextButton" class="primary-button">
                             NEXT SHOT
                         </button>
 
@@ -588,120 +428,73 @@
             </div>
 
 
-            <!-- =========================
-                 CONTROLS
-            ========================== -->
+            <!-- ================= CONTROLS ================= -->
 
             <div class="controls">
 
+                <div class="control-help">
 
-                <div class="aim-control">
+                    <div class="help-item">
+                        <kbd>←</kbd>
+                        <kbd>↑</kbd>
+                        <kbd>↓</kbd>
+                        <kbd>→</kbd>
+                        <span>AIM</span>
+                    </div>
 
-                    <span>
-                        AIM
-                    </span>
-
-
-                    <input
-                        id="aimSlider"
-                        type="range"
-                        min="-100"
-                        max="100"
-                        value="0"
-                    >
-
-
-                    <div class="aim-labels">
-
-                        <span>
-                            LEFT
-                        </span>
-
-                        <span>
-                            CENTER
-                        </span>
-
-                        <span>
-                            RIGHT
-                        </span>
-
+                    <div class="help-item">
+                        <kbd>SPACE</kbd>
+                        <span id="spaceLabel">SHOOT</span>
                     </div>
 
                 </div>
 
-
-                <button
-                    id="shootButton"
-                    class="shoot-button"
-                >
+                <button id="shootButton" class="shoot-button">
                     ⚽ SHOOT
                 </button>
 
-
-                <button
-                    id="saveButton"
-                    class="save-button hidden"
-                >
+                <button id="saveButton" class="save-button hidden">
                     🧤 SAVE
                 </button>
 
             </div>
 
 
-            <!-- =========================
-                 BOTTOM INFORMATION
-            ========================== -->
+            <!-- ================= BOTTOM INFO ================= -->
 
             <div class="bottom-info">
 
-
                 <div class="info-card">
 
-                    <span>
-                        PLAYER
-                    </span>
+                    <div class="mini-avatar" id="bottomPlayer">HA</div>
 
-                    <strong id="bottomPlayer">
-                        Hassan Ali
+                    <div>
+                        <small>PLAYER</small>
+                        <strong id="playerNameBottom">Hassan Ali</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="special-card">
+
+                    <span>⭐ SPECIAL</span>
+
+                    <strong id="bottomSpecial">
+                        Complete Specialist
                     </strong>
-
-                    <small id="bottomSpecialty">
-                        Elite Player
-                    </small>
 
                 </div>
 
 
                 <div class="info-card">
 
-                    <span>
-                        GOALKEEPER
-                    </span>
+                    <div class="mini-avatar keeper-mini" id="bottomKeeper">HA</div>
 
-                    <strong id="bottomKeeper">
-                        Hassan Ali
-                    </strong>
-
-                    <small id="bottomKeeperSpecialty">
-                        Elite Goalkeeper
-                    </small>
-
-                </div>
-
-
-                <div class="info-card">
-
-                    <span>
-                        LEVEL
-                    </span>
-
-                    <strong id="bottomLevel">
-                        1
-                    </strong>
-
-                    <small>
-                        Keep scoring to level up
-                    </small>
+                    <div>
+                        <small>GOALKEEPER</small>
+                        <strong id="keeperNameBottom">Hassan Ali</strong>
+                    </div>
 
                 </div>
 
@@ -712,11 +505,6 @@
     </main>
 
 </div>
-
-
-<!-- =========================
-     JAVASCRIPT
-========================== -->
 
 <script src="script.js"></script>
 
