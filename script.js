@@ -204,8 +204,10 @@ document.addEventListener("DOMContentLoaded", () => {
             accuracy: 97,
             speed: 98,
             special: "Dribbler Master"
+        }
 
     };
+    
 
     const goalkeepers = {
 
