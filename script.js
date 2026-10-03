@@ -340,7 +340,6 @@ document.addEventListener("DOMContentLoaded", () => {
             positioning: 97,
             overall: 97
         }
-        
 
     };
 
