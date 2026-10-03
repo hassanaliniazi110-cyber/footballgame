@@ -7,9 +7,7 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     >
 
-    <meta name="theme-color" content="#071b12">
-
-    <title>Football Masters</title>
+    <title>Football Hero X</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -18,664 +16,333 @@
 
 <div id="app">
 
-    <!-- =========================================
-         HEADER
-    ========================================== -->
-
     <header class="topbar">
 
-        <div class="logo">
-            <div class="logo-ball">⚽</div>
+        <div class="brand">
+            <div class="brand-ball">⚽</div>
 
             <div>
-                <div class="logo-main">
-                    FOOTBALL
-                </div>
-
-                <div class="logo-sub">
-                    MASTERS
-                </div>
+                <h1>FOOTBALL HERO X</h1>
+                <p>Precision • Power • Reflex</p>
             </div>
         </div>
 
-        <div class="global-stats">
-
-            <div class="global-stat">
+        <div class="top-status">
+            <div class="status-box">
                 <span>LEVEL</span>
                 <strong id="levelValue">1</strong>
             </div>
 
-            <div class="global-stat">
+            <div class="status-box">
                 <span>SCORE</span>
                 <strong id="scoreValue">0</strong>
             </div>
 
-            <div class="global-stat">
-                <span>COINS</span>
-                <strong id="coinsValue">100</strong>
+            <div class="status-box">
+                <span>SHOTS</span>
+                <strong id="shotsValue">0</strong>
             </div>
-
         </div>
 
     </header>
 
 
-    <!-- =========================================
-         HOME
-    ========================================== -->
+    <main class="game-layout">
 
-    <main
-        id="homeScreen"
-        class="screen active"
-    >
+        <aside class="side-panel">
 
-        <section class="hero">
+            <section class="panel-section">
 
-            <div class="hero-ball">
-                ⚽
-            </div>
+                <h2>GAME MODE</h2>
 
-            <div class="eyebrow">
-                NEXT GENERATION FOOTBALL GAME
-            </div>
-
-            <h1>
-                FOOTBALL
-                <span>MASTERS</span>
-            </h1>
-
-            <p>
-                Shoot free kicks, score penalties,
-                or become the goalkeeper.
-            </p>
-
-        </section>
-
-
-        <section class="mode-grid">
-
-            <button
-                class="mode-card"
-                data-mode="freeKick"
-            >
-
-                <div class="mode-icon">
-                    🌀
-                </div>
-
-                <div class="mode-title">
-                    FREE KICK
-                </div>
-
-                <div class="mode-description">
-                    Bend the ball around the wall
-                    and find the top corner.
-                </div>
-
-                <div class="mode-tag">
-                    WALL + CURVE
-                </div>
-
-            </button>
-
-
-            <button
-                class="mode-card"
-                data-mode="penalty"
-            >
-
-                <div class="mode-icon">
-                    🎯
-                </div>
-
-                <div class="mode-title">
-                    PENALTY
-                </div>
-
-                <div class="mode-description">
-                    Choose your target and beat
-                    the goalkeeper.
-                </div>
-
-                <div class="mode-tag">
-                    1 VS 1
-                </div>
-
-            </button>
-
-
-            <button
-                class="mode-card"
-                data-mode="goalkeeping"
-            >
-
-                <div class="mode-icon">
-                    🧤
-                </div>
-
-                <div class="mode-title">
-                    GOALKEEPING
-                </div>
-
-                <div class="mode-description">
-                    Switch to goalkeeper view and
-                    make incredible saves.
-                </div>
-
-                <div class="mode-tag">
-                    GK POV
-                </div>
-
-            </button>
-
-        </section>
-
-
-        <section class="home-actions">
-
-            <button
-                id="playersButton"
-                class="secondary-button"
-            >
-                👤 PLAYERS
-            </button>
-
-            <button
-                id="settingsButton"
-                class="secondary-button"
-            >
-                ⚙️ SETTINGS
-            </button>
-
-        </section>
-
-    </main>
-
-
-    <!-- =========================================
-         PLAYERS
-    ========================================== -->
-
-    <main
-        id="playersScreen"
-        class="screen"
-    >
-
-        <div class="section-header">
-
-            <button
-                class="back-button"
-                data-screen="homeScreen"
-            >
-                ←
-            </button>
-
-            <div>
-                <h2>CHOOSE PLAYER</h2>
-                <p>Build your football squad</p>
-            </div>
-
-        </div>
-
-        <div
-            id="playersGrid"
-            class="players-grid"
-        ></div>
-
-    </main>
-
-
-    <!-- =========================================
-         GAME
-    ========================================== -->
-
-    <main
-        id="gameScreen"
-        class="screen game-screen"
-    >
-
-        <div class="game-top">
-
-            <button
-                id="exitGameButton"
-                class="back-button"
-            >
-                ←
-            </button>
-
-            <div class="game-heading">
-
-                <strong id="gameMode">
-                    FREE KICK
-                </strong>
-
-                <span id="gameDifficulty">
-                    NORMAL
-                </span>
-
-            </div>
-
-            <div class="game-score-box">
-                <span>SCORE</span>
-                <strong id="gameScore">
-                    0
-                </strong>
-            </div>
-
-        </div>
-
-
-        <div class="match-info">
-
-            <div class="info-box">
-                <span>DISTANCE</span>
-                <strong id="distanceValue">
-                    22m
-                </strong>
-            </div>
-
-            <div class="info-box">
-                <span>ATTEMPT</span>
-                <strong id="attemptValue">
-                    1 / 5
-                </strong>
-            </div>
-
-            <div class="info-box">
-                <span>PLAYER</span>
-                <strong id="playerValue">
-                    Hassan Ali
-                </strong>
-            </div>
-
-        </div>
-
-
-        <!-- =====================================
-             PITCH
-        ====================================== -->
-
-        <section
-            id="pitch"
-            class="pitch"
-        >
-
-            <canvas
-                id="gameCanvas"
-            ></canvas>
-
-            <div
-                id="aimPoint"
-                class="aim-point"
-            ></div>
-
-            <div
-                id="shotMessage"
-                class="shot-message"
-            >
-                TAP THE PITCH TO AIM
-            </div>
-
-            <div
-                id="powerContainer"
-                class="power-container"
-            >
-
-                <div class="power-title">
-                    SHOT POWER
-                </div>
-
-                <div class="power-track">
-
-                    <div
-                        id="powerFill"
-                        class="power-fill"
-                    ></div>
-
-                </div>
-
-                <div class="power-number">
-                    <span id="powerValue">0</span>%
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================
-             SHOOTING CONTROLS
-        ====================================== -->
-
-        <section
-            id="shootControls"
-            class="shoot-controls"
-        >
-
-            <div class="control-row">
-
-                <button
-                    id="leftAim"
-                    class="control-button"
-                >
-                    ◀
+                <button class="mode-button active" data-mode="penalty">
+                    <span class="mode-icon">🎯</span>
+                    <span>
+                        <b>Penalty</b>
+                        <small>1 vs 1</small>
+                    </span>
                 </button>
 
-                <button
-                    id="shootButton"
-                    class="shoot-button"
-                >
-                    SHOOT
+                <button class="mode-button" data-mode="freekick">
+                    <span class="mode-icon">🧱</span>
+                    <span>
+                        <b>Free Kick</b>
+                        <small>Beat the wall</small>
+                    </span>
                 </button>
 
-                <button
-                    id="rightAim"
-                    class="control-button"
-                >
-                    ▶
+                <button class="mode-button" data-mode="longshot">
+                    <span class="mode-icon">🚀</span>
+                    <span>
+                        <b>Long Shot</b>
+                        <small>Power from distance</small>
+                    </span>
                 </button>
 
-            </div>
-
-            <div class="secondary-controls">
-
-                <button
-                    id="upAim"
-                    class="small-control"
-                >
-                    ▲
+                <button class="mode-button" data-mode="goalkeeper">
+                    <span class="mode-icon">🧤</span>
+                    <span>
+                        <b>Goalkeeping</b>
+                        <small>Keeper POV</small>
+                    </span>
                 </button>
 
-                <button
-                    id="downAim"
-                    class="small-control"
-                >
-                    ▼
-                </button>
-
-                <button
-                    id="longShotButton"
-                    class="long-shot-button"
-                >
-                    💥 LONG SHOT
-                </button>
-
-            </div>
-
-        </section>
+            </section>
 
 
-        <!-- =====================================
-             GOALKEEPER CONTROLS
-        ====================================== -->
+            <section class="panel-section">
 
-        <section
-            id="keeperControls"
-            class="keeper-controls hidden"
-        >
+                <h2>PLAYER</h2>
 
-            <div class="keeper-title">
-                DIVE TO SAVE
-            </div>
+                <select id="playerSelect">
 
-            <div class="keeper-grid">
+                    <option value="hassan">
+                        Hassan Ali
+                    </option>
 
-                <button
-                    class="dive-button"
-                    data-dive="left"
-                >
-                    ↙
-                    <span>LEFT</span>
-                </button>
+                    <option value="ehan">
+                        Ehan Ali
+                    </option>
 
-                <button
-                    class="dive-button"
-                    data-dive="center"
-                >
-                    ↓
-                    <span>CENTER</span>
-                </button>
+                    <option value="umar">
+                        Umar Shoaib
+                    </option>
 
-                <button
-                    class="dive-button"
-                    data-dive="right"
-                >
-                    ↘
-                    <span>RIGHT</span>
-                </button>
+                    <option value="arham">
+                        Muhammad Arham
+                    </option>
 
-            </div>
+                    <option value="ronaldo">
+                        Cristiano Ronaldo
+                    </option>
 
-        </section>
+                    <option value="haaland">
+                        Erling Haaland
+                    </option>
 
-    </main>
+                    <option value="bellingham">
+                        Jude Bellingham
+                    </option>
 
+                    <option value="yamal">
+                        Lamine Yamal
+                    </option>
 
-    <!-- =========================================
-         RESULT
-    ========================================== -->
+                    <option value="mbappe">
+                        Kylian Mbappé
+                    </option>
 
-    <main
-        id="resultScreen"
-        class="screen result-screen"
-    >
+                    <option value="messi">
+                        Lionel Messi
+                    </option>
 
-        <div class="result-card">
+                </select>
 
-            <div
-                id="resultIcon"
-                class="result-icon"
-            >
-                ⚽
-            </div>
+                <div class="player-card">
 
-            <div
-                id="resultTitle"
-                class="result-title"
-            >
-                GOAL!
-            </div>
+                    <div class="player-avatar" id="playerAvatar">
+                        HA
+                    </div>
 
-            <div
-                id="resultMessage"
-                class="result-message"
-            >
-                Incredible finish!
-            </div>
+                    <div class="player-info">
 
-            <div class="result-stats">
+                        <strong id="playerName">
+                            Hassan Ali
+                        </strong>
 
-                <div>
-                    <span>POINTS</span>
-                    <strong id="resultPoints">
-                        0
-                    </strong>
+                        <span id="playerRole">
+                            Goalkeeper / All-Rounder
+                        </span>
+
+                    </div>
+
                 </div>
 
-                <div>
-                    <span>XP</span>
-                    <strong id="resultXP">
-                        0
-                    </strong>
-                </div>
-
-                <div>
-                    <span>COINS</span>
-                    <strong id="resultCoins">
-                        0
-                    </strong>
-                </div>
-
-            </div>
-
-            <button
-                id="nextButton"
-                class="primary-button"
-            >
-                NEXT ATTEMPT
-            </button>
-
-            <button
-                id="resultHomeButton"
-                class="secondary-button full"
-            >
-                HOME
-            </button>
-
-        </div>
-
-    </main>
+            </section>
 
 
-    <!-- =========================================
-         SETTINGS
-    ========================================== -->
+            <section class="panel-section">
 
-    <main
-        id="settingsScreen"
-        class="screen"
-    >
+                <h2>DIFFICULTY</h2>
 
-        <div class="section-header">
+                <select id="difficultySelect">
 
-            <button
-                class="back-button"
-                data-screen="homeScreen"
-            >
-                ←
-            </button>
+                    <option value="easy">
+                        Easy
+                    </option>
 
-            <div>
-                <h2>SETTINGS</h2>
-                <p>Customize your game</p>
-            </div>
-
-        </div>
-
-        <div class="settings-card">
-
-            <div class="setting">
-
-                <div>
-                    <strong>Sound</strong>
-                    <span>Game effects</span>
-                </div>
-
-                <button
-                    id="soundToggle"
-                    class="toggle active"
-                >
-                    ON
-                </button>
-
-            </div>
-
-
-            <div class="setting">
-
-                <div>
-                    <strong>Difficulty</strong>
-                    <span id="difficultyText">
+                    <option value="normal" selected>
                         Normal
+                    </option>
+
+                    <option value="hard">
+                        Hard
+                    </option>
+
+                    <option value="legend">
+                        Legend
+                    </option>
+
+                </select>
+
+            </section>
+
+
+            <section class="panel-section">
+
+                <h2>SHOT POWER</h2>
+
+                <div class="power-row">
+
+                    <input
+                        id="powerSlider"
+                        type="range"
+                        min="25"
+                        max="100"
+                        value="75"
+                    >
+
+                    <strong id="powerValue">
+                        75%
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <section class="panel-section">
+
+                <button id="resetButton" class="secondary-button">
+                    ↻ RESET GAME
+                </button>
+
+            </section>
+
+        </aside>
+
+
+        <section class="game-section">
+
+            <div class="game-header">
+
+                <div>
+                    <span class="small-label">CURRENT MODE</span>
+                    <strong id="modeTitle">
+                        PENALTY
+                    </strong>
+                </div>
+
+                <div class="distance-display">
+                    <span>DISTANCE</span>
+                    <strong id="distanceValue">
+                        11 m
+                    </strong>
+                </div>
+
+                <div class="wind-display">
+                    <span>WIND</span>
+                    <strong id="windValue">
+                        0 km/h
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="canvas-wrapper">
+
+                <canvas id="gameCanvas"></canvas>
+
+                <div id="messageOverlay" class="message-overlay">
+
+                    <div class="message-box">
+
+                        <div id="messageIcon" class="message-icon">
+                            ⚽
+                        </div>
+
+                        <h2 id="messageTitle">
+                            READY?
+                        </h2>
+
+                        <p id="messageText">
+                            Aim at the goal and take your shot.
+                        </p>
+
+                        <button id="overlayButton" class="primary-button">
+                            PLAY
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="game-controls">
+
+                <div class="aim-help">
+                    <span>🎯</span>
+                    <span id="controlText">
+                        Tap the pitch to aim
                     </span>
                 </div>
 
-                <button
-                    id="difficultyButton"
-                    class="setting-button"
-                >
-                    CHANGE
-                </button>
+                <div class="control-buttons">
 
-            </div>
+                    <button
+                        id="shootButton"
+                        class="action-button shoot-button"
+                    >
+                        ⚡ SHOOT
+                    </button>
 
+                    <button
+                        id="diveButton"
+                        class="action-button dive-button hidden"
+                    >
+                        🧤 DIVE
+                    </button>
 
-            <div class="setting">
-
-                <div>
-                    <strong>Reset Progress</strong>
-                    <span>Start your career again</span>
                 </div>
 
-                <button
-                    id="resetButton"
-                    class="danger-button"
-                >
-                    RESET
-                </button>
+            </div>
+
+
+            <div class="bottom-hud">
+
+                <div class="hud-card">
+                    <span>GOALS</span>
+                    <strong id="goalsValue">0</strong>
+                </div>
+
+                <div class="hud-card">
+                    <span>SAVES</span>
+                    <strong id="savesValue">0</strong>
+                </div>
+
+                <div class="hud-card">
+                    <span>COMBO</span>
+                    <strong id="comboValue">0</strong>
+                </div>
+
+                <div class="hud-card">
+                    <span>BEST</span>
+                    <strong id="bestValue">0</strong>
+                </div>
 
             </div>
 
-        </div>
+        </section>
 
     </main>
 
 
-    <!-- =========================================
-         PLAYER MODAL
-    ========================================== -->
-
-    <div
-        id="playerModal"
-        class="modal hidden"
-    >
-
-        <div class="modal-card">
-
-            <button
-                id="closeModal"
-                class="modal-close"
-            >
-                ×
-            </button>
-
-            <div
-                id="modalIcon"
-                class="modal-icon"
-            >
-                ⚽
-            </div>
-
-            <h2 id="modalName">
-                Player
-            </h2>
-
-            <p id="modalRole">
-                Forward
-            </p>
-
-            <div class="speciality">
-                <span>SPECIALTY</span>
-                <strong id="modalSpecialty">
-                    None
-                </strong>
-            </div>
-
-            <div
-                id="modalStats"
-                class="modal-stats"
-            ></div>
-
-            <button
-                id="selectPlayerButton"
-                class="primary-button full"
-            >
-                SELECT PLAYER
-            </button>
-
-        </div>
-
+    <div id="toast" class="toast">
+        Ready!
     </div>
-
-
-    <!-- =========================================
-         NOTIFICATION
-    ========================================== -->
-
-    <div
-        id="notification"
-        class="notification"
-    ></div>
 
 </div>
 
