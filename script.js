@@ -348,7 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
             diving: 123,
             handling: 61,
             positioning: 112,
-            overall: 121
+            overall: 98
         }
 
     };
