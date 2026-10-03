@@ -99,10 +99,10 @@ document.addEventListener("DOMContentLoaded", () => {
         hassan: {
             name: "Hassan Ali",
             avatar: "HA",
-            shooting: 98,
-            power: 98,
-            accuracy: 98,
-            speed: 96,
+            shooting: 300,
+            power: 300,
+            accuracy: 300,
+            speed: 300,
             special: "Complete Specialist"
         },
 
