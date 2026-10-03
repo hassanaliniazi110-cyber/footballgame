@@ -1,8 +1,3 @@
-/* =========================================================
-   FOOTBALL HERO X
-   COMPLETE STYLESHEET
-========================================================= */
-
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
@@ -12,17 +7,15 @@ html,
 body {
     margin: 0;
     padding: 0;
-    width: 100%;
     min-height: 100%;
+    background: #020617;
+    color: white;
     font-family:
-        Inter,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
         Arial,
         sans-serif;
-    background: #030712;
-    color: #ffffff;
 }
 
 body {
@@ -37,11 +30,6 @@ input {
 
 button {
     cursor: pointer;
-    border: 0;
-}
-
-button:active {
-    transform: scale(0.97);
 }
 
 .hidden {
@@ -49,33 +37,27 @@ button:active {
 }
 
 
-/* =========================================================
+/* =========================================
    APP
-========================================================= */
+========================================= */
 
-#app {
+.game-app {
     min-height: 100vh;
-    min-height: 100dvh;
     background:
         radial-gradient(
-            circle at top right,
-            rgba(37, 99, 235, 0.15),
+            circle at 80% 0%,
+            rgba(37,99,235,0.15),
             transparent 35%
         ),
-        radial-gradient(
-            circle at bottom left,
-            rgba(16, 185, 129, 0.10),
-            transparent 35%
-        ),
-        #030712;
+        #020617;
 }
 
 
-/* =========================================================
-   TOP BAR
-========================================================= */
+/* =========================================
+   TOP HUD
+========================================= */
 
-.topbar {
+.top-hud {
     min-height: 78px;
     padding: 12px 18px;
     display: flex;
@@ -83,9 +65,9 @@ button:active {
     justify-content: space-between;
     gap: 20px;
     background:
-        rgba(3, 7, 18, 0.92);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    backdrop-filter: blur(18px);
+        rgba(2,6,23,0.95);
+    border-bottom:
+        1px solid rgba(255,255,255,0.08);
 }
 
 .brand {
@@ -94,7 +76,7 @@ button:active {
     gap: 12px;
 }
 
-.brand-ball {
+.football-logo {
     width: 48px;
     height: 48px;
     display: grid;
@@ -107,60 +89,59 @@ button:active {
             #7c3aed
         );
     font-size: 25px;
-    box-shadow:
-        0 8px 25px rgba(37,99,235,0.30);
 }
 
 .brand h1 {
     margin: 0;
     font-size: 20px;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.3px;
 }
 
 .brand p {
-    margin: 2px 0 0;
-    color: #94a3b8;
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.top-status {
-    display: flex;
-    gap: 8px;
-}
-
-.status-box {
-    min-width: 72px;
-    padding: 8px 12px;
-    text-align: center;
-    background: rgba(255,255,255,0.055);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 12px;
-}
-
-.status-box span {
-    display: block;
+    margin: 3px 0 0;
     color: #64748b;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 700;
     letter-spacing: 1px;
 }
 
-.status-box strong {
+.score-board {
+    display: flex;
+    gap: 8px;
+}
+
+.score-item {
+    min-width: 70px;
+    padding: 8px 10px;
+    text-align: center;
+    border:
+        1px solid rgba(255,255,255,0.07);
+    border-radius: 11px;
+    background:
+        rgba(255,255,255,0.04);
+}
+
+.score-item span {
     display: block;
-    margin-top: 2px;
+    color: #64748b;
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.score-item strong {
+    display: block;
+    margin-top: 3px;
     font-size: 18px;
 }
 
 
-/* =========================================================
-   MAIN LAYOUT
-========================================================= */
+/* =========================================
+   MAIN
+========================================= */
 
-.game-layout {
+.main-layout {
     width: min(1500px, 100%);
-    margin: 0 auto;
+    margin: auto;
     padding: 18px;
     display: grid;
     grid-template-columns: 270px minmax(0, 1fr);
@@ -168,65 +149,58 @@ button:active {
 }
 
 
-/* =========================================================
-   SIDE PANEL
-========================================================= */
+/* =========================================
+   CONTROL PANEL
+========================================= */
 
-.side-panel {
+.control-panel {
     padding: 16px;
-    border-radius: 18px;
+    border-radius: 17px;
     background:
-        rgba(15,23,42,0.82);
-    border: 1px solid rgba(255,255,255,0.07);
-    box-shadow:
-        0 20px 60px rgba(0,0,0,0.25);
+        rgba(15,23,42,0.88);
+    border:
+        1px solid rgba(255,255,255,0.07);
 }
 
-.panel-section {
-    margin-bottom: 22px;
+.panel-block {
+    margin-bottom: 20px;
 }
 
-.panel-section:last-child {
-    margin-bottom: 0;
-}
-
-.panel-section h2 {
-    margin: 0 0 10px;
+.panel-block h2 {
+    margin: 0 0 9px;
     color: #64748b;
     font-size: 10px;
-    letter-spacing: 1.4px;
+    letter-spacing: 1.3px;
 }
 
 
-/* =========================================================
-   MODE BUTTONS
-========================================================= */
+/* =========================================
+   MODES
+========================================= */
 
-.mode-button {
+.mode-btn {
     width: 100%;
-    margin-bottom: 8px;
-    padding: 11px;
+    min-height: 52px;
+    margin-bottom: 7px;
+    padding: 9px;
     display: flex;
     align-items: center;
     gap: 10px;
+    color: white;
     text-align: left;
-    color: #ffffff;
     background:
         rgba(255,255,255,0.035);
-    border: 1px solid rgba(255,255,255,0.055);
-    border-radius: 12px;
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.15s ease;
+    border:
+        1px solid rgba(255,255,255,0.06);
+    border-radius: 11px;
 }
 
-.mode-button:hover {
+.mode-btn:hover {
     background:
         rgba(255,255,255,0.07);
 }
 
-.mode-button.active {
+.mode-btn.active {
     background:
         linear-gradient(
             135deg,
@@ -237,41 +211,43 @@ button:active {
         rgba(96,165,250,0.55);
 }
 
-.mode-icon {
-    width: 34px;
-    height: 34px;
+.mode-btn > span {
+    width: 35px;
+    height: 35px;
     display: grid;
     place-items: center;
-    border-radius: 10px;
+    flex-shrink: 0;
+    border-radius: 9px;
     background:
-        rgba(255,255,255,0.08);
+        rgba(255,255,255,0.07);
     font-size: 17px;
 }
 
-.mode-button b {
+.mode-btn b {
     display: block;
-    font-size: 13px;
+    font-size: 12px;
 }
 
-.mode-button small {
+.mode-btn small {
     display: block;
     margin-top: 2px;
     color: #94a3b8;
-    font-size: 10px;
+    font-size: 9px;
 }
 
 
-/* =========================================================
-   SELECTS
-========================================================= */
+/* =========================================
+   SELECT
+========================================= */
 
 select {
     width: 100%;
-    padding: 11px 12px;
-    color: #ffffff;
-    background:
-        #111827;
-    border: 1px solid rgba(255,255,255,0.1);
+    min-height: 44px;
+    padding: 9px 11px;
+    color: white;
+    background: #111827;
+    border:
+        1px solid rgba(255,255,255,0.10);
     border-radius: 10px;
     outline: none;
 }
@@ -281,28 +257,28 @@ select:focus {
 }
 
 
-/* =========================================================
-   PLAYER CARD
-========================================================= */
+/* =========================================
+   PLAYER
+========================================= */
 
 .player-card {
-    margin-top: 9px;
+    margin-top: 8px;
     padding: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
-    border-radius: 12px;
+    border-radius: 11px;
     background:
         rgba(255,255,255,0.035);
 }
 
-.player-avatar {
+.player-initials {
     width: 42px;
     height: 42px;
     display: grid;
     place-items: center;
     flex-shrink: 0;
-    border-radius: 12px;
+    border-radius: 11px;
     background:
         linear-gradient(
             135deg,
@@ -313,12 +289,12 @@ select:focus {
     font-weight: 900;
 }
 
-.player-info strong {
+.player-card strong {
     display: block;
     font-size: 12px;
 }
 
-.player-info span {
+.player-card span {
     display: block;
     margin-top: 3px;
     color: #94a3b8;
@@ -326,116 +302,127 @@ select:focus {
 }
 
 
-/* =========================================================
+/* =========================================
    POWER
-========================================================= */
+========================================= */
 
-.power-row {
+.power-line {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
-#powerSlider {
+#power {
     width: 100%;
     accent-color: #3b82f6;
 }
 
-#powerValue {
-    width: 42px;
-    font-size: 12px;
-    text-align: right;
+#powerText {
+    min-width: 40px;
+    font-size: 11px;
 }
 
 
-/* =========================================================
-   BUTTONS
-========================================================= */
+/* =========================================
+   STATS
+========================================= */
 
-.primary-button,
-.secondary-button {
-    width: 100%;
-    padding: 12px;
-    border-radius: 11px;
-    font-weight: 800;
+.stat {
+    margin-bottom: 9px;
 }
 
-.primary-button {
-    color: white;
+.stat > span {
+    display: block;
+    margin-bottom: 4px;
+    color: #94a3b8;
+    font-size: 9px;
+}
+
+.bar {
+    height: 5px;
+    overflow: hidden;
+    border-radius: 20px;
+    background:
+        rgba(255,255,255,0.08);
+}
+
+.bar i {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
     background:
         linear-gradient(
-            135deg,
+            90deg,
             #2563eb,
-            #7c3aed
+            #8b5cf6
         );
-    box-shadow:
-        0 10px 25px rgba(37,99,235,0.25);
+    transition:
+        width 0.3s ease;
 }
 
-.secondary-button {
+
+/* =========================================
+   RESTART
+========================================= */
+
+.restart-button {
+    width: 100%;
+    min-height: 44px;
     color: #cbd5e1;
     background:
         rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
+    border:
+        1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
 }
 
 
-/* =========================================================
-   GAME SECTION
-========================================================= */
+/* =========================================
+   GAME
+========================================= */
 
-.game-section {
+.game-area {
     min-width: 0;
 }
 
-.game-header {
-    min-height: 65px;
+.game-info {
+    min-height: 62px;
     padding: 10px 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 15px;
+    border-radius:
+        16px 16px 0 0;
     background:
-        rgba(15,23,42,0.82);
+        rgba(15,23,42,0.88);
     border:
         1px solid rgba(255,255,255,0.07);
-    border-radius: 16px 16px 0 0;
 }
 
-.small-label,
-.distance-display span,
-.wind-display span {
+.game-info span {
     display: block;
     color: #64748b;
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 800;
     letter-spacing: 1px;
 }
 
-#modeTitle {
-    display: block;
-    margin-top: 3px;
-    font-size: 17px;
-}
-
-.distance-display,
-.wind-display {
-    text-align: right;
-}
-
-.distance-display strong,
-.wind-display strong {
+.game-info strong {
     display: block;
     margin-top: 3px;
     font-size: 14px;
 }
 
 
-/* =========================================================
+/* =========================================
    CANVAS
-========================================================= */
+========================================= */
 
-.canvas-wrapper {
+.canvas-container {
     position: relative;
     width: 100%;
     height: clamp(430px, 65vh, 720px);
@@ -444,7 +431,7 @@ select:focus {
     background: #07150d;
 }
 
-#gameCanvas {
+#footballCanvas {
     display: block;
     width: 100%;
     height: 100%;
@@ -453,94 +440,109 @@ select:focus {
 }
 
 
-/* =========================================================
-   OVERLAY
-========================================================= */
+/* =========================================
+   OVERLAYS
+========================================= */
 
-.message-overlay {
+.screen-overlay {
     position: absolute;
     inset: 0;
     display: grid;
     place-items: center;
     padding: 20px;
     background:
-        rgba(2,6,23,0.50);
+        rgba(2,6,23,0.52);
     backdrop-filter: blur(5px);
 }
 
-.message-overlay.hidden {
+.screen-overlay.hidden {
     display: none;
 }
 
-.message-box {
-    width: min(390px, 92%);
+.overlay-card {
+    width: min(400px, 92%);
     padding: 28px;
     text-align: center;
-    border-radius: 22px;
+    border-radius: 20px;
     background:
-        rgba(15,23,42,0.96);
+        rgba(15,23,42,0.97);
     border:
-        1px solid rgba(255,255,255,0.10);
+        1px solid rgba(255,255,255,0.1);
     box-shadow:
-        0 30px 80px rgba(0,0,0,0.45);
+        0 25px 70px rgba(0,0,0,0.45);
 }
 
-.message-icon {
-    font-size: 44px;
+.big-ball {
+    font-size: 46px;
 }
 
-.message-box h2 {
-    margin: 10px 0 5px;
+.overlay-card h2 {
+    margin: 9px 0 6px;
     font-size: 25px;
 }
 
-.message-box p {
+.overlay-card p {
     margin: 0 0 18px;
     color: #94a3b8;
     font-size: 13px;
     line-height: 1.5;
 }
 
+.main-button {
+    width: 100%;
+    min-height: 48px;
+    color: white;
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #7c3aed
+        );
+    border-radius: 11px;
+    font-weight: 900;
+}
 
-/* =========================================================
-   GAME CONTROLS
-========================================================= */
+
+/* =========================================
+   CONTROLS
+========================================= */
 
 .game-controls {
-    min-height: 74px;
+    min-height: 75px;
     padding: 10px 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
     background:
-        rgba(15,23,42,0.90);
+        rgba(15,23,42,0.9);
     border:
         1px solid rgba(255,255,255,0.07);
     border-top: 0;
 }
 
-.aim-help {
+.instruction {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 7px;
     color: #94a3b8;
     font-size: 11px;
 }
 
-.control-buttons {
+.action-buttons {
     display: flex;
     gap: 8px;
 }
 
-.action-button {
+.shoot-button,
+.save-button {
     min-width: 145px;
-    padding: 14px 20px;
-    border-radius: 12px;
+    min-height: 50px;
+    padding: 12px 20px;
     color: white;
-    font-size: 13px;
+    border-radius: 11px;
+    font-size: 12px;
     font-weight: 900;
-    letter-spacing: 0.4px;
 }
 
 .shoot-button {
@@ -550,258 +552,170 @@ select:focus {
             #ef4444,
             #f97316
         );
-    box-shadow:
-        0 10px 25px rgba(239,68,68,0.25);
 }
 
-.dive-button {
+.save-button {
     background:
         linear-gradient(
             135deg,
             #16a34a,
             #0d9488
         );
-    box-shadow:
-        0 10px 25px rgba(22,163,74,0.25);
 }
 
 
-/* =========================================================
-   BOTTOM HUD
-========================================================= */
+/* =========================================
+   BOTTOM STATS
+========================================= */
 
-.bottom-hud {
+.bottom-stats {
+    margin-top: 9px;
     display: grid;
     grid-template-columns:
         repeat(4, 1fr);
     gap: 8px;
-    margin-top: 10px;
 }
 
-.hud-card {
-    padding: 10px;
+.bottom-stats > div {
+    padding: 9px;
     text-align: center;
-    border-radius: 12px;
+    border-radius: 11px;
     background:
-        rgba(15,23,42,0.80);
+        rgba(15,23,42,0.85);
     border:
         1px solid rgba(255,255,255,0.06);
 }
 
-.hud-card span {
+.bottom-stats span {
     display: block;
     color: #64748b;
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 800;
     letter-spacing: 1px;
 }
 
-.hud-card strong {
+.bottom-stats strong {
     display: block;
     margin-top: 3px;
-    font-size: 19px;
+    font-size: 18px;
 }
 
 
-/* =========================================================
-   TOAST
-========================================================= */
-
-.toast {
-    position: fixed;
-    left: 50%;
-    bottom: 25px;
-    z-index: 50;
-    padding: 11px 17px;
-    color: #ffffff;
-    background:
-        rgba(15,23,42,0.96);
-    border:
-        1px solid rgba(255,255,255,0.1);
-    border-radius: 999px;
-    box-shadow:
-        0 15px 40px rgba(0,0,0,0.35);
-    transform:
-        translate(-50%, 100px);
-    opacity: 0;
-    pointer-events: none;
-    transition:
-        transform 0.25s ease,
-        opacity 0.25s ease;
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.toast.visible {
-    transform:
-        translate(-50%, 0);
-    opacity: 1;
-}
-
-
-/* =========================================================
+/* =========================================
    TABLET
-========================================================= */
+========================================= */
 
 @media (max-width: 900px) {
 
-    .game-layout {
+    .main-layout {
         grid-template-columns: 1fr;
     }
 
-    .side-panel {
+    .control-panel {
         display: grid;
         grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-        gap: 15px;
+            repeat(2, 1fr);
+        gap: 14px;
     }
 
-    .panel-section {
+    .panel-block {
         margin-bottom: 0;
-    }
-
-    .panel-section:first-child {
-        grid-column: 1 / -1;
     }
 
 }
 
 
-/* =========================================================
-   SMALL TABLET / IPAD PORTRAIT
-========================================================= */
+/* =========================================
+   SMALL SCREEN
+========================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 650px) {
 
-    .topbar {
-        align-items: flex-start;
+    .top-hud {
         flex-direction: column;
+        align-items: stretch;
     }
 
-    .top-status {
+    .score-board {
         width: 100%;
     }
 
-    .status-box {
+    .score-item {
         flex: 1;
+        min-width: 0;
     }
 
-    .game-layout {
-        padding: 10px;
-        gap: 10px;
+    .main-layout {
+        padding: 9px;
     }
 
-    .side-panel {
+    .control-panel {
         grid-template-columns: 1fr;
         padding: 12px;
     }
 
-    .panel-section:first-child {
-        grid-column: auto;
+    .game-info {
+        padding: 9px;
     }
 
-    .game-header {
-        padding: 9px 11px;
-    }
-
-    .canvas-wrapper {
-        height: 58vh;
-        min-height: 400px;
+    .canvas-container {
+        min-height: 390px;
+        height: 55vh;
     }
 
     .game-controls {
-        align-items: stretch;
         flex-direction: column;
+        align-items: stretch;
     }
 
-    .aim-help {
+    .instruction {
         justify-content: center;
     }
 
-    .control-buttons {
+    .action-buttons {
         width: 100%;
     }
 
-    .action-button {
+    .shoot-button,
+    .save-button {
         width: 100%;
     }
 
 }
 
 
-/* =========================================================
+/* =========================================
    PHONE
-========================================================= */
+========================================= */
 
-@media (max-width: 480px) {
+@media (max-width: 430px) {
 
     .brand h1 {
         font-size: 16px;
     }
 
-    .brand-ball {
-        width: 42px;
-        height: 42px;
+    .brand p {
+        font-size: 8px;
     }
 
-    .status-box {
-        min-width: 0;
-        padding: 7px;
+    .game-info {
+        gap: 7px;
     }
 
-    .canvas-wrapper {
-        height: 52vh;
+    .game-info strong {
+        font-size: 11px;
+    }
+
+    .canvas-container {
         min-height: 350px;
     }
 
-    .bottom-hud {
-        gap: 5px;
+    .bottom-stats {
+        gap: 4px;
     }
 
-    .hud-card {
-        padding: 8px 4px;
-    }
-
-    .hud-card strong {
-        font-size: 16px;
-    }
-
-}
-
-
-/* =========================================================
-   TOUCH DEVICES
-========================================================= */
-
-@media (hover: none) {
-
-    button:hover {
-        transform: none;
-    }
-
-    .mode-button {
-        min-height: 48px;
-    }
-
-    .action-button {
-        min-height: 52px;
-    }
-
-}
-
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        scroll-behavior: auto !important;
-        transition: none !important;
-        animation: none !important;
+    .bottom-stats > div {
+        padding: 7px 3px;
     }
 
 }
