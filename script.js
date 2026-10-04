@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
             power: 300,
             accuracy: 300,
             speed: 300,
-            special: "Complete Specialist"
+            special: "Legend Specialist"
         },
 
         ehan: {
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
             power: 64,
             accuracy: 59,
             speed: 67,
-            special: "Power Finisher"
+            special: "Mr Diddy Onana"
         },
 
         arham: {
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
             power: 93,
             accuracy: 89,
             speed: 92,
-            special: "Power Shooter"
+            special: "Free Kick Master"
         },
 
         umar: {
@@ -224,11 +224,11 @@ document.addEventListener("DOMContentLoaded", () => {
         ehan: {
             name: "Ehan Ali",
             avatar: "EA",
-            reflexes: 95,
-            diving: 94,
-            handling: 92,
-            positioning: 93,
-            overall: 94
+            reflexes: 0,
+            diving: 0,
+            handling: 0,
+            positioning: 0,
+            overall: 0
         },
 
         courtois: {
@@ -347,6 +347,16 @@ document.addEventListener("DOMContentLoaded", () => {
             reflexes: 110,
             diving: 108,
             handling: 98,
+            positioning: 99,
+            overall: 106
+        },
+                
+        yashin: {
+            name: "Lev Yashin",
+            avatar: "LY",
+            reflexes: 110,
+            diving: 108,
+            handling: 300,
             positioning: 99,
             overall: 106
         }
