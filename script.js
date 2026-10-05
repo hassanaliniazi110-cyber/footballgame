@@ -109,11 +109,11 @@ document.addEventListener("DOMContentLoaded", () => {
         ehan: {
             name: "Ehan Ali",
             avatar: "EA",
-            shooting: 60,
-            power: 64,
-            accuracy: 59,
-            speed: 67,
-            special: "Mr Diddy Onana"
+            shooting: 90,
+            power: 110,
+            accuracy: 95,
+            speed: 100,
+            special: "Power Master"
         },
 
         arham: {
@@ -138,11 +138,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         ronaldo: {
             name: "Cristiano Ronaldo",
-            avatar: "CR",
-            shooting: 98,
-            power: 99,
-            accuracy: 95,
-            speed: 93,
+            avatar: "CR7",
+            shooting: 1000000000000000000,
+            power: 999999999999999,
+            accuracy: 999999999999,
+            speed: 10000000000000000,
             special: "Power & Precision"
         },
 
@@ -224,11 +224,11 @@ document.addEventListener("DOMContentLoaded", () => {
         ehan: {
             name: "Ehan Ali",
             avatar: "EA",
-            reflexes: 0,
-            diving: 0,
-            handling: 0,
-            positioning: 0,
-            overall: 0
+            reflexes: 100,
+            diving: 100,
+            handling: 100,
+            positioning: 100,
+            overall: 100,
         },
 
         courtois: {
