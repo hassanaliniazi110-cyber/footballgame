@@ -2752,12 +2752,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } else {
 
-            const power =
-                Number(powerSlider.value);
+            const player = players[playerSelect.value];
+const sliderPower = Number(powerSlider.value);
 
-            const speed =
-                0.010 +
-                power / 9000;
+const effectivePower = Math.max(
+    sliderPower,
+    clamp(player.power, 0, 100)
+);
+
+const speed = 0.010 + effectivePower / 9000;
 
             state.shotProgress += speed;
 
