@@ -901,8 +901,22 @@ document.addEventListener("DOMContentLoaded", () => {
          * Better accuracy = smaller error.
          */
 
-        const accuracyFactor =
-            1 - player.accuracy / 100;
+        
+/*
+ * ACCURACY FIX
+ * Higher accuracy = less aiming error.
+ * CR7's 999999999999 accuracy is safely capped at 100.
+ */
+
+        const accuracy = clamp(player.accuracy, 0, 100);
+
+        const accuracyFactor = 1 - accuracy / 100;
+
+        const error = difficulty.aimError * accuracyFactor;
+
+        targetX += randomBetween(-error, error);
+        targetY += randomBetween(-error, error);
+
 
         const error =
             difficulty.aimError *
