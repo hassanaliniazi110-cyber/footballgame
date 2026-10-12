@@ -918,13 +918,6 @@ document.addEventListener("DOMContentLoaded", () => {
         targetY += randomBetween(-error, error);
 
 
-        const error =
-            difficulty.aimError *
-            accuracyFactor;
-
-        targetX += randomBetween(-error, error);
-        targetY += randomBetween(-error, error);
-
         /*
          * Wind affects the horizontal trajectory.
          */
