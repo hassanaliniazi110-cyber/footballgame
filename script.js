@@ -2747,29 +2747,23 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
 
             const player = players[playerSelect.value];
-const sliderPower = Number(powerSlider.value);
+            const sliderPower = Number(powerSlider.value);
+            const effectivePower = Math.max(
+                sliderPower,
+                clamp(player ? player.power : sliderPower, 0, 100)
+            );
 
-const effectivePower = Math.max(
-    sliderPower,
-    clamp(player.power, 0, 100)
+            const ronaldoBoost =
+                playerSelect.value === "ronaldo" ? 2.5 : 1;
 
-    
-    const player = players[playerSelect.value];
-const sliderPower = Number(powerSlider.value);
+            const speed =
+                (0.010 + effectivePower / 9000) *
+                ronaldoBoost;
 
-const effectivePower = Math.max(
-    sliderPower,
-    clamp(player.power, 0, 100)
-);
+            state.shotProgress += speed;
 
-const ronaldoBoost =
-    playerSelect.value === "ronaldo" ? 2.5 : 1;
+        }
 
-const speed =
-    (0.010 + effectivePower / 9000) *
-    ronaldoBoost;
-
-            
         state.shotProgress =
             clamp(
                 state.shotProgress,
