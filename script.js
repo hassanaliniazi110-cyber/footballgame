@@ -918,6 +918,7 @@ document.addEventListener("DOMContentLoaded", () => {
         targetY += randomBetween(-error, error);
 
 
+        
         /*
          * Wind affects the horizontal trajectory.
          */
@@ -2751,14 +2752,24 @@ const sliderPower = Number(powerSlider.value);
 const effectivePower = Math.max(
     sliderPower,
     clamp(player.power, 0, 100)
+
+    
+    const player = players[playerSelect.value];
+const sliderPower = Number(powerSlider.value);
+
+const effectivePower = Math.max(
+    sliderPower,
+    clamp(player.power, 0, 100)
 );
 
-const speed = 0.010 + effectivePower / 9000;
+const ronaldoBoost =
+    playerSelect.value === "ronaldo" ? 2.5 : 1;
 
-            state.shotProgress += speed;
+const speed =
+    (0.010 + effectivePower / 9000) *
+    ronaldoBoost;
 
-        }
-
+            
         state.shotProgress =
             clamp(
                 state.shotProgress,
